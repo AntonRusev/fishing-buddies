@@ -1,3 +1,4 @@
+using Application.Core;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -7,8 +8,8 @@ namespace Application.Events
 {
     public class List
     {
-        public class Query : IRequest<List<Event>> { }
-        public class Handler : IRequestHandler<Query, List<Event>>
+        public class Query : IRequest<Result<List<Event>>> { }
+        public class Handler : IRequestHandler<Query, Result<List<Event>>>
         {
             private readonly DataContext _context;
             public Handler(DataContext context)
@@ -16,9 +17,10 @@ namespace Application.Events
                 _context = context;
             }
 
-            public async Task<List<Event>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<Event>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.Events.ToListAsync();
+                // Comes from the custom Result class in Core
+                return Result<List<Event>>.Success(await _context.Events.ToListAsync());
             }
         }
     }
