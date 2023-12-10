@@ -8,6 +8,11 @@ namespace API.Services
 {
     public class TokenService
     {
+        private readonly IConfiguration _config;
+        public TokenService(IConfiguration config)
+        {
+            _config = config;
+        }
         public string CreateToken(AppUser user)
         {
             // Setting up the information passed in the JWT
@@ -20,9 +25,9 @@ namespace API.Services
 
             // Setting up a key for the JWT signature
             var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes("0eKBYR10uFFa2oYoQsrnObbqkx1VYJzZZwhPC2yOsUq0owtCiEjdPs4x9Uu23jHb")
+                Encoding.UTF8.GetBytes(_config["TokenKey"])
                 ); // 64bit key is requeired
-                
+
             // Generating the signature of the JWT
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
