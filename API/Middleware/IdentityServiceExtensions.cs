@@ -1,3 +1,4 @@
+using API.Services;
 using Domain;
 using Persistence;
 
@@ -15,6 +16,7 @@ namespace API.Middleware
             .AddEntityFrameworkStores<DataContext>();
 
             services.AddAuthentication();
+            services.AddScoped<TokenService>();
 
             return services;
         }
