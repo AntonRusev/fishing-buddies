@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace Domain
 {
     public class Event
@@ -8,5 +10,6 @@ namespace Domain
         public string Description { get; set; }
         public string Category { get; set; }
         public string Region { get; set; }
+        public ICollection<EventAttendee> Attendees { get; set; }
     }
 }
