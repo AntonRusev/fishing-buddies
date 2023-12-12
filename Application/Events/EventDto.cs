@@ -1,6 +1,8 @@
-namespace Domain
+using Application.Profiles;
+
+namespace Application.Events
 {
-    public class Event
+    public class EventDto
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
@@ -8,6 +10,7 @@ namespace Domain
         public string Description { get; set; }
         public string Category { get; set; }
         public string Region { get; set; }
-        public ICollection<EventAttendee> Attendees { get; set; } = new List<EventAttendee>();
+        public string HostUsername { get; set; }
+        public ICollection<Profile> Attendees { get; set; }
     }
 }

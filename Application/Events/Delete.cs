@@ -36,7 +36,7 @@ namespace Application.Events
                 //SaveChangesAsync returns number of changes successfully written to the database
                 if (!result)
                 {
-                    return Result<Unit>.Failure("Failed to delete activity");
+                    return Result<Unit>.Failure("Failed to delete event");
                 }
 
                 return Result<Unit>.Success(Unit.Value);

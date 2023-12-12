@@ -1,7 +1,9 @@
 using Application.Core;
+using Application.Interfaces;
 using Domain;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Events
@@ -23,13 +25,28 @@ namespace Application.Events
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
-            public Handler(DataContext context)
+            private readonly IUserAccessor _userAccessor;
+            public Handler(DataContext context, IUserAccessor userAccessor)
             {
+                _userAccessor = userAccessor;
                 _context = context;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
+
+                // Setting the User creating the Event as a Host in the table
+                var attendee = new EventAttendee
+                {
+                    AppUser = user,
+                    Event = request.Event,
+                    IsHost = true,
+                };
+
+                // Adding the User in the list of attendees
+                request.Event.Attendees.Add(attendee);
+
                 // Adding the Event in-memory
                 _context.Events.Add(request.Event);
 
@@ -39,7 +56,7 @@ namespace Application.Events
                 //SaveChangesAsync returns number of changes successfully written to the database
                 if (!result)
                 {
-                    return Result<Unit>.Failure("Failed to create activity");
+                    return Result<Unit>.Failure("Failed to create event");
                 }
 
                 return Result<Unit>.Success(Unit.Value);
