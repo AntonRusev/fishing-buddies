@@ -1,5 +1,6 @@
 using Application.Events;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -29,6 +30,7 @@ namespace API.Controllers
         }
 
         // Edit an Event
+        [Authorize(Policy = "IsEventHost")] // Only the Host of the Event can Edit it
         [HttpPut("{id}")]
         public async Task<IActionResult> EditEvent(Guid id, Event fishingEvent)
         {
@@ -38,6 +40,7 @@ namespace API.Controllers
         }
 
         // Delete an Event
+        [Authorize(Policy = "IsEventHost")] // Only the Host of the Event can Delete it
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEvent(Guid id)
         {
