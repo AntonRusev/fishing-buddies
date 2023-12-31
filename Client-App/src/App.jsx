@@ -1,11 +1,14 @@
-import './App.css'
+import { Route, Routes } from 'react-router-dom';
+import './App.css';
+import TestingComp from './components/TestingComp';
 
 function App() {
     return (
-        <>
-            <h1>Fishing Buddies</h1>
-        </>
+        <Routes>
+            <Route path='/' element={<TestingComp />}>
+            </Route>
+        </Routes>
     )
-}
+};
 
-export default App
+export default App;

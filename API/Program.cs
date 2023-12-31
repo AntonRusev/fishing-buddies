@@ -10,7 +10,7 @@ using Persistence;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers(options => 
+builder.Services.AddControllers(options =>
 {
     // TODO decide which endpoints would need authentication
     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
@@ -30,7 +30,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// TODO Fix the CORS policy
 // app.UseCors("CorsPolicy");
+app.UseCors(builder => builder
+    //  .AllowAnyOrigin()
+     .WithOrigins("http://localhost:3000", "http://localhost")
+     .AllowAnyMethod()
+     .AllowAnyHeader()
+     .AllowCredentials());
 
 app.UseAuthentication();
 app.UseAuthorization();
