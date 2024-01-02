@@ -8,6 +8,7 @@ namespace API.Controllers
     public class EventsController : BaseApiController
     {
         // Get all Events => /api/events
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetEvents()
         {
@@ -16,6 +17,7 @@ namespace API.Controllers
         }
 
         // Get single Event by Id => /api/events/:id
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEvent(Guid id)
         {
