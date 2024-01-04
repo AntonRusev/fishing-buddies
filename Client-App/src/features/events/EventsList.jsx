@@ -19,7 +19,7 @@ const EventsList = () => {
 
     } else if (isError) {
         content = <p>ERROR: {error.toString()}</p>;
-    }
+    };
 
     return (
         <section>
