@@ -1,28 +1,28 @@
-import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Form, Formik } from 'formik';
 
 import { useLoginMutation } from '../auth/authApiSlice';
 import { setCredentials } from '../auth/authSlice';
-import BreadcrumbNav from '../../components/common/Breadcrumb';
 
+import BreadcrumbNav from '../../components/common/Breadcrumb';
+import { MyTextInput, MyCheckbox, MyButton} from '../../components/common/form';
 import { loginSchema } from '../../utils/schemas';
-import { MyTextInput, MyCheckbox } from '../../components/common/form';
-import { MyButton } from '../../components/common/form'
 
 const Login = () => {
-    const [persistAuth, setPersistAuth] = useState(false);
     const [login] = useLoginMutation();
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    // TODO Create a custom useHandleAuth hook for both Login and Register
     const handleSubmit = async (values, actions) => {
         try {
-            const userData = await login(values).unwrap();
+            const { persistAuth, ...obj } = values;
+            const email = obj.email;
 
-            const email = values.email;
+            const userData = await login({ ...obj }).unwrap();
+
             dispatch(setCredentials({ ...userData, email, persistAuth }));
 
             actions.resetForm();
@@ -30,11 +30,6 @@ const Login = () => {
         } catch (err) {
             console.log(err);
         };
-    };
-
-    const rememberUserHandler = () => {
-        setPersistAuth(!persistAuth);
-        console.log(persistAuth);
     };
 
     const content = (
@@ -68,7 +63,7 @@ const Login = () => {
                         />
 
                         {/* CHECKBOX */}
-                        <MyCheckbox handler={rememberUserHandler} />
+                        <MyCheckbox name="persistAuth" />
 
                         {/* SUBMIT */}
                         <MyButton

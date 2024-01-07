@@ -1,174 +1,99 @@
-import { useState } from 'react';
-
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Form, Formik } from 'formik';
 
 import { useRegisterMutation } from '../auth/authApiSlice';
 import { setCredentials } from '../auth/authSlice';
+
 import BreadcrumbNav from '../../components/common/Breadcrumb';
+import { MyTextInput, MyCheckbox, MyButton } from '../../components/common/form';
+import { registerSchema } from '../../utils/schemas';
 
 const Register = () => {
-    const [email, setEmail] = useState('');
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [rePass, setRePass] = useState('');
-
     const [register] = useRegisterMutation();
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        // TODO fix -> If passwords do not match, return
-        if (password !== rePass) {
-            return;
-        };
-
+    // TODO Create a custom useHandleAuth hook for both Login and Register
+    const handleSubmit = async (values, actions) => {
         try {
-            const userData = await register({ email, username, password }).unwrap();
+            const { persistAuth, rePass, ...obj } = values;
 
-            // Set the User data in State and Local Storage
-            dispatch(setCredentials({ ...userData, email }));
-            localStorage.setItem("userData", JSON.stringify(userData));
+            const email = obj.email;
 
-            setEmail('');
-            setUsername('');
-            setPassword('');
-            setRePass('');
+            const userData = await register({ ...obj }).unwrap();
 
+            dispatch(setCredentials({ ...userData, email, persistAuth }));
+
+            actions.resetForm();
             navigate('/');
         } catch (err) {
             console.log(err);
         };
     };
 
-    const handleEmailInput = (e) => setEmail(e.target.value);
-
-    const handleUsernameInput = (e) => setUsername(e.target.value);
-
-    const handlePasswordInput = (e) => setPassword(e.target.value);
-
-    const handleRePassInput = (e) => setRePass(e.target.value);
-
     const content = (
-        <section>
-            <BreadcrumbNav />
-            <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-                {/* EMAIL */}
-                <div className="relative z-0 w-full mb-5 group">
-                    <input
-                        type="email"
-                        name="floating_email"
-                        id="floating_email"
-                        onChange={handleEmailInput}
-                        value={email}
-                        placeholder=" "
-                        required
-                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 
-                    appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 
-                    focus:border-blue-600 peer"
-                    />
-                    <label
-                        htmlFor="floating_email"
-                        className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 
-                    transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 
-                    rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 
-                    peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+        <Formik
+            initialValues={{ email: '', username: '', password: '', rePass: '' }}
+            validationSchema={registerSchema}
+            onSubmit={handleSubmit}
+        >
+            {({ handleSubmit, isValid, isSubmitting, dirty }) => (
+                <>
+                    <BreadcrumbNav />
+                    <Form
+                        onSubmit={handleSubmit}
+                        autoComplete='off'
+                        className="flex max-w-md flex-col gap-4 mx-auto"
                     >
-                        Email address
-                    </label>
-                </div>
+                        {/* EMAIL */}
+                        <MyTextInput
+                            placeholder="name@email.com"
+                            name="email"
+                            label="Your email"
+                            type="email"
+                        />
 
-                {/* USERNAME */}
-                <div className="relative z-0 w-full mb-5 group">
-                    <input
-                        type="text"
-                        name="floating_username"
-                        id="floating_username"
-                        onChange={handleUsernameInput}
-                        value={username}
-                        placeholder=" "
-                        required
-                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 
-                    appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 
-                    focus:border-blue-600 peer"
-                    />
-                    <label
-                        htmlFor="floating_username"
-                        className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 
-                    transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 
-                    rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 
-                    peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                    >
-                        Username
-                    </label>
-                </div>
+                        {/* USERNAME */}
+                        <MyTextInput
+                            placeholder="Username"
+                            name="username"
+                            label="Your username"
+                            type="text"
+                        />
 
-                {/* PASSWORD */}
-                <div className="relative z-0 w-full mb-5 group">
-                    <input
-                        type="password"
-                        name="floating_password"
-                        id="floating_password"
-                        onChange={handlePasswordInput}
-                        value={password}
-                        placeholder=" "
-                        required
-                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 
-                    appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 
-                    focus:border-blue-600 peer"
-                    />
-                    <label
-                        htmlFor="floating_password"
-                        className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 
-                    transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 
-                    peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 
-                    peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                    >
-                        Password
-                    </label>
-                </div>
+                        {/* PASSWORD */}
+                        <MyTextInput
+                            placeholder="********"
+                            name="password"
+                            label="Your password"
+                            type="password"
+                        />
 
-                {/* RePass - Repeat Password */}
-                <div className="relative z-0 w-full mb-5 group">
-                    <input
-                        type="password"
-                        name="repeat_password"
-                        id="floating_repeat_password"
-                        onChange={handleRePassInput}
-                        value={rePass}
-                        placeholder=" "
-                        required
-                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none 
-                dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    />
-                    <label
-                        htmlFor="floating_repeat_password"
-                        className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 
-                scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 
-                peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 
-                peer-focus:-translate-y-6"
-                    >
-                        Confirm password
-                    </label>
-                </div>
+                        {/* RePass - REPEAT PASSWORD */}
+                        <MyTextInput
+                            placeholder="********"
+                            name="rePass"
+                            label="Repeat password"
+                            type="password"
+                        />
 
-                {/* SUBMIT BUTTON */}
-                <button
-                    type="submit"
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 
-            font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 
-            dark:focus:ring-blue-800"
-                >
-                    Submit
-                </button>
-            </form>
-        </section>
+                        {/* CHECKBOX */}
+                        <MyCheckbox name="persistAuth" />
 
+                        {/* SUBMIT */}
+                        <MyButton
+                            isValid={isValid}
+                            dirty={dirty}
+                            isSubmitting={isSubmitting}
+                            value='Register'
+                        />
+                    </Form>
+                </>
+            )}
+        </Formik>
     );
-
 
     return content;
 }

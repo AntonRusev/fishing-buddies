@@ -15,8 +15,19 @@ const MyTextInput = (props) => {
             <TextInput
                 {...field}
                 {...props}
+                color={
+                    meta.touched && meta.error
+                        ? "failure" // If field is touched and validation error - red background
+                        : meta.touched && "success" // If field is touched but no validation error - green background
+                }
+                helperText={
+                    <>
+                        {/* In case of validation error show message */}
+                        {meta.touched && meta.error && <span className="error">{meta.error}</span>}
+                    </>
+                }
             />
-            {meta.touched && meta.error && <div className="error">{meta.error}</div>}
+
         </div>
     );
 
