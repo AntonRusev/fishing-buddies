@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentUser } from "../features/auth/authSlice";
+import { selectCurrentUser, selectCurrentImage, selectCurrentEmail } from "../features/auth/authSlice";
 import { logOut } from "../features/auth/authSlice";
 
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
@@ -9,17 +9,14 @@ const Header = () => {
     const dispatch = useDispatch();
 
     const user = useSelector(selectCurrentUser);
-
-    const handleLogout = () => {
-        localStorage.removeItem("userData");
-        dispatch(logOut());
-    };
+    const userImage = useSelector(selectCurrentImage);
+    const email = useSelector(selectCurrentEmail);
 
     const content = (
         <Navbar fluid rounded>
             <Navbar.Brand as={NavLink} to="/">
                 {/* TODO set Logo here */}
-                {/* <img src="/favicon.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" /> */} 
+                {/* <img src="/favicon.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" /> */}
                 <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Fishing Buddies</span>
             </Navbar.Brand>
             {user
@@ -29,38 +26,38 @@ const Header = () => {
                         arrowIcon={false}
                         inline
                         label={
-                            <Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded />
+                            <Avatar alt="User settings" img={userImage} rounded />
                         }
                     >
                         <Dropdown.Header>
                             <span className="block text-sm">{user}</span>
-                            <span className="block truncate text-sm font-medium">name@flowbite.com</span>
+                            <span className="block truncate text-sm font-medium">{email}</span>
                         </Dropdown.Header>
                         {/* <Dropdown.Item>Dashboard</Dropdown.Item>
                         <Dropdown.Item>Settings</Dropdown.Item>
                         <Dropdown.Item>Earnings</Dropdown.Item> */}
                         <Dropdown.Divider />
-                        <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
+                        <Dropdown.Item onClick={() => dispatch(logOut())}>Sign out</Dropdown.Item>
                     </Dropdown>
                     <Navbar.Toggle />
                 </div>
                 :
-                 ""       
+""
             }
 
-            <Navbar.Collapse>
-                <Navbar.Link as={NavLink} to="/">
-                    Home
-                </Navbar.Link>
-                <Navbar.Link as={NavLink} to="/events">Events</Navbar.Link>
-                <Navbar.Link as={NavLink} to="/login">Login</Navbar.Link>
-                <Navbar.Link as={NavLink} to="/register">Register</Navbar.Link>
-                {/* <Navbar.Link as={NavLink} to="#">Contact</Navbar.Link> */}
-            </Navbar.Collapse>
-        </Navbar>
+<Navbar.Collapse>
+    <Navbar.Link as={NavLink} to="/">
+        Home
+    </Navbar.Link>
+    <Navbar.Link as={NavLink} to="/events">Events</Navbar.Link>
+    <Navbar.Link as={NavLink} to="/login">Login</Navbar.Link>
+    <Navbar.Link as={NavLink} to="/register">Register</Navbar.Link>
+    {/* <Navbar.Link as={NavLink} to="#">Contact</Navbar.Link> */}
+</Navbar.Collapse>
+        </Navbar >
     );
 
-    return content;
+return content;
 };
 
 export default Header;

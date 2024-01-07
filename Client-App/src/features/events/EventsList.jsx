@@ -1,6 +1,6 @@
-import { useEffect } from "react";
 import { useGetAllEventsQuery } from "./eventsApiSlice";
 import EventCard from "./EventCard";
+import BreadcrumbNav from "../../components/common/Breadcrumb";
 
 const EventsList = () => {
     const { data: fishingEvents = [],
@@ -22,9 +22,13 @@ const EventsList = () => {
     };
 
     return (
-        <section>
-            {content}
-        </section>
+        <>
+            <BreadcrumbNav />
+            <section>
+                {content}
+            </section>
+        </>
+
     );
 };
 

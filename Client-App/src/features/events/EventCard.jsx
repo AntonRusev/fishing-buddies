@@ -1,7 +1,11 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
+
+import { Button } from 'flowbite-react';
+import { Card } from 'flowbite-react';
+
 import { useUpdateAttendanceMutation } from "./eventsApiSlice";
 
-import { Card } from 'flowbite-react';
 
 let EventCard = ({ fishingEvent }) => {
     const [updateAttendance] = useUpdateAttendanceMutation();
@@ -47,6 +51,7 @@ let EventCard = ({ fishingEvent }) => {
         <p className="font-normal text-gray-700 dark:text-gray-400">
           Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.
         </p>
+        <Button as={NavLink} to={`/events/${fishingEvent.id}`} size="xs">View</Button>
       </Card>
     );
 

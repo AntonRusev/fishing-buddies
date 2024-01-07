@@ -1,103 +1,86 @@
 import { useState } from 'react';
-
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Form, Formik } from 'formik';
 
 import { useLoginMutation } from '../auth/authApiSlice';
 import { setCredentials } from '../auth/authSlice';
+import BreadcrumbNav from '../../components/common/Breadcrumb';
+
+import { loginSchema } from '../../utils/schemas';
+import { MyTextInput, MyCheckbox } from '../../components/common/form';
+import { MyButton } from '../../components/common/form'
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
+    const [persistAuth, setPersistAuth] = useState(false);
     const [login] = useLoginMutation();
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
+    const handleSubmit = async (values, actions) => {
         try {
-            const userData = await login({ email, password }).unwrap();
+            const userData = await login(values).unwrap();
 
-            dispatch(setCredentials({ ...userData, email }));
-            localStorage.setItem("userData", JSON.stringify(userData));
+            const email = values.email;
+            dispatch(setCredentials({ ...userData, email, persistAuth }));
 
-            setEmail('');
-            setPassword('');
+            actions.resetForm();
             navigate('/');
         } catch (err) {
             console.log(err);
         };
     };
 
-    const handleEmailInput = (e) => setEmail(e.target.value);
-
-    const handlePasswordInput = (e) => setPassword(e.target.value);
+    const rememberUserHandler = () => {
+        setPersistAuth(!persistAuth);
+        console.log(persistAuth);
+    };
 
     const content = (
-        <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-            {/* EMAIL */}
-            <div className="relative z-0 w-full mb-5 group">
-                <input
-                    type="email"
-                    name="floating_email"
-                    id="floating_email"
-                    onChange={handleEmailInput}
-                    value={email}
-                    placeholder=" "
-                    required
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 
-                    appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 
-                    focus:border-blue-600 peer"
-                />
-                <label
-                    htmlFor="floating_email"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 
-                    transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 
-                    rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 
-                    peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                    Email address
-                </label>
-            </div>
+        <Formik
+            initialValues={{ email: '', password: '' }}
+            validationSchema={loginSchema}
+            onSubmit={handleSubmit}
+        >
+            {({ handleSubmit, isValid, isSubmitting, dirty }) => (
+                <>
+                    <BreadcrumbNav />
+                    <Form
+                        onSubmit={handleSubmit}
+                        autoComplete='off'
+                        className="flex max-w-md flex-col gap-4 mx-auto"
+                    >
+                        {/* EMAIL */}
+                        <MyTextInput
+                            placeholder="name@email.com"
+                            name="email"
+                            label="Your email"
+                            type="email"
+                        />
 
-            {/* PASSWORD */}
-            <div className="relative z-0 w-full mb-5 group">
-                <input
-                    type="password"
-                    name="floating_password"
-                    id="floating_password"
-                    onChange={handlePasswordInput}
-                    value={password}
-                    placeholder=" "
-                    required
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 
-                    appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 
-                    focus:border-blue-600 peer"
-                />
-                <label
-                    htmlFor="floating_password"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 
-                    transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 
-                    peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 
-                    peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                    Password
-                </label>
-            </div>
+                        {/* PASSWORD */}
+                        <MyTextInput
+                            placeholder="********"
+                            name="password"
+                            label="Your password"
+                            type="password"
+                        />
 
-            {/* SUBMIT BUTTON */}
-            <button
-                type="submit"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 
-            font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 
-            dark:focus:ring-blue-800"
-            >
-                Submit
-            </button>
-        </form>
+                        {/* CHECKBOX */}
+                        <MyCheckbox handler={rememberUserHandler} />
+
+                        {/* SUBMIT */}
+                        <MyButton
+                            isValid={isValid}
+                            dirty={dirty}
+                            isSubmitting={isSubmitting}
+                            value='Login'
+                        />
+                    </Form>
+                </>
+            )}
+        </Formik>
     );
 
     return content;
