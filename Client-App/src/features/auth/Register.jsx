@@ -6,7 +6,8 @@ import { useRegisterMutation } from '../auth/authApiSlice';
 import { setCredentials } from '../auth/authSlice';
 
 import BreadcrumbNav from '../../components/common/Breadcrumb';
-import { MyTextInput, MyCheckbox, MyButton } from '../../components/common/form';
+import { CustomTextInput, CustomCheckbox, CustomButton } from '../../components/common/form';
+
 import { registerSchema } from '../../utils/schemas';
 
 const Register = () => {
@@ -22,6 +23,7 @@ const Register = () => {
 
             const email = obj.email;
 
+            // using params: email, username and password 
             const userData = await register({ ...obj }).unwrap();
 
             dispatch(setCredentials({ ...userData, email, persistAuth }));
@@ -48,7 +50,7 @@ const Register = () => {
                         className="flex max-w-md flex-col gap-4 mx-auto"
                     >
                         {/* EMAIL */}
-                        <MyTextInput
+                        <CustomTextInput
                             placeholder="name@email.com"
                             name="email"
                             label="Your email"
@@ -56,7 +58,7 @@ const Register = () => {
                         />
 
                         {/* USERNAME */}
-                        <MyTextInput
+                        <CustomTextInput
                             placeholder="Username"
                             name="username"
                             label="Your username"
@@ -64,7 +66,7 @@ const Register = () => {
                         />
 
                         {/* PASSWORD */}
-                        <MyTextInput
+                        <CustomTextInput
                             placeholder="********"
                             name="password"
                             label="Your password"
@@ -72,7 +74,7 @@ const Register = () => {
                         />
 
                         {/* RePass - REPEAT PASSWORD */}
-                        <MyTextInput
+                        <CustomTextInput
                             placeholder="********"
                             name="rePass"
                             label="Repeat password"
@@ -80,10 +82,13 @@ const Register = () => {
                         />
 
                         {/* CHECKBOX */}
-                        <MyCheckbox name="persistAuth" />
+                        <CustomCheckbox
+                            name="persistAuth"
+                            label="Remember me"
+                        />
 
                         {/* SUBMIT */}
-                        <MyButton
+                        <CustomButton
                             isValid={isValid}
                             dirty={dirty}
                             isSubmitting={isSubmitting}

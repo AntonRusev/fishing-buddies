@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
+
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import './App.css';
 
 import { setCredentials } from './features/auth/authSlice';
 
@@ -12,6 +12,8 @@ import Header from './components/Header';
 import EventForm from './features/events/EventForm';
 import EventsList from './features/events/EventsList';
 import EventDetails from './features/events/EventDetails';
+
+import './App.css';
 
 function App() {
     const dispatch = useDispatch();
@@ -34,6 +36,7 @@ function App() {
                     <Route path='/register' element={<Register />} />
                     <Route path='/events' element={<EventsList />} />
                     <Route path='/events/:id' element={<EventDetails />} />
+                    <Route path='/manage/:id' element={<EventForm />} />
                     <Route path='/create' element={<EventForm />} />
                 </Routes>
             </main>

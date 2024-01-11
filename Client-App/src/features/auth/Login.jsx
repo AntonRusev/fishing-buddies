@@ -5,8 +5,9 @@ import { Form, Formik } from 'formik';
 import { useLoginMutation } from '../auth/authApiSlice';
 import { setCredentials } from '../auth/authSlice';
 
+import { CustomTextInput, CustomCheckbox, CustomButton } from '../../components/common/form';
 import BreadcrumbNav from '../../components/common/Breadcrumb';
-import { MyTextInput, MyCheckbox, MyButton} from '../../components/common/form';
+
 import { loginSchema } from '../../utils/schemas';
 
 const Login = () => {
@@ -21,6 +22,7 @@ const Login = () => {
             const { persistAuth, ...obj } = values;
             const email = obj.email;
 
+            // using params: email and password 
             const userData = await login({ ...obj }).unwrap();
 
             dispatch(setCredentials({ ...userData, email, persistAuth }));
@@ -47,7 +49,7 @@ const Login = () => {
                         className="flex max-w-md flex-col gap-4 mx-auto"
                     >
                         {/* EMAIL */}
-                        <MyTextInput
+                        <CustomTextInput
                             placeholder="name@email.com"
                             name="email"
                             label="Your email"
@@ -55,7 +57,7 @@ const Login = () => {
                         />
 
                         {/* PASSWORD */}
-                        <MyTextInput
+                        <CustomTextInput
                             placeholder="********"
                             name="password"
                             label="Your password"
@@ -63,10 +65,13 @@ const Login = () => {
                         />
 
                         {/* CHECKBOX */}
-                        <MyCheckbox name="persistAuth" />
+                        <CustomCheckbox 
+                        name="persistAuth" 
+                        label="Remember me"
+                        />
 
                         {/* SUBMIT */}
-                        <MyButton
+                        <CustomButton
                             isValid={isValid}
                             dirty={dirty}
                             isSubmitting={isSubmitting}

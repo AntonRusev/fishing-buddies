@@ -1,7 +1,7 @@
 import { useField } from 'formik';
 import { Checkbox, Label } from 'flowbite-react';
 
-const MyCheckbox = (props) => {
+const CustomCheckbox = (props) => {
     const [field, meta] = useField(props);
 
     const content = (
@@ -9,14 +9,15 @@ const MyCheckbox = (props) => {
             <Checkbox
                 {...field}
                 {...props}
-                id="remember"
             />
-            <Label htmlFor="remember">Remember me</Label>
-            {/* TODO Sort the error div */}
-            {meta.touched && meta.error && <div className="error">{meta.error}</div>} 
+            <Label
+                htmlFor={props.name}
+                value={props.label}
+            />
+            {meta.touched && meta.error && <div className="error">{meta.error}</div>}
         </div>
     );
 
     return content;
 };
-export default MyCheckbox;
+export default CustomCheckbox;

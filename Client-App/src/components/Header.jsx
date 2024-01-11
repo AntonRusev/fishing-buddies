@@ -1,7 +1,7 @@
-import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentUser, selectCurrentImage, selectCurrentEmail } from "../features/auth/authSlice";
-import { logOut } from "../features/auth/authSlice";
+import { NavLink } from "react-router-dom";
+
+import { selectCurrentUser, selectCurrentImage, selectCurrentEmail, logOut } from "../features/auth/authSlice";
 
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
 
@@ -42,22 +42,20 @@ const Header = () => {
                     <Navbar.Toggle />
                 </div>
                 :
-""
+                ""
             }
 
-<Navbar.Collapse>
-    <Navbar.Link as={NavLink} to="/">
-        Home
-    </Navbar.Link>
-    <Navbar.Link as={NavLink} to="/events">Events</Navbar.Link>
-    <Navbar.Link as={NavLink} to="/login">Login</Navbar.Link>
-    <Navbar.Link as={NavLink} to="/register">Register</Navbar.Link>
-    {/* <Navbar.Link as={NavLink} to="#">Contact</Navbar.Link> */}
-</Navbar.Collapse>
+            <Navbar.Collapse>
+                <Navbar.Link as={NavLink} to="/">Home</Navbar.Link>
+                <Navbar.Link as={NavLink} to="/events">Events</Navbar.Link>
+                <Navbar.Link as={NavLink} to="/login">Login</Navbar.Link>
+                <Navbar.Link as={NavLink} to="/register">Register</Navbar.Link>
+                <Navbar.Link as={NavLink} to="/create">Create</Navbar.Link>
+            </Navbar.Collapse>
         </Navbar >
     );
 
-return content;
+    return content;
 };
 
 export default Header;

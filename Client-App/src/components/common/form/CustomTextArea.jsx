@@ -1,18 +1,18 @@
 import { useField } from 'formik';
-import { Label, TextInput } from 'flowbite-react';
+import { Label, Textarea } from 'flowbite-react';
 
-const MyTextInput = (props) => {
+const CustomTextArea = (props) => {
     const [field, meta] = useField(props.name);
 
     const content = (
-        <div>
+        <div className="max-w-md">
             <div className="mb-2 block">
                 <Label
                     htmlFor={props.name}
                     value={props.label}
                 />
             </div>
-            <TextInput
+            <Textarea
                 {...field}
                 {...props}
                 color={
@@ -26,12 +26,13 @@ const MyTextInput = (props) => {
                         {meta.touched && meta.error && <span className="error">{meta.error}</span>}
                     </>
                 }
+                required
+                rows={4}
             />
-
         </div>
     );
 
     return content;
 };
 
-export default MyTextInput;
+export default CustomTextArea;

@@ -1,6 +1,6 @@
 import { Button } from 'flowbite-react';
 
-const MyButton = (props) => {
+const CustomButton = (props) => {
     const { isValid, dirty, isSubmitting, value } = props;
     const content = (
         <Button
@@ -16,4 +16,4 @@ const MyButton = (props) => {
     return content;
 };
 
-export default MyButton;
+export default CustomButton;

@@ -1,84 +1,134 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import { useNavigate, useParams } from "react-router-dom";
+import { Form, Formik } from 'formik';
 import { v4 as uuid } from 'uuid';
-import { useCreateEventMutation, useDeleteEventMutation, useEditEventMutation } from "./eventsApiSlice";
+
+import { useCreateEventMutation, useEditEventMutation, useGetEventQuery } from "./eventsApiSlice";
+
+import { CustomTextInput, CustomButton, CustomTextArea, CustomSelectInput, CustomDatepicker } from "../../components/common/form";
+import BreadcrumbNav from "../../components/common/Breadcrumb";
+
+import { eventSchema } from "../../utils/schemas";
+import { categoryOptions } from "../../utils/options/categoryOptions";
 
 const EventForm = () => {
-    const [event, setEvent] = useState();
-    const [editedEvent, setEditedEvent] = useState();
+    const [event, setEvent] = useState({
+        id: undefined,
+        title: '',
+        category: '',
+        description: '',
+        date: new Date(),
+        region: '',
+    });
+
+    const navigate = useNavigate();
+
+    const { id } = useParams();
+    const { data: fishingEvent } = useGetEventQuery(id);
 
     const [createEvent] = useCreateEventMutation();
     const [editEvent] = useEditEventMutation();
-    const [deleteEvent] = useDeleteEventMutation();
 
-    const createStateEvent = () => {
-        const newId = uuid();
-        const dateNow = new Date().toISOString();
-
-        setEvent({
-            id: newId,
-            title: 'Create Test Title',
-            category: 'flowing-freshwater',
-            description: 'Some text here',
-            date: dateNow,
-            region: 'Plovdiv',
-        });
-    };
-
-    const editStateEvent = (eventId) => {
-        const dateNow = new Date().toISOString();
-
-        setEditedEvent({
-            id: '9ab429a9-09bb-4f54-83b2-1604fc932545',
-            title: 'Create EDIT  Title',
-            category: 'flowing-freshwater',
-            description: 'Some EDIT text here',
-            date: dateNow,
-            region: 'Varna',
-        });
-    };
-
-    const handleEventSubmit = async (e) => {
-        e.preventDefault();
-
-        try {
-            await createEvent(event).unwrap();
-        } catch (err) {
-            console.log(err);
+    useEffect(() => {
+        // If editing an Event, populate the input fields with the existing properties
+        if (id && fishingEvent) {
+            setEvent({
+                id: fishingEvent.id,
+                title: fishingEvent.title,
+                category: fishingEvent.category,
+                description: fishingEvent.description,
+                date: fishingEvent.date,
+                region: fishingEvent.region,
+            });
         };
-    };
+    }, [fishingEvent]);
 
-    const handleEditSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (values, actions) => {
         try {
-            await editEvent(editedEvent).unwrap();
-        } catch (err) {
-            console.log(err);
-        };
-    };
+            if (id) {
+                // If there is an Id, Editing the Event
+                await editEvent({ ...values }).unwrap();
+            } else {
+                // If there is no Id, generating one and Creating an Event
+                const newId = uuid();
+                await createEvent({ newId, ...values }).unwrap();
+            };
 
-    const handleDeleteSubmit = async (e) => {
-        e.preventDefault();
-
-        const id = '9ab429a9-09bb-4f54-83b2-1604fc932545';
-
-        try {
-            await deleteEvent(id).unwrap();
+            actions.resetForm();
+            navigate('/');
         } catch (err) {
             console.log(err);
         };
     };
 
     const content = (
-        <section>
-            <button onClick={createStateEvent}>Click</button>
-            <button onClick={editStateEvent}>Click Edit</button>
-            <button onClick={() => console.log(event)}>Console Log</button>
-            <button onClick={() => console.log(editedEvent)}>Console Log Edit</button>
-            <button onClick={handleEventSubmit}>CREATE</button>
-            <button onClick={handleEditSubmit}>EDIT</button>
-            <button onClick={handleDeleteSubmit}>DELETE</button>
-        </section>
+        <Formik
+            validationSchema={eventSchema}
+            enableReinitialize
+            initialValues={event}
+            onSubmit={handleSubmit}
+        >
+            {({ handleSubmit, isValid, isSubmitting, dirty }) => (
+                <>
+                    <BreadcrumbNav />
+                    <Form
+                        onSubmit={handleSubmit}
+                        autoComplete='off'
+                        className="flex max-w-md flex-col gap-4 mx-auto"
+                    >
+                        {/* TITLE */}
+                        <CustomTextInput
+                            placeholder="Fishing with buddies"
+                            name="title"
+                            label="Event title"
+                        />
+
+                        {/* DESCRIPTION */}
+                        <CustomTextArea
+                            placeholder="Makarel fishing"
+                            name="description"
+                            label="Event description"
+                        />
+
+                        {/* DATE */}
+                        <CustomDatepicker
+                            name='date'
+                            minDate={new Date()}
+                            weekStart={1} // Monday
+                            title="Event Date"
+                        />
+
+                        {/* CATEGORY */}
+                        <CustomSelectInput
+                            name="category"
+                            label="Category"
+                            options={categoryOptions}
+                        />
+
+                        {/* REGION */}
+                        <CustomTextInput
+                            placeholder="Burgas"
+                            name="region"
+                            label="Region"
+                        />
+
+                        {/* SUBMIT */}
+                        <CustomButton
+                            isValid={isValid}
+                            dirty={dirty}
+                            isSubmitting={isSubmitting}
+                            value={
+                                // If there is Event Id, the Event is being edited, otherwise it is being created
+                                event.id
+                                    ? 'Edit'
+                                    : 'Create'
+                            }
+                        />
+                    </Form>
+                </>
+            )}
+        </Formik>
     );
 
     return content;

@@ -1,8 +1,10 @@
-import { useParams } from "react-router-dom";
-
-import { Button } from 'flowbite-react';
+import { useSelector } from "react-redux";
+import { NavLink, useParams } from "react-router-dom";
 
 import { useGetEventQuery, useUpdateAttendanceMutation } from "./eventsApiSlice";
+import { selectCurrentUser } from "../auth/authSlice";
+
+import { Button } from 'flowbite-react';
 import BreadcrumbNav from "../../components/common/Breadcrumb";
 
 const EventDetails = () => {
@@ -10,6 +12,7 @@ const EventDetails = () => {
 
     const { data: fishingEvent } = useGetEventQuery(id);
     const [updateAttendance] = useUpdateAttendanceMutation();
+    const user = useSelector(selectCurrentUser);
 
     const handleAttendanceSubmit = async () => {
         await updateAttendance(fishingEvent.id).unwrap();
@@ -44,7 +47,17 @@ const EventDetails = () => {
                                 </li>
                             ))}
                         </ul>
-                        <Button onClick={handleAttendanceSubmit} size="xs">Attend</Button>
+                        <Button onClick={handleAttendanceSubmit} size="sm">Attend</Button>
+                        {fishingEvent.hostUsername === user
+                            ? <Button
+                                as={NavLink}
+                                to={`/manage/${id}`}
+                                size="sm"
+                                className='mx-auto'
+                            >Manage
+                            </Button>
+                            : ""
+                        }
                     </div>
                 </article>
             </>

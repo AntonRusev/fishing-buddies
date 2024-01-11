@@ -1,3 +1,6 @@
-export { default as MyTextInput } from './MyTextInput';
-export { default as MyCheckbox } from './MyCheckbox';
-export { default as MyButton } from './MyButton';
+export { default as CustomTextInput } from './CustomTextInput';
+export { default as CustomCheckbox } from './CustomCheckbox';
+export { default as CustomButton } from './CustomButton';
+export { default as CustomTextArea } from './CustomTextArea';
+export { default as CustomSelectInput } from './CustomSelectInput';
+export { default as CustomDatepicker } from './CustomDatepicker';
