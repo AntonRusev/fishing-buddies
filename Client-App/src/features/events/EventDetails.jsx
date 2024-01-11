@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 
-import { useGetEventQuery, useUpdateAttendanceMutation } from "./eventsApiSlice";
+import { useDeleteEventMutation, useGetEventQuery, useUpdateAttendanceMutation } from "./eventsApiSlice";
 import { selectCurrentUser } from "../auth/authSlice";
 
 import { Button } from 'flowbite-react';
@@ -9,13 +9,25 @@ import BreadcrumbNav from "../../components/common/Breadcrumb";
 
 const EventDetails = () => {
     const { id } = useParams();
+    const navigate = useNavigate()
 
     const { data: fishingEvent } = useGetEventQuery(id);
     const [updateAttendance] = useUpdateAttendanceMutation();
+    const [deleteEvent] = useDeleteEventMutation();
     const user = useSelector(selectCurrentUser);
 
     const handleAttendanceSubmit = async () => {
         await updateAttendance(fishingEvent.id).unwrap();
+    };
+    const handleDeleteEvent = async () => {
+        try {
+            if (id) {
+                await deleteEvent(id).unwrap();
+            };
+            navigate('/');
+        } catch (err) {
+            console.log(err);
+        };
     };
 
     let content;
@@ -48,6 +60,7 @@ const EventDetails = () => {
                             ))}
                         </ul>
                         <Button onClick={handleAttendanceSubmit} size="sm">Attend</Button>
+                        <Button onClick={handleDeleteEvent} size="sm">Remove</Button>
                         {fishingEvent.hostUsername === user
                             ? <Button
                                 as={NavLink}

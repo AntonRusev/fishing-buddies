@@ -12,6 +12,7 @@ import Header from './components/Header';
 import EventForm from './features/events/EventForm';
 import EventsList from './features/events/EventsList';
 import EventDetails from './features/events/EventDetails';
+import ProfilePage from './features/profiles/ProfilePage';
 
 import './App.css';
 
@@ -38,6 +39,7 @@ function App() {
                     <Route path='/events/:id' element={<EventDetails />} />
                     <Route path='/manage/:id' element={<EventForm />} />
                     <Route path='/create' element={<EventForm />} />
+                    <Route path='/profiles/:username' element={<ProfilePage />} />
                 </Routes>
             </main>
         </>

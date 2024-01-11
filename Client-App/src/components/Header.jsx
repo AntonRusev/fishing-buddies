@@ -33,10 +33,12 @@ const Header = () => {
                             <span className="block text-sm">{user}</span>
                             <span className="block truncate text-sm font-medium">{email}</span>
                         </Dropdown.Header>
-                        {/* <Dropdown.Item>Dashboard</Dropdown.Item>
-                        <Dropdown.Item>Settings</Dropdown.Item>
+                        {/* MY PROFILE PAGE */}
+                        <Dropdown.Item as={NavLink} to={`/profiles/${user}`}>My Profile</Dropdown.Item>
+                        {/* <Dropdown.Item>Settings</Dropdown.Item>
                         <Dropdown.Item>Earnings</Dropdown.Item> */}
                         <Dropdown.Divider />
+                        {/* LOGOUT */}
                         <Dropdown.Item onClick={() => dispatch(logOut())}>Sign out</Dropdown.Item>
                     </Dropdown>
                     <Navbar.Toggle />
