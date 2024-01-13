@@ -1,5 +1,8 @@
-import { useGetProfileQuery } from "./profilesApiSlice";
 import { useParams } from "react-router-dom";
+
+import { useGetProfileQuery } from "./profilesApiSlice";
+
+import ProfileNavBar from "./ProfileNavBar";
 
 const ProfilePage = () => {
     const { username } = useParams();
@@ -11,11 +14,7 @@ const ProfilePage = () => {
     if (profile) {
         content = (
             <>
-                <h3>Profile Page</h3>
-                <h4>{profile.username}</h4>
-                <p>Bio: {profile.bio}</p>
-                <img src={profile.image} alt="" />
-                <p>Photos : {profile.photos.length}</p>
+                <ProfileNavBar profile={profile} />
             </>
         );
     } else {
