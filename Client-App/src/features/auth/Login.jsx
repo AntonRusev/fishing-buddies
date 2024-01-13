@@ -46,7 +46,7 @@ const Login = () => {
                     <Form
                         onSubmit={handleSubmit}
                         autoComplete='off'
-                        className="flex max-w-md flex-col gap-4 mx-auto"
+                        className="flex max-w-md flex-col gap-4 mx-auto dark:bg-gray-900"
                     >
                         {/* EMAIL */}
                         <CustomTextInput

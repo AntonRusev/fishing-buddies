@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { selectCurrentUser, selectCurrentImage, selectCurrentEmail, logOut } from "../features/auth/authSlice";
 
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
+import DarkModeSwitch from "./common/DarkModeSwitch";
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -13,7 +14,7 @@ const Header = () => {
     const email = useSelector(selectCurrentEmail);
 
     const content = (
-        <Navbar fluid rounded>
+        <Navbar fluid>
             <Navbar.Brand as={NavLink} to="/">
                 {/* TODO set Logo here */}
                 {/* <img src="/favicon.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" /> */}
@@ -42,6 +43,7 @@ const Header = () => {
                         <Dropdown.Item onClick={() => dispatch(logOut())}>Sign out</Dropdown.Item>
                     </Dropdown>
                     <Navbar.Toggle />
+
                 </div>
                 :
                 ""
@@ -54,6 +56,8 @@ const Header = () => {
                 <Navbar.Link as={NavLink} to="/register">Register</Navbar.Link>
                 <Navbar.Link as={NavLink} to="/create">Create</Navbar.Link>
             </Navbar.Collapse>
+            {/* DARK MODE TOGGLE */}
+            <DarkModeSwitch />
         </Navbar >
     );
 

@@ -30,7 +30,7 @@ function App() {
     return (
         <>
             <Header />
-            <main className='content-center'>
+            <main className='content-center dark:bg-gray-900'>
                 <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='/login' element={<Login />} />
