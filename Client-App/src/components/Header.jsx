@@ -3,8 +3,7 @@ import { NavLink } from "react-router-dom";
 
 import { selectCurrentUser, selectCurrentImage, selectCurrentEmail, logOut } from "../features/auth/authSlice";
 
-import { Avatar, Dropdown, Navbar } from 'flowbite-react';
-import DarkModeSwitch from "./common/DarkModeSwitch";
+import { Avatar, Dropdown, Navbar, DarkThemeToggle } from 'flowbite-react';
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -37,7 +36,10 @@ const Header = () => {
                         </Dropdown.Header>
                         {/* MY PROFILE PAGE */}
                         <Dropdown.Item as={NavLink} to={`/profiles/${user}`}>My Profile</Dropdown.Item>
-                        <DarkModeSwitch />
+                        {/* DARK MODE TOGGLE for authenticated User  */}
+                        <li className="flex items-center gap-1 pl-4 py-1 block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                            Mode: <DarkThemeToggle />
+                        </li>
                         {/* <Dropdown.Item>Settings</Dropdown.Item> */}
                         {/* <Dropdown.Item>Earnings</Dropdown.Item> */}
                         <Dropdown.Divider />
@@ -64,9 +66,9 @@ const Header = () => {
                 }
             </Navbar.Collapse>
 
-            {/* Dark Mode toggle if there is no authenticated User */}
+            {/* DARK MODE TOGGLE if there is no authenticated User */}
             {!user
-                ? <DarkModeSwitch />
+                ? <DarkThemeToggle />
                 : null}
         </Navbar >
     );

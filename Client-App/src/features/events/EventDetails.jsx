@@ -11,7 +11,14 @@ const EventDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate()
 
-    const { data: fishingEvent } = useGetEventQuery(id);
+    const {
+        data: fishingEvent,
+        isFetching,
+        isSuccess,
+        isError,
+        error
+    } = useGetEventQuery(id);
+
     const [updateAttendance] = useUpdateAttendanceMutation();
     const [deleteEvent] = useDeleteEventMutation();
     const user = useSelector(selectCurrentUser);
@@ -32,7 +39,9 @@ const EventDetails = () => {
 
     let content;
 
-    if (fishingEvent) {
+    if (isFetching) {
+        content = <p>"Loading..."</p>;
+    } else if (isSuccess && fishingEvent) {
         content = (
             <>
                 <BreadcrumbNav title={fishingEvent.title} />
@@ -74,10 +83,10 @@ const EventDetails = () => {
                     </div>
                 </article>
             </>
-
         );
-    }
-
+    } else if (isError) {
+        content = <p>{JSON.stringify(error)}</p>;
+    };
 
     return content;
 };

@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { Flowbite } from 'flowbite-react';
+
 
 import { setCredentials } from './features/auth/authSlice';
 
@@ -31,30 +33,32 @@ function App() {
 
     return (
         <>
-            <Header />
-            <main className='content-center dark:bg-gray-900'>
-                <Routes>
-                    {/* Routes accessible by both guests and authenticated users */}
-                    <Route path='/' element={<Home />} />
-                    <Route path='/events' element={<EventsList />} />
-                    <Route path='/events/:id' element={<EventDetails />} />
-                    <Route path='/profiles/:username' element={<ProfilePage />} />
+            <Flowbite>
+                <Header />
+                <main className='content-center dark:bg-gray-900'>
+                    <Routes>
+                        {/* Routes accessible by both guests and authenticated users */}
+                        <Route path='/' element={<Home />} />
+                        <Route path='/events' element={<EventsList />} />
+                        <Route path='/events/:id' element={<EventDetails />} />
+                        <Route path='/profiles/:username' element={<ProfilePage />} />
 
-                    {/* Route Guard protection for authenticated(logged in) users only */}
-                    <Route element={<RequireAuth />}>
-                        <Route path='/create' element={<EventForm />} />
-                        <Route path='/manage/:id' element={<EventForm />} />
-                    </Route>
+                        {/* Route Guard protection for authenticated(logged in) users only */}
+                        <Route element={<RequireAuth />}>
+                            <Route path='/create' element={<EventForm />} />
+                            <Route path='/manage/:id' element={<EventForm />} />
+                        </Route>
 
-                    {/* Route Guard protection for guests only */}
-                    <Route element={<GuestOnly />}>
-                        <Route path='/login' element={<Login />} />
-                        <Route path='/register' element={<Register />} />
-                    </Route>
-                </Routes>
-            </main>
+                        {/* Route Guard protection for guests only */}
+                        <Route element={<GuestOnly />}>
+                            <Route path='/login' element={<Login />} />
+                            <Route path='/register' element={<Register />} />
+                        </Route>
+                    </Routes>
+                </main>
+            </Flowbite>
         </>
-    )
+    );
 };
 
 export default App;
