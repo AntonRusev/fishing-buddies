@@ -7,7 +7,7 @@ const DarkModeSwitch = () => {
 
     useEffect(() => {
         document.body.classList.toggle("dark", darkMode);
-    });
+    }, [darkMode]);
 
     const content = (
         <button
