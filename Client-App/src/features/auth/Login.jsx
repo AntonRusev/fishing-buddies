@@ -28,7 +28,7 @@ const Login = () => {
             dispatch(setCredentials({ ...userData, email, persistAuth }));
 
             actions.resetForm();
-            navigate('/');
+            navigate('/events');
         } catch (err) {
             console.log(err);
         };

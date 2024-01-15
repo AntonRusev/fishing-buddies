@@ -1,8 +1,10 @@
 import { useMemo } from 'react';
 
 import { useGetAllEventsQuery } from "./eventsApiSlice";
+
 import EventCard from "./EventCard";
 import BreadcrumbNav from "../../components/common/Breadcrumb";
+import { Spinner } from 'flowbite-react';
 
 const EventsList = () => {
     const {
@@ -21,13 +23,15 @@ const EventsList = () => {
 
     let content;
     if (isLoading) {
-        content = <p>"Loading..."</p>;
+        content = (<Spinner aria-label="Extra large spinner example" size="xl" />);
     } else if (isSuccess) {
-        content = sortedEvents.map(fe => (
-            <EventCard key={fe.id} fishingEvent={fe} />
-        ));
+        content = (
+            sortedEvents.map(fe => (
+                <EventCard key={fe.id} fishingEvent={fe} />
+            ))
+        );
     } else if (isError) {
-        content = <p>ERROR: {error.toString()}</p>;
+        content = (<p>ERROR: {error.toString()}</p>);
     };
 
     return (

@@ -4,8 +4,9 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useDeleteEventMutation, useGetEventQuery, useUpdateAttendanceMutation } from "./eventsApiSlice";
 import { selectCurrentUser } from "../auth/authSlice";
 
-import { Button } from 'flowbite-react';
 import BreadcrumbNav from "../../components/common/Breadcrumb";
+
+import { Button, Spinner } from 'flowbite-react';
 
 const EventDetails = () => {
     const { id } = useParams();
@@ -31,7 +32,7 @@ const EventDetails = () => {
             if (id) {
                 await deleteEvent(id).unwrap();
             };
-            navigate('/');
+            navigate('/events');
         } catch (err) {
             console.log(err);
         };
@@ -40,7 +41,7 @@ const EventDetails = () => {
     let content;
 
     if (isFetching) {
-        content = <p>"Loading..."</p>;
+        content = (<Spinner aria-label="Extra large spinner example" size="xl" />);
     } else if (isSuccess && fishingEvent) {
         content = (
             <>
@@ -85,7 +86,7 @@ const EventDetails = () => {
             </>
         );
     } else if (isError) {
-        content = <p>{JSON.stringify(error)}</p>;
+        content = (<p>{JSON.stringify(error)}</p>);
     };
 
     return content;

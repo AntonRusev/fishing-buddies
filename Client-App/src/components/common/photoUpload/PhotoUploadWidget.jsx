@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import { useUploadPhotoMutation } from "./photosApiSlice";
+import { useUploadPhotoMutation } from "../../../features/profiles/profilesApiSlice";
 
-import { PhotoCropper, PhotoDropzone } from "../../components/common/photoUpload";
+import { PhotoCropper, PhotoDropzone } from "./";
 import { Button } from 'flowbite-react';
 
 const PhotoUploadWidget = ({ setAddPhotoMode }) => {
@@ -12,10 +12,14 @@ const PhotoUploadWidget = ({ setAddPhotoMode }) => {
     const [uploadPhoto] = useUploadPhotoMutation();
 
     function handleUpload() {
-        if (cropper) {
-            cropper.getCroppedCanvas().toBlob(blob => uploadPhoto(blob));
-            // Close the PhotoUploadWidget upon upload
-            setAddPhotoMode(false);
+        try {
+            if (cropper) {
+                cropper.getCroppedCanvas().toBlob(blob => uploadPhoto(blob));
+                // Close the PhotoUploadWidget upon upload
+                setAddPhotoMode(false);
+            };
+        } catch (error) {
+            console.log(error);
         };
     };
 

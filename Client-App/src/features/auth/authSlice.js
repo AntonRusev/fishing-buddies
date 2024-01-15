@@ -30,11 +30,24 @@ const authSlice = createSlice({
             state.image = null;
             state.email = null;
             localStorage.removeItem("userData");
+        },
+        changeImage: (state, action) => {
+            const image = action.payload;
+
+            state.image = image;
+
+            // Persist the new image in Local Storage, without changing anything else
+            localStorage.setItem("userData", JSON.stringify({
+                username: state.username,
+                email: state.email,
+                token: state.token,
+                image
+            }));
         }
     },
 });
 
-export const { setCredentials, logOut } = authSlice.actions;
+export const { setCredentials, logOut, changeImage } = authSlice.actions;
 
 export default authSlice.reducer;
 

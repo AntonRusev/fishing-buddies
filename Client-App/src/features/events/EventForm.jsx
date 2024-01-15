@@ -56,7 +56,7 @@ const EventForm = () => {
             };
 
             actions.resetForm();
-            navigate('/');
+            navigate('/events');
         } catch (err) {
             console.log(err);
         };

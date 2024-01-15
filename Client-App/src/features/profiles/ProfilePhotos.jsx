@@ -1,18 +1,37 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-import { useDeletePhotoMutation, useSetMainPhotoMutation } from "../photos/photosApiSlice";
+import { useDeletePhotoMutation, useSetMainPhotoMutation } from "../profiles/profilesApiSlice";
+import { changeImage } from "../auth/authSlice";
 
+import { PhotoUploadWidget } from "../../components/common/photoUpload";
+import ProfilePhotoItem from "./ProfilePhotoItem";
 import { Button } from 'flowbite-react';
-import PhotoUploadWidget from "../photos/PhotoUploadWidget";
-import PhotoCard from "../photos/PhotoCard";
 
 const ProfilePhotos = ({ profile }) => {
     const [addPhotoMode, setAddPhotoMode] = useState(false);
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [deletePhoto] = useDeletePhotoMutation();
     const [setMainPhoto] = useSetMainPhotoMutation();
 
-    let content
+    const handleSetMainPhoto = (id, url) => {
+        try {
+            // Change the IsMain in the database
+            setMainPhoto(id);
+            // Change user image in local state
+            dispatch(changeImage(url));
+
+            navigate(`/profiles/${profile.username}`)
+        } catch (error) {
+            console.log(error);
+        };
+    };
+
+    let content;
 
     if (profile) {
         content = (
@@ -25,17 +44,17 @@ const ProfilePhotos = ({ profile }) => {
                     {/* Alternate between Add Photo and View Photos screens */}
                     {!addPhotoMode
                         ? "Add Photo"
-                        : "View Photos"}
+                        : "Cancel"}
                 </Button>
                 {addPhotoMode
                     ? <PhotoUploadWidget setAddPhotoMode={setAddPhotoMode} />
                     : <div className='container flex flex-wrap justify-between items-center mx-auto gap-6'>
                         {profile.photos.map(p => (
-                            <PhotoCard
+                            <ProfilePhotoItem
                                 key={p.id}
                                 photo={p}
                                 deletePhoto={deletePhoto}
-                                setMainPhoto={setMainPhoto}
+                                handleSetMainPhoto={handleSetMainPhoto}
                             />
                         ))}
                     </div>

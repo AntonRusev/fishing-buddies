@@ -2,7 +2,7 @@ import { Button, Card } from 'flowbite-react';
 
 import { HiTrash, HiBadgeCheck } from 'react-icons/hi';
 
-const PhotoCard = ({ photo, deletePhoto, setMainPhoto }) => {
+const ProfilePhotoItem = ({ photo, deletePhoto, handleSetMainPhoto }) => {
 
     const content = (
         <Card
@@ -12,7 +12,7 @@ const PhotoCard = ({ photo, deletePhoto, setMainPhoto }) => {
         >
             <Button.Group outline >
                 <Button
-                    onClick={() => setMainPhoto(photo.id)}
+                    onClick={() => handleSetMainPhoto(photo.id, photo.url)}
                     gradientMonochrome="success"
                 >
                     <HiBadgeCheck className="mr-3 h-4 w-4" />
@@ -33,4 +33,4 @@ const PhotoCard = ({ photo, deletePhoto, setMainPhoto }) => {
     return content;
 };
 
-export default PhotoCard;
+export default ProfilePhotoItem;

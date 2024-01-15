@@ -9,10 +9,9 @@ const PhotoDropzone = ({ setFiles }) => {
         })));
     }, [setFiles]);
 
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+    const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
     const content = (
-
         <div
             {...getRootProps()}
             className="flex items-center justify-center w-full"
