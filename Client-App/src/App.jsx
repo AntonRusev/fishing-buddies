@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Flowbite } from 'flowbite-react';
+import { ToastContainer } from 'react-toastify';
 
 
 import { setCredentials } from './features/auth/authSlice';
@@ -17,6 +18,8 @@ import EventDetails from './features/events/EventDetails';
 import ProfilePage from './features/profiles/ProfilePage';
 import RequireAuth from './features/auth/RequireAuth';
 import GuestOnly from './features/auth/GuestOnly';
+import NotFound from './components/errors/NotFount';
+import ServerError from './components/errors/ServerError';
 
 import './App.css';
 
@@ -33,7 +36,16 @@ function App() {
 
     return (
         <>
+            {/* TOAST */}
+            <ToastContainer
+                position='bottom-center'
+                hideProgressBar
+                theme='colored'
+                pauseOnHover
+            />
+
             <Flowbite>
+                {/* Header */}
                 <Header />
                 <main className='content-center dark:bg-gray-900'>
                     <Routes>
@@ -54,6 +66,14 @@ function App() {
                             <Route path='/login' element={<Login />} />
                             <Route path='/register' element={<Register />} />
                         </Route>
+
+                        {/* SERVER ERROR */}
+                        <Route path='/server-error' element={<ServerError />} />
+
+                        {/* Not Fount */}
+                        <Route path='/not-found' element={<NotFound />} />
+                        <Route path='*' element={<Navigate replace to='not-found' />} />
+
                     </Routes>
                 </main>
             </Flowbite>

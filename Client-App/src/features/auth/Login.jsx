@@ -35,54 +35,57 @@ const Login = () => {
     };
 
     const content = (
-        <Formik
-            initialValues={{ email: '', password: '' }}
-            validationSchema={loginSchema}
-            onSubmit={handleSubmit}
-        >
-            {({ handleSubmit, isValid, isSubmitting, dirty }) => (
-                <>
-                    <BreadcrumbNav />
-                    <Form
-                        onSubmit={handleSubmit}
-                        autoComplete='off'
-                        className="flex max-w-md flex-col gap-4 mx-auto dark:bg-gray-900"
-                    >
-                        {/* EMAIL */}
-                        <CustomTextInput
-                            placeholder="name@email.com"
-                            name="email"
-                            label="Your email"
-                            type="email"
-                        />
+        <>
+            <Formik
+                initialValues={{ email: '', password: '' }}
+                validationSchema={loginSchema}
+                onSubmit={handleSubmit}
+            >
+                {({ handleSubmit, isValid, isSubmitting, dirty }) => (
+                    <>
+                        <BreadcrumbNav />
+                        <Form
+                            onSubmit={handleSubmit}
+                            autoComplete='off'
+                            className="flex max-w-md flex-col gap-4 mx-auto dark:bg-gray-900"
+                        >
+                            {/* EMAIL */}
+                            <CustomTextInput
+                                placeholder="name@email.com"
+                                name="email"
+                                label="Your email"
+                                type="email"
+                            />
 
-                        {/* PASSWORD */}
-                        <CustomTextInput
-                            placeholder="********"
-                            name="password"
-                            label="Your password"
-                            type="password"
-                        />
+                            {/* PASSWORD */}
+                            <CustomTextInput
+                                placeholder="********"
+                                name="password"
+                                label="Your password"
+                                type="password"
+                            />
 
-                        {/* CHECKBOX */}
-                        <CustomCheckbox 
-                        name="persistAuth" 
-                        label="Remember me"
-                        />
+                            {/* CHECKBOX */}
+                            <CustomCheckbox
+                                name="persistAuth"
+                                label="Remember me"
+                            />
 
-                        {/* SUBMIT */}
-                        <CustomButton
-                            isValid={isValid}
-                            dirty={dirty}
-                            isSubmitting={isSubmitting}
-                            value='Login'
-                        />
-                    </Form>
-                </>
-            )}
-        </Formik>
+                            {/* SUBMIT */}
+                            <CustomButton
+                                isValid={isValid}
+                                dirty={dirty}
+                                isSubmitting={isSubmitting}
+                                value='Login'
+                            />
+                        </Form>
+                    </>
+                )}
+            </Formik>
+        </>
     );
 
     return content;
-}
+};
+
 export default Login;

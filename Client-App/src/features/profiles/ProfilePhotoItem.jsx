@@ -2,7 +2,7 @@ import { Button, Card } from 'flowbite-react';
 
 import { HiTrash, HiBadgeCheck } from 'react-icons/hi';
 
-const ProfilePhotoItem = ({ photo, deletePhoto, handleSetMainPhoto }) => {
+const ProfilePhotoItem = ({ photo, deletePhoto, handleSetMainPhoto, deleteIsLoading, setMainIsLoading }) => {
 
     const content = (
         <Card
@@ -14,15 +14,20 @@ const ProfilePhotoItem = ({ photo, deletePhoto, handleSetMainPhoto }) => {
                 <Button
                     onClick={() => handleSetMainPhoto(photo.id, photo.url)}
                     gradientMonochrome="success"
+                    isProcessing={setMainIsLoading}
                 >
-                    <HiBadgeCheck className="mr-3 h-4 w-4" />
+                    {/* If isLoading hide the icon and show Spinner instead */}
+                    {!setMainIsLoading && <HiBadgeCheck className="mr-3 h-4 w-4" />}
                     Set Main
                 </Button>
                 <Button
                     onClick={() => deletePhoto(photo.id)}
                     gradientMonochrome="failure"
+                    isProcessing={deleteIsLoading}
                 >
-                    <HiTrash className="mr-3 h-4 w-4" />
+
+                    {!deleteIsLoading && <HiTrash className="mr-3 h-4 w-4" />}
+
                     {/* &nbsp; => empty space */}
                     Delete &nbsp; &nbsp;
                 </Button>

@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { apiSlice } from './api/apiSlice';
 import authReducer from '../features/auth/authSlice';
+import { errorHandleMiddleware } from './middleware/errorHandleMiddleware';
 
 
 export const store = configureStore({
@@ -8,6 +9,8 @@ export const store = configureStore({
         [apiSlice.reducerPath]: apiSlice.reducer,
         auth: authReducer
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware()
+        .concat(errorHandleMiddleware)
+        .concat(apiSlice.middleware),
     devTools: true // TODO set False/Remove in Build
 });

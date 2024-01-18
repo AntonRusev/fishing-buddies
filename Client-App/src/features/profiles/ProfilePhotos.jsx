@@ -15,8 +15,8 @@ const ProfilePhotos = ({ profile }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [deletePhoto] = useDeletePhotoMutation();
-    const [setMainPhoto] = useSetMainPhotoMutation();
+    const [deletePhoto, {isLoading : deleteIsLoading}] = useDeletePhotoMutation();
+    const [setMainPhoto, {isLoading : setMainIsLoading}] = useSetMainPhotoMutation();
 
     const handleSetMainPhoto = (id, url) => {
         try {
@@ -25,7 +25,7 @@ const ProfilePhotos = ({ profile }) => {
             // Change user image in local state
             dispatch(changeImage(url));
 
-            navigate(`/profiles/${profile.username}`)
+            navigate(`/profiles/${profile.username}`);
         } catch (error) {
             console.log(error);
         };
@@ -55,14 +55,15 @@ const ProfilePhotos = ({ profile }) => {
                                 photo={p}
                                 deletePhoto={deletePhoto}
                                 handleSetMainPhoto={handleSetMainPhoto}
+                                deleteIsLoading={deleteIsLoading}
+                                setMainIsLoading={setMainIsLoading}
                             />
                         ))}
                     </div>
-
                 }
             </section>
         );
-    }
+    };
 
     return content;
 };

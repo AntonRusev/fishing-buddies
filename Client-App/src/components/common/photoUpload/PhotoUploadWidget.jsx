@@ -9,7 +9,7 @@ const PhotoUploadWidget = ({ setAddPhotoMode }) => {
     const [files, setFiles] = useState([]);
     const [cropper, setCropper] = useState();
 
-    const [uploadPhoto] = useUploadPhotoMutation();
+    const [uploadPhoto, { isLoading }] = useUploadPhotoMutation();
 
     function handleUpload() {
         try {
@@ -53,6 +53,7 @@ const PhotoUploadWidget = ({ setAddPhotoMode }) => {
                             {/* UPLOAD PHOTO */}
                             <Button
                                 onClick={() => handleUpload()}
+                                isProcessing={isLoading}
                             >
                                 Add
                             </Button>

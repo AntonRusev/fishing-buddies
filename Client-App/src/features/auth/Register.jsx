@@ -5,8 +5,8 @@ import { Form, Formik } from 'formik';
 import { useRegisterMutation } from '../auth/authApiSlice';
 import { setCredentials } from '../auth/authSlice';
 
-import BreadcrumbNav from '../../components/common/Breadcrumb';
 import { CustomTextInput, CustomCheckbox, CustomButton } from '../../components/common/form';
+import BreadcrumbNav from '../../components/common/Breadcrumb';
 
 import { registerSchema } from '../../utils/schemas';
 
@@ -36,70 +36,73 @@ const Register = () => {
     };
 
     const content = (
-        <Formik
-            initialValues={{ email: '', username: '', password: '', rePass: '' }}
-            validationSchema={registerSchema}
-            onSubmit={handleSubmit}
-        >
-            {({ handleSubmit, isValid, isSubmitting, dirty }) => (
-                <>
-                    <BreadcrumbNav />
-                    <Form
-                        onSubmit={handleSubmit}
-                        autoComplete='off'
-                        className="flex max-w-md flex-col gap-4 mx-auto"
-                    >
-                        {/* EMAIL */}
-                        <CustomTextInput
-                            placeholder="name@email.com"
-                            name="email"
-                            label="Your email"
-                            type="email"
-                        />
+        <>
+            <Formik
+                initialValues={{ email: '', username: '', password: '', rePass: '' }}
+                validationSchema={registerSchema}
+                onSubmit={handleSubmit}
+            >
+                {({ handleSubmit, isValid, isSubmitting, dirty }) => (
+                    <>
+                        <BreadcrumbNav />
+                        <Form
+                            onSubmit={handleSubmit}
+                            autoComplete='off'
+                            className="flex max-w-md flex-col gap-4 mx-auto"
+                        >
+                            {/* EMAIL */}
+                            <CustomTextInput
+                                placeholder="name@email.com"
+                                name="email"
+                                label="Your email"
+                                type="email"
+                            />
 
-                        {/* USERNAME */}
-                        <CustomTextInput
-                            placeholder="Username"
-                            name="username"
-                            label="Your username"
-                            type="text"
-                        />
+                            {/* USERNAME */}
+                            <CustomTextInput
+                                placeholder="Username"
+                                name="username"
+                                label="Your username"
+                                type="text"
+                            />
 
-                        {/* PASSWORD */}
-                        <CustomTextInput
-                            placeholder="********"
-                            name="password"
-                            label="Your password"
-                            type="password"
-                        />
+                            {/* PASSWORD */}
+                            <CustomTextInput
+                                placeholder="********"
+                                name="password"
+                                label="Your password"
+                                type="password"
+                            />
 
-                        {/* RePass - REPEAT PASSWORD */}
-                        <CustomTextInput
-                            placeholder="********"
-                            name="rePass"
-                            label="Repeat password"
-                            type="password"
-                        />
+                            {/* RePass - REPEAT PASSWORD */}
+                            <CustomTextInput
+                                placeholder="********"
+                                name="rePass"
+                                label="Repeat password"
+                                type="password"
+                            />
 
-                        {/* CHECKBOX */}
-                        <CustomCheckbox
-                            name="persistAuth"
-                            label="Remember me"
-                        />
+                            {/* CHECKBOX */}
+                            <CustomCheckbox
+                                name="persistAuth"
+                                label="Remember me"
+                            />
 
-                        {/* SUBMIT */}
-                        <CustomButton
-                            isValid={isValid}
-                            dirty={dirty}
-                            isSubmitting={isSubmitting}
-                            value='Register'
-                        />
-                    </Form>
-                </>
-            )}
-        </Formik>
+                            {/* SUBMIT */}
+                            <CustomButton
+                                isValid={isValid}
+                                dirty={dirty}
+                                isSubmitting={isSubmitting}
+                                value='Register'
+                            />
+                        </Form>
+                    </>
+                )}
+            </Formik>
+        </>
     );
 
     return content;
-}
+};
+
 export default Register;

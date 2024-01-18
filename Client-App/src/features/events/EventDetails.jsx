@@ -5,23 +5,21 @@ import { useDeleteEventMutation, useGetEventQuery, useUpdateAttendanceMutation }
 import { selectCurrentUser } from "../auth/authSlice";
 
 import BreadcrumbNav from "../../components/common/Breadcrumb";
-
 import { Button, Spinner } from 'flowbite-react';
 
 const EventDetails = () => {
     const { id } = useParams();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const {
         data: fishingEvent,
         isFetching,
         isSuccess,
-        isError,
-        error
     } = useGetEventQuery(id);
 
-    const [updateAttendance] = useUpdateAttendanceMutation();
-    const [deleteEvent] = useDeleteEventMutation();
+    const [updateAttendance, { isLoading: updateAttendIsLoading }] = useUpdateAttendanceMutation();
+    const [deleteEvent, { isLoading: deleteIsLoading }] = useDeleteEventMutation();
+
     const user = useSelector(selectCurrentUser);
 
     const handleAttendanceSubmit = async () => {
@@ -30,9 +28,10 @@ const EventDetails = () => {
     const handleDeleteEvent = async () => {
         try {
             if (id) {
-                await deleteEvent(id).unwrap();
+                await deleteEvent(id)
+                    .unwrap()
+                    .then(navigate('/events'));
             };
-            navigate('/events');
         } catch (err) {
             console.log(err);
         };
@@ -69,24 +68,39 @@ const EventDetails = () => {
                                 </li>
                             ))}
                         </ul>
-                        <Button onClick={handleAttendanceSubmit} size="sm">Attend</Button>
-                        <Button onClick={handleDeleteEvent} size="sm">Remove</Button>
+                        <Button
+                            onClick={handleAttendanceSubmit}
+                            size="sm"
+                            isProcessing={updateAttendIsLoading}
+                        >
+                            Attend
+                        </Button>
+
                         {fishingEvent.hostUsername === user
-                            ? <Button
-                                as={NavLink}
-                                to={`/manage/${id}`}
-                                size="sm"
-                                className='mx-auto'
-                            >Manage
-                            </Button>
+                            ? <>
+                                <Button
+                                    onClick={handleDeleteEvent}
+                                    size="sm"
+                                    isProcessing={deleteIsLoading}
+                                >
+                                    Remove
+                                </Button>
+                                <Button
+                                    as={NavLink}
+                                    to={`/manage/${id}`}
+                                    size="sm"
+                                    className='mx-auto'
+                                >
+                                    Manage
+                                </Button>
+                            </>
+
                             : ""
                         }
                     </div>
                 </article>
             </>
         );
-    } else if (isError) {
-        content = (<p>{JSON.stringify(error)}</p>);
     };
 
     return content;
