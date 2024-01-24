@@ -13,9 +13,7 @@ const ProfilePage = () => {
         data: profile,
         isFetching,
         isLoading,
-        isSuccess,
-        isError,
-        error
+        isSuccess
     } = useGetProfileQuery(username);
 
     let content;
@@ -24,8 +22,6 @@ const ProfilePage = () => {
         content = (<Spinner aria-label="Extra large spinner example" size="xl" />);
     } else if (isSuccess && profile) {
         content = (<ProfileNavBar profile={profile} />);
-    } else if (isError) {
-        content = (<p>{JSON.stringify(error)}</p>);
     };
 
     return content;

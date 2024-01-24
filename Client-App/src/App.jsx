@@ -18,8 +18,7 @@ import EventDetails from './features/events/EventDetails';
 import ProfilePage from './features/profiles/ProfilePage';
 import RequireAuth from './features/auth/RequireAuth';
 import GuestOnly from './features/auth/GuestOnly';
-import NotFound from './components/errors/NotFount';
-import ServerError from './components/errors/ServerError';
+import ErrorPage from './components/errors/ErrorPage';
 
 import './App.css';
 
@@ -68,10 +67,10 @@ function App() {
                         </Route>
 
                         {/* SERVER ERROR */}
-                        <Route path='/server-error' element={<ServerError />} />
+                        <Route path='/server-error' element={<ErrorPage />} />
 
                         {/* Not Fount */}
-                        <Route path='/not-found' element={<NotFound />} />
+                        <Route path='/not-found' element={<ErrorPage />} />
                         <Route path='*' element={<Navigate replace to='not-found' />} />
 
                     </Routes>

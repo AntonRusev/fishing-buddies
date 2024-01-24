@@ -1,8 +1,9 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import { Button } from 'flowbite-react';
 
-const NotFound = () => {
+const ErrorPage = () => {
+    const { pathname } = useLocation();
     const navigate = useNavigate();
 
     const content = (
@@ -15,15 +16,27 @@ const NotFound = () => {
                 <p
                     className="text-2xl md:text-3xl lg:text-5xl font-bold tracking-wider text-gray-300 mt-4"
                 >
-                    Page Not Found
+                    {/* Render Not Found or Server Error text, depending on the URL path */}
+                    {
+                        pathname === '/not-found'
+                            ? "Page Not Found"
+                            : "Error: 500"
+                    }
                 </p>
                 <p
                     className="text-gray-500 mt-4 pb-4 border-b-2 text-center"
-                >Sorry, the page you are looking for could not be found.
+                >
+                    {/* Render Not Found or Server Error text, depending on the URL path */}
+                    {
+                        pathname === '/not-found'
+                            ? "Sorry, the page you are looking for could not be found."
+                            : "Internal Server Error has occured."
+                    }
                 </p>
+                {/* Return Button */}
                 <Button
                     // Replacing the current entry in the history stack, instead of adding a new one
-                    // (User can't go back to the Not Found page by clicking the Back button on the browser)
+                    // (User can't go back to the Error Page by clicking the Back button on the browser)
                     onClick={() => navigate('/', { replace: true })}
                     className="mt-6"
                 >
@@ -36,4 +49,4 @@ const NotFound = () => {
     return content;
 };
 
-export default NotFound;
+export default ErrorPage;

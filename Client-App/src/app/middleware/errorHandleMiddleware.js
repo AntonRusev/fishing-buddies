@@ -9,8 +9,7 @@ export const errorHandleMiddleware =
     (api) => (next) => (action) => {
         // isRejectedWithValue Or isRejected
         if (isRejected(action) || isRejectedWithValue(action)) {
-            console.log(action)
-
+            
             switch (action.payload?.status) {
                 case 400:
                     // If request method is GET redirect to /not-found
