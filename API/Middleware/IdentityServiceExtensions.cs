@@ -37,6 +37,23 @@ namespace API.Middleware
                         ValidateIssuer = false,   // Not used in the JWT so has to be set to false 
                         ValidateAudience = false, // Not used in the JWT so has to be set to false 
                     };
+
+                    options.Events = new JwtBearerEvents
+                    {
+                        // Getting the Access Token(JWT) from the query string 
+                        OnMessageReceived = context =>
+                        {
+                            var accessToken = context.Request.Query["access_token"];
+                            var path = context.HttpContext.Request.Path;
+
+                            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chat"))
+                            {
+                                context.Token = accessToken;
+                            };
+
+                            return Task.CompletedTask;
+                        }
+                    };
                 });
 
             // Adding a requirement for a User to be the Host of the Event in order to be able to Edit it

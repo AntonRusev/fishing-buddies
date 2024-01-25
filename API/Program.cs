@@ -1,5 +1,6 @@
 using API.Extensions;
 using API.Middleware;
+using API.SignalR;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -33,7 +34,7 @@ if (app.Environment.IsDevelopment())
 // TODO Fix the CORS policy
 // app.UseCors("CorsPolicy");
 app.UseCors(builder => builder
-    //  .AllowAnyOrigin()
+     //  .AllowAnyOrigin()
      .WithOrigins("http://localhost:3000", "http://localhost")
      .AllowAnyMethod()
      .AllowAnyHeader()
@@ -43,6 +44,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ChatHub>("/chat");
 
 // Creating the Database
 using var scope = app.Services.CreateScope();
