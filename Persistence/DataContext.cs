@@ -13,6 +13,7 @@ namespace Persistence
         public DbSet<Event> Events { get; set; }
         public DbSet<EventAttendee> EventAttendees { get; set; }
         public DbSet<Photo> Photos { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         // Manually creating the Join Table for Event Attendees
         protected override void OnModelCreating(ModelBuilder builder)
@@ -32,6 +33,12 @@ namespace Persistence
                 .HasOne(u => u.Event)
                 .WithMany(e => e.Attendees)
                 .HasForeignKey(ea => ea.EventId);
+
+            // Upon deleting an Event, delete all comments related to it
+            builder.Entity<Comment>()
+            .HasOne(e => e.Event)
+            .WithMany(c => c.Comments)
+            .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

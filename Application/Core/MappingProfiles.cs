@@ -1,3 +1,4 @@
+using Application.Comments;
 using Application.Events;
 using AutoMapper;
 using Domain;
@@ -20,6 +21,10 @@ namespace Application.Core
                     .FirstOrDefault(x => x.IsMain).Url));
             CreateMap<AppUser, Profiles.Profile>()
                 .ForMember(d => d.Image, o => o.MapFrom(s => s.Photos
+                    .FirstOrDefault(x => x.IsMain).Url));
+            CreateMap<Comment, CommentDto>()
+                .ForMember(u => u.Username, opt => opt.MapFrom(s => s.Author.UserName))
+                .ForMember(d => d.Image, o => o.MapFrom(s => s.Author.Photos
                     .FirstOrDefault(x => x.IsMain).Url));
         }
     }

@@ -4,7 +4,6 @@ import { useGetAllEventsQuery } from "./eventsApiSlice";
 
 import EventCard from "./EventCard";
 import BreadcrumbNav from "../../components/common/Breadcrumb";
-import { Spinner } from 'flowbite-react';
 import EventCardPlaceholder from './EventCardPlaceholder';
 
 const EventsList = () => {
@@ -23,7 +22,7 @@ const EventsList = () => {
     let content;
 
     if (isLoading) {
-        // content = (<Spinner aria-label="Extra large spinner example" size="xl" />);
+        // TODO - Design the Skeleton(Placeholder) to resemble the actual Card Component
         content = (
             <div className='flex flex-col gap-4'>
                 <EventCardPlaceholder />
