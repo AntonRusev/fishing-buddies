@@ -1,59 +1,37 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Formik } from 'formik';
 
-import { createHubConnection, stopHubConnection, selectAllComments, setComments, addComment, selectHubConnection, updateComments } from "../comments/commentsSlice";
 import { selectCurrentToken } from "../auth/authSlice";
+import { startSignalRConnection, stopSignalRConnection, addComment, selectComments } from "../comments/commentsSlice";
 
 import { CustomTextArea, CustomButton } from "../../components/common/form";
-import { commentSchema } from "../../utils/schemas";
 import ChatBubble from "../../components/common/ChatBubble";
+import { commentSchema } from "../../utils/schemas";
 
 const EventDetailedChat = ({ eventId }) => {
-    const [eventComments, setEventComments] = useState([]);
-
     const dispatch = useDispatch();
 
+    const comments = useSelector(selectComments);
     const token = useSelector(selectCurrentToken);
-    const hubConnection = useSelector(selectHubConnection);
 
     useEffect(() => {
         if (eventId && token) {
-            dispatch(createHubConnection({ eventId, token }));
+            // If there is logged in user, connect to this group Hub(with the name of the event Id)
+            dispatch(startSignalRConnection(eventId, token));
         };
 
-        // Upon dismount stop the connection to the current Hub
+        // Upon dismount stop the connection to the current group Hub
         return () => {
-            dispatch(stopHubConnection());
+            dispatch(stopSignalRConnection());
         };
-    }, [eventId, dispatch]);
-
-    useEffect(() => {
-        if (hubConnection) {
-            hubConnection.on('LoadComments', (comments) => {
-                if (comments.length > 0) {
-                    comments.forEach(comment => {
-                        comment.createdAt = new Date(comment.createdAt);
-                    });
-                    const sorted = comments.sort((a, b) => b.createdAt - a.createdAt);
-                    setEventComments(sorted);
-                };
-            });
-
-            hubConnection.on('ReceiveComment', (comment) => {
-                if (comment) {
-                    comment.createdAt = new Date(comment.createdAt);
-                    setEventComments(state => [comment, ...state]);
-                };
-            });
-        };
-    }, [hubConnection]);
+    }, [eventId, token,  stopSignalRConnection, startSignalRConnection]);
 
     const handleSubmit = async (values, actions) => {
         try {
             // using params: body and eventId
             const { body } = values;
-            dispatch(addComment({ body, eventId }));
+            dispatch(addComment(body, eventId));
 
             actions.resetForm();
         } catch (err) {
@@ -95,8 +73,8 @@ const EventDetailedChat = ({ eventId }) => {
             </Formik>
             <div>
                 {
-                    eventComments?.length > 0
-                        ? eventComments.map(c => (
+                    comments?.length > 0
+                        ? comments.map(c => (
                             <ChatBubble key={c.id} comment={c} />
                         ))
                         : 'No comments'

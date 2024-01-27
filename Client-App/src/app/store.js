@@ -1,8 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { apiSlice } from './api/apiSlice';
+
 import authReducer from '../features/auth/authSlice';
 import commentsReducer from '../features/comments/commentsSlice';
+
 import { errorHandleMiddleware } from './middleware/errorHandleMiddleware';
+import { signalRMiddleware } from './middleware/signalRMiddleware';
 
 
 export const store = configureStore({
@@ -13,9 +16,10 @@ export const store = configureStore({
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         // TODO Get the hubConnection out of state into its own middleware
-        serializableCheck: false,
+        // serializableCheck: false,
     })
         .concat(errorHandleMiddleware)
+        .concat(signalRMiddleware)
         .concat(apiSlice.middleware),
     devTools: true // TODO set False/Remove in Build
 });
