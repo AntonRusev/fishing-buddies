@@ -4,6 +4,7 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useDeleteEventMutation, useGetEventQuery, useUpdateAttendanceMutation } from "./eventsApiSlice";
 import { selectCurrentUser } from "../auth/authSlice";
 
+import EventDetailedChat from "./EventDetailedChat";
 import BreadcrumbNav from "../../components/common/Breadcrumb";
 import { Button, Spinner } from 'flowbite-react';
 
@@ -68,14 +69,19 @@ const EventDetails = () => {
                                 </li>
                             ))}
                         </ul>
-                        <Button
-                            onClick={handleAttendanceSubmit}
-                            size="sm"
-                            isProcessing={updateAttendIsLoading}
-                        >
-                            Attend
-                        </Button>
+                        
+                        {/* ATTEND BUTTON */}
+                        {user &&
+                            <Button
+                                onClick={handleAttendanceSubmit}
+                                size="sm"
+                                isProcessing={updateAttendIsLoading}
+                            >
+                                Attend
+                            </Button>
+                        }
 
+                        {/* EDIT AND DELETE BUTTONS */}
                         {fishingEvent.hostUsername === user
                             ? <>
                                 <Button
@@ -98,6 +104,11 @@ const EventDetails = () => {
                             : ""
                         }
                     </div>
+
+                    {/* CHAT */}
+                    {/* Only shown to logged in users */}
+                    {user && <EventDetailedChat eventId={fishingEvent.id} />}
+
                 </article>
             </>
         );
