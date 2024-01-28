@@ -1,4 +1,5 @@
 using Application.Core;
+using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
@@ -17,8 +18,10 @@ namespace Application.Events
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
-            public Handler(DataContext context, IMapper mapper)
+            private readonly IUserAccessor _userAccessor;
+            public Handler(DataContext context, IMapper mapper, IUserAccessor userAccessor)
             {
+                _userAccessor = userAccessor;
                 _mapper = mapper;
                 _context = context;
             }
@@ -26,7 +29,8 @@ namespace Application.Events
             public async Task<Result<EventDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var fishingEvent = await _context.Events
-                    .ProjectTo<EventDto>(_mapper.ConfigurationProvider)
+                    .ProjectTo<EventDto>(_mapper.ConfigurationProvider,
+                        new { currentUsername = _userAccessor.GetUsername() }) // Setting currentUsername in MappingProfiles
                     .FirstOrDefaultAsync(x => x.Id == request.Id);
 
                 // Comes from the custom Result class in Core
