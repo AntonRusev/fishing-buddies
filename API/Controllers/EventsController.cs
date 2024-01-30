@@ -1,4 +1,3 @@
-using Application.Core;
 using Application.Events;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
@@ -11,7 +10,7 @@ namespace API.Controllers
         // Get all Events => /api/events
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> GetEvents([FromQuery] PagingParams param)
+        public async Task<IActionResult> GetEvents([FromQuery] EventParams param)
         {
             // Generating a HTTP response in the BaseApiController & True for all instances below
             // Returns Paged result (Pagination Header in the Response)
