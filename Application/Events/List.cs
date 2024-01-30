@@ -10,8 +10,11 @@ namespace Application.Events
 {
     public class List
     {
-        public class Query : IRequest<Result<List<EventDto>>> { }
-        public class Handler : IRequestHandler<Query, Result<List<EventDto>>>
+        public class Query : IRequest<Result<PagedList<EventDto>>>
+        {
+            public PagingParams Params { get; set; }
+        }
+        public class Handler : IRequestHandler<Query, Result<PagedList<EventDto>>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -23,16 +26,23 @@ namespace Application.Events
                 _context = context;
             }
 
-            public async Task<Result<List<EventDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<PagedList<EventDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
+                // We are not executing the query, we are defering it until we create a PagedList
                 // Including the User and the Attendees from the join table in the response
-                var events = await _context.Events
+                var query = _context.Events
+                    .OrderBy(d => d.Date) // Order by date
                     .ProjectTo<EventDto>(_mapper.ConfigurationProvider,
                         new { currentUsername = _userAccessor.GetUsername() }) // Setting currentUsername in MappingProfiles
-                    .ToListAsync();
+                    .AsQueryable(); // Defering
 
-                // Comes from the custom Result class in Core
-                return Result<List<EventDto>>.Success(events);
+                // "Result" comes from the custom Result class in Core
+                // The PagedList of Events includes properties such as:
+                // current page, total pages, total count
+                return Result<PagedList<EventDto>>.Success(
+                    // "CreateAsync" method comes from the PagedList class
+                    await PagedList<EventDto>.CreateAsync(query, request.Params.PageNumber, request.Params.PageSize) 
+                );
             }
         }
     }
