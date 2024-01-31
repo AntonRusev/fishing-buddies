@@ -18,21 +18,16 @@ const Register = () => {
 
     // TODO Create a custom useHandleAuth hook for both Login and Register
     const handleSubmit = async (values, actions) => {
-        try {
-            const { persistAuth, rePass, ...obj } = values;
+        const { persistAuth, rePass, ...obj } = values;
+        const email = obj.email;
 
-            const email = obj.email;
-
-            // using params: email, username and password 
-            const userData = await register({ ...obj }).unwrap();
-
-            dispatch(setCredentials({ ...userData, email, persistAuth }));
-
-            actions.resetForm();
-            navigate('/events');
-        } catch (err) {
-            console.log(err);
-        };
+        // using params: email, username and password 
+        await register({ ...obj })
+            .unwrap()
+            .then((payload) => dispatch(setCredentials({ ...payload, email, persistAuth })))
+            .then(() => actions.resetForm())
+            .then(() => navigate('/events'))
+            .catch((error) => console.log(error));
     };
 
     const content = (

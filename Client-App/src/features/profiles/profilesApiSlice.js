@@ -1,4 +1,7 @@
 import { apiSlice } from "../../app/api/apiSlice";
+import { eventsApiSlice } from "../events/eventsApiSlice";
+
+import { current } from 'immer';
 
 export const profilesApiSlice = apiSlice.injectEndpoints({
     tagTypes: ['Profile'],
@@ -25,8 +28,8 @@ export const profilesApiSlice = apiSlice.injectEndpoints({
                     body: formData,
                     // Required headers for a file upload
                     prepareHeaders: (headers) => {
-                        headers.set("Content-Type", "multipart/form-data")
-                        return headers
+                        headers.set("Content-Type", "multipart/form-data");
+                        return headers;
                     },
                 };
             },
@@ -50,6 +53,40 @@ export const profilesApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Profile']
         }),
+        // Update Following (FOLLOW/UNFOLLOW)
+        updateFollowing: builder.mutation({
+            query: ({ username, id }) => ({
+                url: `/follow/${username}`,
+                method: 'POST',
+            }),
+            invalidatesTags: ['Profile'],
+            async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled;
+                    // Update the Attendees Profile CACHED data of the Event that is being viewed
+                    // TODO MAke it invalidate the Event Tag
+                    dispatch(
+                        eventsApiSlice.util.updateQueryData('getEvent', id, (draft) => {
+                            const attendeeToUpdate = draft.attendees.find(attendee => attendee.username === patch.username);
+
+                            if (attendeeToUpdate) {
+                                attendeeToUpdate.following = !attendeeToUpdate.following;
+                            };
+                        })
+                    );
+                } catch (error) {
+                    console.error('Error in onQueryStarted:', error);
+                }
+            },
+        }),
+        // List Followings
+        listFollowings: builder.query({
+            query: (username, predicate) => `/follow/${username}?predicate=${predicate}`,
+        }),
+        // List Events related to a User(isAttending, IsHost)
+        listEvents: builder.query({
+            query: (username, predicate) => `/profiles/${username}/events?predicate=${predicate}`,
+        }),
     })
 });
 
@@ -57,5 +94,8 @@ export const {
     useGetProfileQuery,
     useUploadPhotoMutation,
     useDeletePhotoMutation,
-    useSetMainPhotoMutation
+    useSetMainPhotoMutation,
+    useUpdateFollowingMutation,
+    useListFollowingsQuery,
+    useListEventsQuery
 } = profilesApiSlice;

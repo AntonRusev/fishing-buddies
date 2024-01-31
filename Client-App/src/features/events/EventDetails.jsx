@@ -7,6 +7,7 @@ import { selectCurrentUser } from "../auth/authSlice";
 import EventDetailedChat from "./EventDetailedChat";
 import BreadcrumbNav from "../../components/common/Breadcrumb";
 import { Button, Spinner } from 'flowbite-react';
+import ProfileCard from "../profiles/ProfileCard";
 
 const EventDetails = () => {
     const { id } = useParams();
@@ -24,17 +25,15 @@ const EventDetails = () => {
     const user = useSelector(selectCurrentUser);
 
     const handleAttendanceSubmit = async () => {
-        await updateAttendance(fishingEvent.id).unwrap();
+        await updateAttendance(fishingEvent.id)
+            .unwrap();
     };
     const handleDeleteEvent = async () => {
-        try {
-            if (id) {
-                await deleteEvent(id)
-                    .unwrap()
-                    .then(navigate('/events'));
-            };
-        } catch (err) {
-            console.log(err);
+        if (id) {
+            await deleteEvent(id)
+                .unwrap()
+                .then(navigate('/events'))
+                .catch((error) => console.log(error));
         };
     };
 
@@ -63,13 +62,13 @@ const EventDetails = () => {
                     <div>
                         Attended by:
                         <ul>
-                            {fishingEvent.attendees.map(a => (
-                                <li key={a.username}>
-                                    {a.username}
+                            {fishingEvent.attendees.map(attendee => (
+                                <li key={attendee.username} >
+                                    <ProfileCard profile={attendee} />
                                 </li>
                             ))}
                         </ul>
-                        
+
                         {/* ATTEND BUTTON */}
                         {user &&
                             <Button

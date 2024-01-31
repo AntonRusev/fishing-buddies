@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import { selectCurrentUser, selectCurrentImage, selectCurrentEmail, logOut } from "../features/auth/authSlice";
 
@@ -7,10 +7,16 @@ import { Avatar, Dropdown, Navbar, DarkThemeToggle } from 'flowbite-react';
 
 const Header = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const user = useSelector(selectCurrentUser);
     const userImage = useSelector(selectCurrentImage);
     const email = useSelector(selectCurrentEmail);
+
+    const HandleLogOut = () => {
+        dispatch(logOut());
+        navigate('/');
+    };
 
     const content = (
         <Navbar fluid>
@@ -44,7 +50,7 @@ const Header = () => {
                         {/* <Dropdown.Item>Earnings</Dropdown.Item> */}
                         <Dropdown.Divider />
                         {/* LOGOUT */}
-                        <Dropdown.Item onClick={() => dispatch(logOut())}>Sign out</Dropdown.Item>
+                        <Dropdown.Item onClick={() => HandleLogOut()}>Sign out</Dropdown.Item>
                     </Dropdown>
                     <Navbar.Toggle />
 
