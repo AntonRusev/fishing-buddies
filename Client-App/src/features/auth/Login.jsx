@@ -6,7 +6,7 @@ import { useLoginMutation } from '../auth/authApiSlice';
 import { setCredentials } from '../auth/authSlice';
 
 import { CustomTextInput, CustomCheckbox, CustomButton } from '../../components/common/form';
-import BreadcrumbNav from '../../components/common/Breadcrumb';
+import BreadcrumbNav from '../../components/common/BreadcrumbNav';
 
 import { loginSchema } from '../../utils/schemas';
 

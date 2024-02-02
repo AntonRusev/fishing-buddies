@@ -2,9 +2,8 @@ import { useParams } from "react-router-dom";
 
 import { useGetProfileQuery } from "./profilesApiSlice";
 
-import ProfileNavBar from "./ProfileNavBar";
-
 import { Spinner } from 'flowbite-react';
+import ProfileAbout from "./ProfileAbout";
 
 const ProfilePage = () => {
     const { username } = useParams();
@@ -21,7 +20,7 @@ const ProfilePage = () => {
     if (isFetching || isLoading) {
         content = (<Spinner aria-label="Extra large spinner example" size="xl" />);
     } else if (isSuccess && profile) {
-        content = (<ProfileNavBar profile={profile} />);
+        content = (<ProfileAbout profile={profile} />);
     };
 
     return content;

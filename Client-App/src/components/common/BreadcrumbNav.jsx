@@ -2,13 +2,13 @@ import { useLocation, NavLink } from 'react-router-dom';
 
 import { Breadcrumb } from 'flowbite-react';
 import { HiHome } from 'react-icons/hi';
-import { capitalizeFirstLetter, getPathString } from '../../utils';
+import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter';
 
 const BreadcrumbNav = ({ title = '' }) => {
     const { pathname } = useLocation();
 
-    // Get the name of the Path without the "/"
-    const pathString = getPathString(pathname);
+    // Get the string between the first and second "/" in pathname
+    const pathString = pathname.split('/')[1];
 
     const content = (
         <Breadcrumb aria-label="Solid background breadcrumb example" className="bg-gray-50 px-5 py-3 dark:bg-gray-800">

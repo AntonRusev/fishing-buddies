@@ -6,7 +6,7 @@ import { useRegisterMutation } from '../auth/authApiSlice';
 import { setCredentials } from '../auth/authSlice';
 
 import { CustomTextInput, CustomCheckbox, CustomButton } from '../../components/common/form';
-import BreadcrumbNav from '../../components/common/Breadcrumb';
+import BreadcrumbNav from '../../components/common/BreadcrumbNav';
 
 import { registerSchema } from '../../utils/schemas';
 

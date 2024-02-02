@@ -4,9 +4,9 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useDeleteEventMutation, useGetEventQuery, useUpdateAttendanceMutation } from "./eventsApiSlice";
 import { selectCurrentUser } from "../auth/authSlice";
 
+import { Button, Spinner, Avatar, Dropdown } from 'flowbite-react';
 import EventDetailedChat from "./EventDetailedChat";
-import BreadcrumbNav from "../../components/common/Breadcrumb";
-import { Button, Spinner } from 'flowbite-react';
+import BreadcrumbNav from "../../components/common/BreadcrumbNav";
 import ProfileCard from "../profiles/ProfileCard";
 
 const EventDetails = () => {
@@ -64,7 +64,13 @@ const EventDetails = () => {
                         <ul>
                             {fishingEvent.attendees.map(attendee => (
                                 <li key={attendee.username} >
-                                    <ProfileCard profile={attendee} />
+                                    <Dropdown
+                                        label={<Avatar alt="User settings" img={attendee.image} rounded />}
+                                        arrowIcon={false}
+                                        inline
+                                    >
+                                        <ProfileCard profile={attendee} />
+                                    </Dropdown>
                                 </li>
                             ))}
                         </ul>

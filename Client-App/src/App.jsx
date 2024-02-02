@@ -13,7 +13,6 @@ import Login from '../src/features/auth/Login';
 import Register from './features/auth/Register';
 import Header from './components/Header';
 import EventForm from './features/events/EventForm';
-import EventsList from './features/events/EventsList';
 import EventDetails from './features/events/EventDetails';
 import ProfilePage from './features/profiles/ProfilePage';
 import RequireAuth from './features/auth/RequireAuth';
@@ -21,6 +20,9 @@ import GuestOnly from './features/auth/GuestOnly';
 import ErrorPage from './components/errors/ErrorPage';
 
 import './App.css';
+import ProfilePhotos from './features/profiles/ProfilePhotos';
+import ProfileFollowings from './features/profiles/ProfileFollowings';
+import EventDashboard from './features/events/EventDashboard';
 
 function App() {
     const dispatch = useDispatch();
@@ -50,9 +52,14 @@ function App() {
                     <Routes>
                         {/* Routes accessible by both guests and authenticated users */}
                         <Route path='/' element={<Home />} />
-                        <Route path='/events' element={<EventsList />} />
+                        <Route path='/events' element={<EventDashboard />} />
                         <Route path='/events/:id' element={<EventDetails />} />
-                        <Route path='/profiles/:username' element={<ProfilePage />} />
+
+                        {/* Profile paths */}
+                        <Route path='/profile/:username' element={<ProfilePage />} />
+                        <Route path='/profile/:username/photos' element={<ProfilePhotos />} />
+                        <Route path='/profile/:username/followers' element={<ProfileFollowings />} />
+                        <Route path='/profile/:username/following' element={<ProfileFollowings />} />
 
                         {/* Route Guard protection for authenticated(logged in) users only */}
                         <Route element={<RequireAuth />}>

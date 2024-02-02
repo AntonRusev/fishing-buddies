@@ -1,10 +1,8 @@
 import { apiSlice } from "../../app/api/apiSlice";
 import { eventsApiSlice } from "../events/eventsApiSlice";
 
-import { current } from 'immer';
-
 export const profilesApiSlice = apiSlice.injectEndpoints({
-    tagTypes: ['Profile'],
+    tagTypes: ['Profile', 'Following'],
     endpoints: builder => ({
         // Get Profile
         getProfile: builder.query({
@@ -59,7 +57,7 @@ export const profilesApiSlice = apiSlice.injectEndpoints({
                 url: `/follow/${username}`,
                 method: 'POST',
             }),
-            invalidatesTags: ['Profile'],
+            invalidatesTags: ['Profile', "Following"],
             async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
                 try {
                     await queryFulfilled;
@@ -81,7 +79,10 @@ export const profilesApiSlice = apiSlice.injectEndpoints({
         }),
         // List Followings
         listFollowings: builder.query({
-            query: (username, predicate) => `/follow/${username}?predicate=${predicate}`,
+            query: ({ username, predicate }) => `/follow/${username}?predicate=${predicate}`,
+            providesTags: (result = [], error, arg) => [
+                'Following', ...result.map(({ id }) => ({ type: 'Following', id }))
+            ],
         }),
         // List Events related to a User(isAttending, IsHost)
         listEvents: builder.query({

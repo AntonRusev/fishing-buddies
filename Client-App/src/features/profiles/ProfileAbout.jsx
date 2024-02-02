@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import FollowButton from './FollowButton';
 
 const ProfileAbout = ({ profile }) => {
@@ -14,11 +15,30 @@ const ProfileAbout = ({ profile }) => {
                         <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
                             <FollowButton profile={profile} />
                             {profile.bio}
+
+                            <NavLink
+                                to={`/profile/${profile.username}/followers`}
+                                className="hover:underline"
+                            >
+                                <span>Followers: {profile.followersCount}</span>
+                            </NavLink>
+                            <span> / </span>
+                            <NavLink
+                                to={`/profile/${profile.username}/following`}
+                                className="hover:underline"
+                            >
+                                <span>Following: {profile.followingCount}</span>
+                            </NavLink>
                         </p>
                     </div>
                     <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
-                        <img src={profile.image} alt="mockup" />
+                        <img src={profile.image} alt="photo" />
                     </div>
+                    <NavLink
+                        to={`/profile/${profile.username}/photos`}
+                    >
+                        View Photos
+                    </NavLink>
                 </div>
             </section>
             // <section className='container flex flex-col flex-wrap justify-between items-center mx-auto'>
