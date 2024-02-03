@@ -3,6 +3,7 @@ import { apiSlice } from './api/apiSlice';
 
 import authReducer from '../features/auth/authSlice';
 import commentsReducer from '../features/comments/commentsSlice';
+import eventsReducer from '../features/events/eventsSlice';
 
 import { errorHandleMiddleware } from './middleware/errorHandleMiddleware';
 import { signalRMiddleware } from './middleware/signalRMiddleware';
@@ -13,6 +14,7 @@ export const store = configureStore({
         [apiSlice.reducerPath]: apiSlice.reducer,
         auth: authReducer,
         comments: commentsReducer,
+        events: eventsReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         // TODO Get the hubConnection out of state into its own middleware

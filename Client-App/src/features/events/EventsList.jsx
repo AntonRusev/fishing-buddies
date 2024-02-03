@@ -1,6 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
-
-import { useGetAllEventsQuery } from "./eventsApiSlice";
+import { useMemo } from 'react';
 
 import EventCard from "./EventCard";
 import BreadcrumbNav from "../../components/common/BreadcrumbNav";

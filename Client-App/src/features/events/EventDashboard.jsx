@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import InfiniteScroll from "react-infinite-scroller";
 
-import { useGetAllEventsQuery } from './eventsApiSlice';
+import { useLazyGetAllEventsQuery } from './eventsApiSlice';
+import { selectPagination, setPage } from './eventsSlice';
 
 import EventsList from './EventsList';
 import EventCardPlaceholder from './EventCardPlaceholder';
@@ -13,28 +15,37 @@ const EventDashboard = () => {
     const [loadingNext, setLoadingNext] = useState(false);
     const [nextPage, setNextPage] = useState(1);
 
-    const {
-        data,
-        isLoading,
-        isSuccess,
-    } = useGetAllEventsQuery({ pageNumber: nextPage, pageSize: 4 });
+    const dispatch = useDispatch();
+
+    const pagination = useSelector(selectPagination);
+
+    const [trigger, { isLoading, isSuccess, data }] = useLazyGetAllEventsQuery();
+    // const {
+    //     data,
+    //     isLoading,
+    //     isSuccess,
+    // } = useLazyGetAllEventsQuery({ pageNumber: pagination.currentPage, pageSize: 2, currentPage: pagination.currentPage });
+
+    useEffect(() => {
+        trigger({ pageNumber: pagination.currentPage, pageSize: 2, currentPage: pagination.currentPage });
+    }, [pagination]);
 
     useEffect(() => {
         if (data) {
+            const parsedResult = JSON.parse(data.paginationResult);
+
             setFishingEvents(data.apiResponse);
-            setPaginationResult(JSON.parse(data.paginationResult));
+            setPaginationResult(parsedResult);
         };
+
         setLoadingNext(false);
     }, [data]);
 
     const handleGetNext = () => {
         setLoadingNext(true);
-        setNextPage(paginationResult.currentPage + 1);
-        // setPagingParams(new PagingParams(paginationResult.currentPage + 1))
-        // loadActivities().then(() => setLoadingNext(false))
+        // setNextPage(paginationResult.currentPage + 1);
+        dispatch(setPage(paginationResult.currentPage + 1));
     };
-
-    console.log(loadingNext)
 
     let content;
 
@@ -52,7 +63,7 @@ const EventDashboard = () => {
             <InfiniteScroll
                 pageStart={0}
                 loadMore={handleGetNext}
-                hasMore={!loadingNext && !!paginationResult && paginationResult.currentPage < paginationResult.totalPages}
+                hasMore={!loadingNext && !!paginationResult && paginationResult.currentPage < paginationResult.totalPages && pagination.currentPage <= paginationResult.currentPage}
                 initialLoad={false}
                 loader={<Spinner key={0} />}
             >

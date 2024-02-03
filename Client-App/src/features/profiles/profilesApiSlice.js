@@ -85,8 +85,8 @@ export const profilesApiSlice = apiSlice.injectEndpoints({
             ],
         }),
         // List Events related to a User(isAttending, IsHost)
-        listEvents: builder.query({
-            query: (username, predicate) => `/profiles/${username}/events?predicate=${predicate}`,
+        listProfileEvents: builder.query({
+            query: ({ username, predicate }) => `/profiles/${username}/events?predicate=${predicate}`,
         }),
     })
 });
@@ -98,5 +98,5 @@ export const {
     useSetMainPhotoMutation,
     useUpdateFollowingMutation,
     useListFollowingsQuery,
-    useListEventsQuery
+    useListProfileEventsQuery
 } = profilesApiSlice;

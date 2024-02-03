@@ -39,15 +39,13 @@ const ProfileAbout = ({ profile }) => {
                     >
                         View Photos
                     </NavLink>
+                    <NavLink
+                        to={`/profile/${profile.username}/events`}
+                    >
+                        {profile.username}'s Events
+                    </NavLink>
                 </div>
             </section>
-            // <section className='container flex flex-col flex-wrap justify-between items-center mx-auto'>
-            //     <h3>Profile Page</h3>
-            //     <h4>{profile.username}</h4>
-            //     <p>Bio: {profile.bio}</p>
-            //     <img src={profile.image} alt="" />
-            //     <p>Photos : {profile.photos.length}</p>
-            // </section>
         );
     };
 

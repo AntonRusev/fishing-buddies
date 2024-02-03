@@ -28,10 +28,24 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
             serializeQueryArgs: ({ endpointName }) => {
                 return endpointName;
             },
-            // Always merge incoming data to the cache entry
+            // Merging incoming data to the cache entry and updating paginationResults with most recent response
             merge: (currentCache, newItems) => {
-                currentCache.apiResponse.unshift(...newItems.apiResponse);
+                // currentCache.apiResponse.unshift(...newItems.apiResponse);
                 currentCache.paginationResult = newItems.paginationResult;
+
+                const existingIds = new Set(currentCache.apiResponse.map(item => item.id));
+                const uniqueElements = newItems.apiResponse.filter(item => !existingIds.has(item.id));
+                currentCache.apiResponse.push(...uniqueElements);
+                
+                // const parsedCurrentPagination = JSON.parse(currentCache.paginationResult);
+                // const parsedNewPagination = JSON.parse(newItems.paginationResult);
+
+                // console.log(parsedCurrentPagination.currentPage)
+                // console.log(parsedNewPagination.currentPage)
+
+                // if (parsedCurrentPagination.currentPage < parsedNewPagination.currentPage) {
+                //     currentCache.paginationResult = newItems.paginationResult;
+                // };
             },
             // Refetch when the page arg changes
             forceRefetch({ currentArg, previousArg }) {
@@ -48,9 +62,9 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
                     return { apiResponse };
                 };
             },
-            // providesTags: (result = [], error, arg) => [
-            //     'Event', ...result.map(({ id }) => ({ type: 'Event', id }))
-            // ],
+            providesTags: (result = [], error, arg) => [
+                'Event', ...result.apiResponse.map(({ id }) => ({ type: 'Event', id }))
+            ],
         }),
         // Get SINGLE Event
         getEvent: builder.query({
@@ -96,7 +110,7 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
                 method: 'DELETE',
             }),
             invalidatesTags: (result, error, arg) => (
-                [{ type: 'Event', id: arg.id }]
+                [{ type: 'Event', id: arg}]
             ),
         }),
     })
@@ -106,7 +120,7 @@ export const {
     useCreateEventMutation,
     useDeleteEventMutation,
     useEditEventMutation,
-    useGetAllEventsQuery,
+    useLazyGetAllEventsQuery,
     useGetEventQuery,
     useUpdateAttendanceMutation,
 } = eventsApiSlice;
