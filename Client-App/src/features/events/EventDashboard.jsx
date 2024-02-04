@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import InfiniteScroll from "react-infinite-scroller";
 
 import { useLazyGetAllEventsQuery } from './eventsApiSlice';
-import { selectPagination, setPage } from './eventsSlice';
+import { setPaginationParams, selectFilterParams } from './eventsSlice';
 
 import EventsList from './EventsList';
+import EventFilters from './EventFilters';
 import EventCardPlaceholder from './EventCardPlaceholder';
 import { Spinner } from 'flowbite-react';
 
@@ -13,22 +14,19 @@ const EventDashboard = () => {
     const [fishingEvents, setFishingEvents] = useState([]);
     const [paginationResult, setPaginationResult] = useState({});
     const [loadingNext, setLoadingNext] = useState(false);
-    const [nextPage, setNextPage] = useState(1);
 
     const dispatch = useDispatch();
 
-    const pagination = useSelector(selectPagination);
+    const filterParams = useSelector(selectFilterParams);
 
     const [trigger, { isLoading, isSuccess, data }] = useLazyGetAllEventsQuery();
-    // const {
-    //     data,
-    //     isLoading,
-    //     isSuccess,
-    // } = useLazyGetAllEventsQuery({ pageNumber: pagination.currentPage, pageSize: 2, currentPage: pagination.currentPage });
 
     useEffect(() => {
-        trigger({ pageNumber: pagination.currentPage, pageSize: 2, currentPage: pagination.currentPage });
-    }, [pagination]);
+        if (filterParams) {
+            // Send a request with the current filter params
+            trigger({ ...filterParams});
+        };
+    }, [filterParams]);
 
     useEffect(() => {
         if (data) {
@@ -42,9 +40,10 @@ const EventDashboard = () => {
     }, [data]);
 
     const handleGetNext = () => {
+        // GET NEXT PAGE
+        // (Get the next batch of paginated data)
         setLoadingNext(true);
-        // setNextPage(paginationResult.currentPage + 1);
-        dispatch(setPage(paginationResult.currentPage + 1));
+        dispatch(setPaginationParams({ pageNumber: paginationResult.currentPage + 1 }));
     };
 
     let content;
@@ -60,15 +59,23 @@ const EventDashboard = () => {
         );
     } else if (isSuccess) {
         content = (
-            <InfiniteScroll
-                pageStart={0}
-                loadMore={handleGetNext}
-                hasMore={!loadingNext && !!paginationResult && paginationResult.currentPage < paginationResult.totalPages && pagination.currentPage <= paginationResult.currentPage}
-                initialLoad={false}
-                loader={<Spinner key={0} />}
-            >
-                <EventsList fishingEvents={fishingEvents} />
-            </InfiniteScroll>
+            <div className='flex'>
+                <div className='flex-shrink-0'>
+                    <InfiniteScroll
+                        pageStart={0}
+                        loadMore={handleGetNext}
+                        hasMore={!loadingNext && !!paginationResult && paginationResult.currentPage < paginationResult.totalPages}
+                        initialLoad={false}
+                        loader={<Spinner key={0} />}
+                    >
+                        <EventsList fishingEvents={fishingEvents} />
+                    </InfiniteScroll>
+                </div>
+                <div className='flex-shrink-0'>
+                    <EventFilters />
+                    {/* Place for Calendar Filter Component */}
+                </div>
+            </div>
         );
     };
 

@@ -7,21 +7,9 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
         // Get All Events
         getAllEvents: builder.query({
             query: (options) => {
-                // Setting default value to the pagination query params
-                let pageNumber = 1;
-                let pageSize = 5;
-
-                // If params are passed override the default ones
-                if (options) {
-                    pageNumber = options.pageNumber;
-                    if (options.pageSize) {
-                        pageSize = options.pageSize;
-                    };
-                };
-
                 return {
                     url: '/events',
-                    params: { pageNumber, pageSize } // query params for pagination
+                    params: { ...options } // QUERY PARAMS for pagination and filtering
                 };
             },
             // Only have one cache entry because the arg always maps to one string
@@ -30,22 +18,24 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
             },
             // Merging incoming data to the cache entry and updating paginationResults with most recent response
             merge: (currentCache, newItems) => {
-                // currentCache.apiResponse.unshift(...newItems.apiResponse);
+                // Replacing the pagination results in the cache
                 currentCache.paginationResult = newItems.paginationResult;
 
+                const parsedNewPagination = JSON.parse(newItems.paginationResult);
+                
+                // If the pagination response data has current page set to 1:
+                // Clear the existing apiResponse(Events) cache and start anew
+                if (parsedNewPagination.currentPage === 1) {
+                    currentCache.apiResponse = newItems.apiResponse;
+                    return;
+                };
+
+                // If the current page is not set to 1:
+                // Update the apiResponse cache only with new entries, which are not already in it,
+                // (the cache has to contain only entries with unique Ids)
                 const existingIds = new Set(currentCache.apiResponse.map(item => item.id));
                 const uniqueElements = newItems.apiResponse.filter(item => !existingIds.has(item.id));
                 currentCache.apiResponse.push(...uniqueElements);
-                
-                // const parsedCurrentPagination = JSON.parse(currentCache.paginationResult);
-                // const parsedNewPagination = JSON.parse(newItems.paginationResult);
-
-                // console.log(parsedCurrentPagination.currentPage)
-                // console.log(parsedNewPagination.currentPage)
-
-                // if (parsedCurrentPagination.currentPage < parsedNewPagination.currentPage) {
-                //     currentCache.paginationResult = newItems.paginationResult;
-                // };
             },
             // Refetch when the page arg changes
             forceRefetch({ currentArg, previousArg }) {
@@ -53,7 +43,7 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
             },
             transformResponse(apiResponse, meta) {
                 // Get the "Pagination" params from the Response Headers
-                // and return them alongside the data
+                // and return them alongside the data(apiResponse)
                 const paginationResult = meta.response.headers.get('Pagination');
 
                 if (paginationResult) {
@@ -110,7 +100,7 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
                 method: 'DELETE',
             }),
             invalidatesTags: (result, error, arg) => (
-                [{ type: 'Event', id: arg}]
+                [{ type: 'Event', id: arg }]
             ),
         }),
     })
