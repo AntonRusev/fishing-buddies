@@ -12,6 +12,7 @@
   "dependencies": {
     "@microsoft/signalr": "^8.0.0",
     "@reduxjs/toolkit": "^2.0.1",
+    "date-fns": "^3.3.1",
     "flowbite": "^2.2.1",
     "flowbite-react": "^0.7.2",
     "formik": "^2.4.5",

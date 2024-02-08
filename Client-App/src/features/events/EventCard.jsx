@@ -48,6 +48,7 @@ let EventCard = ({ fishingEvent }) => {
           {fishingEvent.title}
         </h5>
         <p className="font-normal text-gray-700 dark:text-gray-400">
+        {fishingEvent.date}
         {fishingEvent.description}
         </p>
         <Button as={NavLink} to={`/events/${fishingEvent.id}`} size="xs">View</Button>

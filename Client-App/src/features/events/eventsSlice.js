@@ -14,7 +14,7 @@ const eventsSlice = createSlice({
                 isgoing: false,
                 ishost: false
             },
-            startDate: new Date().toISOString(),
+            startDate: null,
         }
     },
     reducers: {
@@ -47,9 +47,10 @@ const eventsSlice = createSlice({
         },
         setStartDate: (state, action) => {
             // Set start date filter param for Events list
-            if (typeof action.payload === "date") {
-                state.filters.startDate = action.payload;
-            };
+            state.filters.startDate = action.payload;
+
+            // On selecting a filter, reset pageNumber back to 1 to start over again
+            state.pagination.pageNumber = 1;
         },
     }
 });
@@ -62,7 +63,7 @@ export const selectPagination = (state) => state.events.pagination;
 export const selectFilters = (state) => state.events.filters;
 // Getting all filters for query params at once
 export const selectFilterParams = createSelector(selectPagination, selectFilters, (pagination, filters) => {
-    let filterParams;
+    let filterParams = { ...pagination };
 
     // Checking if any of "all", "isgoing" or "ishost" is set to "true"
     const isTrueFilter = Object.entries(filters.boolFilter).find(([key, value]) => value === true);
@@ -70,10 +71,14 @@ export const selectFilterParams = createSelector(selectPagination, selectFilters
     // If there is one set to "true", add it to the other params
     if (isTrueFilter) {
         const [key, value] = isTrueFilter;
-        filterParams = { ...pagination, [key]: value };
-    } else {
-        filterParams = { ...pagination };
+        filterParams = { ...filterParams, [key]: value };
+    };
+
+    // If start date is selected(null by default), add it to the other params
+    if (filters.startDate != null) {
+        filterParams = { ...filterParams, startDate: filters.startDate };
     };
 
     return filterParams;
+    // Should look similar to this: http://localhost:5000/api/events?pageNumber=1&pageSize=2&all=true&startDate=2024-02-28T22:00:00.000Z
 });
