@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { format } from "date-fns";
 
 import { useUpdateAttendanceMutation } from "./eventsApiSlice";
 
@@ -48,7 +49,7 @@ let EventCard = ({ fishingEvent }) => {
           {fishingEvent.title}
         </h5>
         <p className="font-normal text-gray-700 dark:text-gray-400">
-        {fishingEvent.date}
+        {format(fishingEvent.date, 'dd MMM yyyy ')}
         {fishingEvent.description}
         </p>
         <Button as={NavLink} to={`/events/${fishingEvent.id}`} size="xs">View</Button>

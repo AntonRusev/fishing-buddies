@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { format } from "date-fns";
 
 import { useDeleteEventMutation, useGetEventQuery, useUpdateAttendanceMutation } from "./eventsApiSlice";
 import { selectCurrentUser } from "../auth/authSlice";
@@ -8,8 +10,11 @@ import { Button, Spinner, Avatar, Dropdown } from 'flowbite-react';
 import EventDetailedChat from "./EventDetailedChat";
 import BreadcrumbNav from "../../components/common/BreadcrumbNav";
 import ProfileCard from "../profiles/ProfileCard";
+import DeleteModal from "../../components/common/modals/deleteModal";
 
 const EventDetails = () => {
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -32,6 +37,7 @@ const EventDetails = () => {
         if (id) {
             await deleteEvent(id)
                 .unwrap()
+                .then(setOpenDeleteModal(false))
                 .then(navigate('/events'))
                 .catch((error) => console.log(error));
         };
@@ -47,7 +53,7 @@ const EventDetails = () => {
                 <BreadcrumbNav title={fishingEvent.title} />
                 <article>
                     <h4>{fishingEvent.title}</h4>
-                    <p>{fishingEvent.date}</p>
+                    <p>{format(fishingEvent.date, 'dd MMM yyyy')}</p>
                     <p>{fishingEvent.description}</p>
                     <p>Category: {fishingEvent.category}</p>
                     <p>Region: {fishingEvent.region}</p>
@@ -90,7 +96,7 @@ const EventDetails = () => {
                         {fishingEvent.hostUsername === user
                             ? <>
                                 <Button
-                                    onClick={handleDeleteEvent}
+                                    onClick={() => setOpenDeleteModal(true)}
                                     size="sm"
                                     isProcessing={deleteIsLoading}
                                 >
@@ -114,6 +120,15 @@ const EventDetails = () => {
                     {/* Only shown to logged in users */}
                     {user && <EventDetailedChat eventId={fishingEvent.id} />}
 
+                    {/* DELETE MODAL */}
+                    {openDeleteModal &&
+                        <DeleteModal
+                            trigger={openDeleteModal}
+                            closeModal={setOpenDeleteModal}
+                            deleteHandler={handleDeleteEvent}
+                            textString={"event"}
+                        />
+                    }
                 </article>
             </>
         );

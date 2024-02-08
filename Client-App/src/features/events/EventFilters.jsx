@@ -4,7 +4,7 @@ import { setFilter, setStartDate } from './eventsSlice';
 
 import { Sidebar, Datepicker } from 'flowbite-react';
 
-const EventFilters = () => {
+const EventFilters = ({ totalItems }) => {
     const dispatch = useDispatch();
 
     const content = (
@@ -14,19 +14,20 @@ const EventFilters = () => {
                     <Sidebar.ItemGroup>
                         <Sidebar.Item
                             onClick={() => dispatch(setFilter('all'))}
-                            label="Pro"
+                            label={totalItems}
                             labelColor="dark"
                         >
                             All Events
                         </Sidebar.Item>
                         <Sidebar.Item
                             onClick={() => dispatch(setFilter('isgoing'))}
-                            label="3"
+                            label={totalItems}
                         >
                             I'm going
                         </Sidebar.Item>
                         <Sidebar.Item
                             onClick={() => dispatch(setFilter('ishost'))}
+                            label={totalItems}
                         >
                             I'm hosting
                         </Sidebar.Item>

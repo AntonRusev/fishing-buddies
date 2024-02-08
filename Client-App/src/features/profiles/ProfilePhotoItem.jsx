@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { HiTrash, HiBadgeCheck } from 'react-icons/hi';
 
-const ProfilePhotoItem = ({ photo, deletePhoto, handleSetMainPhoto, deleteIsLoading, setMainIsLoading, isOwner }) => {
+const ProfilePhotoItem = ({ photo, handleOpenModal, handleSetMainPhoto, deleteIsLoading, setMainIsLoading, isOwner }) => {
     // TODO Find another way to show Spinner only on the clicked button
     const [targetPhoto, setTargetPhoto] = useState('');
 
@@ -23,22 +23,22 @@ const ProfilePhotoItem = ({ photo, deletePhoto, handleSetMainPhoto, deleteIsLoad
                             )}
                             gradientMonochrome="success"
                             isProcessing={setMainIsLoading && photo.id == targetPhoto}
+                            disabled={setMainIsLoading || deleteIsLoading}
                         >
                             {/* If isLoading hide the icon and show Spinner instead */}
-                            {!setMainIsLoading && <HiBadgeCheck className="mr-3 h-4 w-4" />}
+                            {photo.id != targetPhoto && <HiBadgeCheck className="mr-3 h-4 w-4" />}
                             Set Main
                         </Button>
                         <Button
                             onClick={() => (
                                 setTargetPhoto(photo.id),
-                                deletePhoto(photo.id)
+                                handleOpenModal(photo.id)
                             )}
                             gradientMonochrome="failure"
-                            isProcessing={deleteIsLoading}
+                            isProcessing={deleteIsLoading && photo.id == targetPhoto}
+                            disabled={setMainIsLoading || deleteIsLoading}
                         >
-
-                            {!deleteIsLoading && <HiTrash className="mr-3 h-4 w-4" />}
-
+                            {photo.id != targetPhoto && <HiTrash className="mr-3 h-4 w-4" />}
                             {/* &nbsp; => empty space */}
                             Delete &nbsp; &nbsp;
                         </Button>

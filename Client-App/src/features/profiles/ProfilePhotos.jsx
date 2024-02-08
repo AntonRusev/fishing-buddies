@@ -9,10 +9,14 @@ import { PhotoUploadWidget } from "../../components/common/photoUpload";
 import ProfilePhotoItem from "./ProfilePhotoItem";
 import { Button, Spinner } from 'flowbite-react';
 import { HiOutlineArrowLeft } from 'react-icons/hi';
+import DeleteModal from "../../components/common/modals/deleteModal";
 
 const ProfilePhotos = () => {
-    const { username } = useParams();
     const [addPhotoMode, setAddPhotoMode] = useState(false);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+    const [idToBeDeleted, setIdToBeDeleted] = useState('');
+
+    const { username } = useParams();
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -27,6 +31,7 @@ const ProfilePhotos = () => {
     const user = useSelector(selectCurrentUser);
     const [deletePhoto, { isLoading: deleteIsLoading }] = useDeletePhotoMutation();
     const [setMainPhoto, { isLoading: setMainIsLoading }] = useSetMainPhotoMutation();
+
 
     // Check if the user is viewing own profile or someone else's
     let isOwner = false;
@@ -44,6 +49,19 @@ const ProfilePhotos = () => {
         navigate(`/profile/${profile.username}/photos`);
     };
 
+    const handleDeletePhoto = async () => {
+        if (idToBeDeleted) {
+            await deletePhoto(idToBeDeleted)
+                .unwrap()
+                .then(setOpenDeleteModal(false));
+        };
+    };
+
+    const handleOpenModal = (id) => {
+        setOpenDeleteModal(true);
+        setIdToBeDeleted(id);
+    };
+
     let content;
 
     if (profileIsLoading || isFetching) {
@@ -52,13 +70,16 @@ const ProfilePhotos = () => {
         content = (
             <>
                 <section className='container flex flex-wrap flex-col justify-between items-center mx-auto gap-2'>
+                    {/* If the user is viewing his own profile */}
+                    {/* Trigger button to alternate between Add Photo and View Photos views*/}
                     {isOwner
+
                         ? <Button
                             onClick={() => setAddPhotoMode(!addPhotoMode)}
                             size="lg"
                             className="my-3"
                         >
-                            {/* Alternate between Add Photo and View Photos screens */}
+
                             {!addPhotoMode
                                 ? "Add Photo"
                                 : "Cancel"}
@@ -66,6 +87,7 @@ const ProfilePhotos = () => {
                         : ''
                     }
 
+                    {/* UPLOAD PHOTO or PHOTOS LIST view */}
                     {addPhotoMode
                         ? <PhotoUploadWidget setAddPhotoMode={setAddPhotoMode} />
                         : <ul className='container flex flex-wrap justify-between items-center mx-auto gap-6'>
@@ -73,7 +95,7 @@ const ProfilePhotos = () => {
                                 <ProfilePhotoItem
                                     key={p.id}
                                     photo={p}
-                                    deletePhoto={deletePhoto}
+                                    handleOpenModal={handleOpenModal}
                                     handleSetMainPhoto={handleSetMainPhoto}
                                     deleteIsLoading={deleteIsLoading}
                                     setMainIsLoading={setMainIsLoading}
@@ -83,11 +105,22 @@ const ProfilePhotos = () => {
                         </ul>
                     }
 
+                    {/* BACK BUTTON */}
                     <NavLink to={`/profile/${profile.username}`} >
                         <Button outline>
                             <HiOutlineArrowLeft className="h-6 w-6" />
                         </Button>
                     </NavLink>
+
+                    {/* DELETE MODAL */}
+                    {openDeleteModal &&
+                        <DeleteModal
+                            trigger={openDeleteModal}
+                            closeModal={setOpenDeleteModal}
+                            deleteHandler={handleDeletePhoto}
+                            textString={"photo"}
+                        />
+                    }
                 </section >
             </>
         );

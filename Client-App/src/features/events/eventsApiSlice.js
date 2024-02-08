@@ -100,7 +100,8 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
                 method: 'DELETE',
             }),
             invalidatesTags: (result, error, arg) => (
-                [{ type: 'Event', id: arg }]
+                console.log(arg)
+                // [{ type: 'Event', id: arg }]
             ),
         }),
     })

@@ -72,8 +72,7 @@ const EventDashboard = () => {
                     </InfiniteScroll>
                 </div>
                 <div className='flex-shrink-0'>
-                    <EventFilters />
-                    {/* Place for Calendar Filter Component */}
+                    <EventFilters totalItems={paginationResult.totalItems} />
                 </div>
             </div>
         );
