@@ -29,10 +29,13 @@ const EventDetails = () => {
 
     const user = useSelector(selectCurrentUser);
 
+    // Handle ATTEND
     const handleAttendanceSubmit = async () => {
         await updateAttendance(fishingEvent.id)
             .unwrap();
     };
+    
+    // Handle DELETE
     const handleDeleteEvent = async () => {
         if (id) {
             await deleteEvent(id)
@@ -87,6 +90,7 @@ const EventDetails = () => {
                                 onClick={handleAttendanceSubmit}
                                 size="sm"
                                 isProcessing={updateAttendIsLoading}
+                                disabled={updateAttendIsLoading || deleteIsLoading}
                             >
                                 Attend
                             </Button>
@@ -99,6 +103,7 @@ const EventDetails = () => {
                                     onClick={() => setOpenDeleteModal(true)}
                                     size="sm"
                                     isProcessing={deleteIsLoading}
+                                    disabled={updateAttendIsLoading || deleteIsLoading}
                                 >
                                     Remove
                                 </Button>
@@ -107,6 +112,7 @@ const EventDetails = () => {
                                     to={`/manage/${id}`}
                                     size="sm"
                                     className='mx-auto'
+                                    disabled={updateAttendIsLoading || deleteIsLoading}
                                 >
                                     Manage
                                 </Button>

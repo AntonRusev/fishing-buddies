@@ -22,7 +22,7 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
                 currentCache.paginationResult = newItems.paginationResult;
 
                 const parsedNewPagination = JSON.parse(newItems.paginationResult);
-                
+
                 // If the pagination response data has current page set to 1:
                 // Clear the existing apiResponse(Events) cache and start anew
                 if (parsedNewPagination.currentPage === 1) {
@@ -52,9 +52,9 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
                     return { apiResponse };
                 };
             },
-            providesTags: (result = [], error, arg) => [
-                'Event', ...result.apiResponse.map(({ id }) => ({ type: 'Event', id }))
-            ],
+            // providesTags: (result = [], error, arg) => [
+            //     'Event', ...result.apiResponse.map(({ id }) => ({ type: 'Event', id }))
+            // ],
         }),
         // Get SINGLE Event
         getEvent: builder.query({
@@ -70,7 +70,21 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: initialEvent
             }),
-            invalidatesTags: ['Event']
+            // invalidatesTags: ['Event'],
+            async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
+                try {
+                    // Update the getAllEvents CACHED data with the Event that is being created(from the API response)
+                    const { data: createdEvent } = await queryFulfilled;
+
+                    dispatch(
+                        eventsApiSlice.util.updateQueryData('getAllEvents', id, (draft) => {
+                            Object.assign(draft.apiResponse, createdEvent);
+                        })
+                    );
+                } catch (error) {
+                    console.error('Error in createEvent onQueryStarted:', error);
+                };
+            },
         }),
         // EDIT Event
         editEvent: builder.mutation({
@@ -82,6 +96,30 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: (result, error, arg) => (
                 [{ type: 'Event', id: arg.id }]
             ),
+            async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
+                try {
+                    // Update the getAllEvents CACHED data with the edited Event
+                    await queryFulfilled;
+
+                    dispatch(
+                        eventsApiSlice.util.updateQueryData('getAllEvents', id, (draft) => {
+                            draft.apiResponse.map(event => {
+                                if (event.id === id) {
+                                    Object.keys(patch).forEach((key) => {
+                                        // Check if the key exists in the original Event
+                                        if (event.hasOwnProperty(key)) {
+                                            // Update the value in the original Event
+                                            event[key] = patch[key];
+                                        };
+                                    });
+                                };
+                            })
+                        })
+                    );
+                } catch (error) {
+                    console.error('Error in editEvent onQueryStarted:', error);
+                };
+            },
         }),
         // UPDATE Attendance to an Event
         updateAttendance: builder.mutation({
@@ -99,10 +137,25 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
                 url: `/events/${eventId}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: (result, error, arg) => (
-                console.log(arg)
-                // [{ type: 'Event', id: arg }]
-            ),
+            // invalidatesTags: (result, error, arg) => (
+            //     [{ type: 'Event', id: arg }]
+            // ),
+            async onQueryStarted(eventId, { dispatch, queryFulfilled }) {
+                try {
+                    // Update the getAllEvents CACHED data by removing the deleted Event
+                    await queryFulfilled;
+
+                    dispatch(
+                        eventsApiSlice.util.updateQueryData('getAllEvents', eventId, (draft) => {
+                            // Remove the object with the Id of the deleted Event
+                            const updatedList = draft.apiResponse.filter((event) => event.id !== eventId)
+                            draft.apiResponse = [...updatedList];
+                        })
+                    );
+                } catch (error) {
+                    console.error('Error in deleteEvent onQueryStarted:', error);
+                };
+            },
         }),
     })
 });

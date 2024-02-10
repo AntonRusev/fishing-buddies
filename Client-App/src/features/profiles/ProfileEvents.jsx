@@ -11,11 +11,11 @@ const ProfileEvents = () => {
     const [predicate, setPredicate] = useState();
     const { username } = useParams();
 
-    const { data, isLoading, isSuccess } = useListProfileEventsQuery({ username, predicate }, { skip: !predicate })
+    const { data, isLoading, isFetching, isSuccess } = useListProfileEventsQuery({ username, predicate }, { skip: !predicate })
 
     let profileEventsList
 
-    if (isLoading) {
+    if (isLoading || isFetching) {
         // TODO - Design the Skeleton(Placeholder) to resemble the actual Card Component
         profileEventsList = (
             <div className='flex flex-col gap-4'>
@@ -39,6 +39,7 @@ const ProfileEvents = () => {
                     <Button
                         onClick={() => setPredicate("hosting")}
                         gradientDuoTone="cyanToBlue"
+                        disabled={isLoading || isFetching}
                     >
                         Hosting
                     </Button>
@@ -46,6 +47,7 @@ const ProfileEvents = () => {
                     <Button
                         onClick={() => setPredicate("future")}
                         gradientDuoTone="cyanToBlue"
+                        disabled={isLoading || isFetching}
                     >
                         Future Events
                     </Button>
@@ -53,6 +55,7 @@ const ProfileEvents = () => {
                     <Button
                         onClick={() => setPredicate("past")}
                         gradientDuoTone="cyanToBlue"
+                        disabled={isLoading || isFetching}
                     >
                         Past Events
                     </Button>

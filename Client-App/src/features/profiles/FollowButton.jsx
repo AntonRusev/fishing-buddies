@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 
 const FollowButton = ({ profile }) => {
     const { id } = useParams();
-    const [updateFollowing, { isLoading }] = useUpdateFollowingMutation();
+    const [updateFollowing, { isLoading, isFetching }] = useUpdateFollowingMutation();
 
     const user = useSelector(selectCurrentUser);
 
@@ -24,8 +24,9 @@ const FollowButton = ({ profile }) => {
     const content = (
         <Button
             onClick={handleFollow}
-            isProcessing={isLoading}
+            isProcessing={isLoading || isFetching}
             color="gray"
+            disabled={isLoading || isFetching}
         >
             {profile.following
                 ? "Unfollow"

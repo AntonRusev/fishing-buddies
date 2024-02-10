@@ -9,14 +9,14 @@ const PhotoUploadWidget = ({ setAddPhotoMode }) => {
     const [files, setFiles] = useState([]);
     const [cropper, setCropper] = useState();
 
-    const [uploadPhoto, { isLoading }] = useUploadPhotoMutation();
+    const [uploadPhoto, { isLoading, isFetching }] = useUploadPhotoMutation();
 
     function handleUpload() {
         try {
             if (cropper) {
                 cropper.getCroppedCanvas().toBlob(blob => uploadPhoto(blob));
                 // Close the PhotoUploadWidget upon upload
-                setAddPhotoMode(false);
+                // setAddPhotoMode(false);
             };
         } catch (error) {
             console.log(error);
@@ -53,7 +53,8 @@ const PhotoUploadWidget = ({ setAddPhotoMode }) => {
                             {/* UPLOAD PHOTO */}
                             <Button
                                 onClick={() => handleUpload()}
-                                isProcessing={isLoading}
+                                isProcessing={isLoading || isFetching}
+                                disabled={isLoading || isFetching}
                             >
                                 Add
                             </Button>
@@ -61,6 +62,7 @@ const PhotoUploadWidget = ({ setAddPhotoMode }) => {
                             {/* REMOVE PHOTO FROM PHOTO CROPPER */}
                             <Button
                                 onClick={() => setFiles([])}
+                                disabled={isLoading || isFetching}
                             >
                                 Reset
                             </Button>

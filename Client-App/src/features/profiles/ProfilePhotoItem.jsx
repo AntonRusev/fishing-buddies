@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { HiTrash, HiBadgeCheck } from 'react-icons/hi';
 
 const ProfilePhotoItem = ({ photo, handleOpenModal, handleSetMainPhoto, deleteIsLoading, setMainIsLoading, isOwner }) => {
-    // TODO Find another way to show Spinner only on the clicked button
     const [targetPhoto, setTargetPhoto] = useState('');
 
     const content = (

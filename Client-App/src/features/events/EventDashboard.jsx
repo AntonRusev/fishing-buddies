@@ -22,13 +22,14 @@ const EventDashboard = () => {
     const [trigger, { isLoading, isSuccess, data }] = useLazyGetAllEventsQuery();
 
     useEffect(() => {
+        // Send a request with the current filter params
         if (filterParams) {
-            // Send a request with the current filter params
-            trigger({ ...filterParams});
+            trigger({ ...filterParams });
         };
     }, [filterParams]);
 
     useEffect(() => {
+        // Populate state with response data
         if (data) {
             const parsedResult = JSON.parse(data.paginationResult);
 

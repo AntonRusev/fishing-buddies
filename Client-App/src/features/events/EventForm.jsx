@@ -51,15 +51,18 @@ const EventForm = () => {
         try {
             if (id) {
                 // If there is an Id, Editing the Event
-                await editEvent({ ...values }).unwrap();
+                await editEvent({ ...values })
+                    .unwrap()
+                    .then(navigate(`/events/${id}`));
             } else {
                 // If there is no Id, generating one and Creating an Event
                 const newId = uuid();
-                await createEvent({ ...values, id: newId }).unwrap();
+                await createEvent({ ...values, id: newId })
+                    .unwrap()
+                    .then(navigate(`/events/${newId}`));
             };
 
             actions.resetForm();
-            navigate('/events');
         } catch (err) {
             console.log(err);
         };
