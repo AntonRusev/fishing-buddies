@@ -40,18 +40,18 @@ const ProfilePhotos = () => {
         isOwner = user === profile.username;
     };
 
-    const handleSetMainPhoto = (id, url) => {
-        // Change the IsMain in the database
-        setMainPhoto(id);
-        // Change user image in local state
-        dispatch(changeImage(url));
-
-        navigate(`/profile/${profile.username}/photos`);
+    const handleSetMainPhoto = async (id, url) => {
+        if (id && url && user) {
+            await setMainPhoto({ photoId: id, user }) // Change the IsMain in the database
+                .unwrap()
+                .then(dispatch(changeImage(url))) // Change user image in local state
+                .then(navigate(`/profile/${profile.username}/photos`))
+        };
     };
 
     const handleDeletePhoto = async () => {
-        if (idToBeDeleted) {
-            await deletePhoto(idToBeDeleted)
+        if (idToBeDeleted && user) {
+            await deletePhoto({ photoId: idToBeDeleted, user })
                 .unwrap()
                 .then(setOpenDeleteModal(false));
         };
@@ -89,7 +89,7 @@ const ProfilePhotos = () => {
 
                     {/* UPLOAD PHOTO or PHOTOS LIST view */}
                     {addPhotoMode
-                        ? <PhotoUploadWidget setAddPhotoMode={setAddPhotoMode} />
+                        ? <PhotoUploadWidget setAddPhotoMode={setAddPhotoMode} user={user} />
                         : <ul className='container flex flex-wrap justify-between items-center mx-auto gap-6'>
                             {profile.photos.map(p => (
                                 <ProfilePhotoItem

@@ -1,5 +1,4 @@
 import { apiSlice } from "../../app/api/apiSlice";
-import { eventsApiSlice } from "../events/eventsApiSlice";
 
 export const profilesApiSlice = apiSlice.injectEndpoints({
     tagTypes: ['Profile', 'Following'],
@@ -13,7 +12,7 @@ export const profilesApiSlice = apiSlice.injectEndpoints({
         }),
         // ADD Photo (Upload)
         uploadPhoto: builder.mutation({
-            query: (file) => {
+            query: ({ file, user }) => {
                 // TODO Check if Headers can be changed to ('Content-Type', file.type);
                 console.log(file.type);
 
@@ -31,25 +30,78 @@ export const profilesApiSlice = apiSlice.injectEndpoints({
                     },
                 };
             },
-            invalidatesTags: ['Profile']
+            // invalidatesTags: ['Profile'],
+            async onQueryStarted({ file, user }, { dispatch, queryFulfilled }) {
+                try {
+                    // Update the getProfile CACHED data with uploaded Photo
+                    const { data: uploadedPhoto } = await queryFulfilled;
+
+                    dispatch(
+                        profilesApiSlice.util.updateQueryData('getProfile', user, (draft) => {
+                            // Add uploadedPhoto to the User's photos
+                            draft.photos.push(uploadedPhoto);
+                        })
+                    );
+                } catch (error) {
+                    console.error('Error in uploadPhoto onQueryStarted:', error);
+                };
+            },
         }),
         // DELETE Photo
         deletePhoto: builder.mutation({
-            query: (photoId) => ({
+            query: ({ photoId, user }) => ({
                 url: `/photos/${photoId}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: (result, error, arg) => (
-                [{ type: 'Profile', id: arg.id }]
-            ),
+            // invalidatesTags: (result, error, arg) => (
+            //     [{ type: 'Profile', id: arg.id }]
+            // ),
+            async onQueryStarted({ photoId, user }, { dispatch, queryFulfilled }) {
+                try {
+                    // Update the getProfile CACHED data by removing the deleted Photo
+                    await queryFulfilled;
+
+                    dispatch(
+                        profilesApiSlice.util.updateQueryData('getProfile', user, (draft) => {
+                            // Remove the object with the Id of the deleted Photo
+                            const updatedPhotos = draft.photos.filter((photo) => photo.id !== photoId);
+                            draft.photos = [...updatedPhotos];
+                        })
+                    );
+                } catch (error) {
+                    console.error('Error in deletePhoto onQueryStarted:', error);
+                };
+            },
         }),
         // Set Photo as "Main Photo" (Avatar)
         setMainPhoto: builder.mutation({
-            query: (photoId) => ({
+            query: ({ photoId, user }) => ({
                 url: `/photos/${photoId}/setMain`,
                 method: 'POST',
             }),
-            invalidatesTags: ['Profile']
+            // invalidatesTags: ['Profile'],
+            async onQueryStarted({ photoId, user }, { dispatch, queryFulfilled }) {
+                try {
+                    // Update the getProfile CACHED data by setting new Main Photo
+                    await queryFulfilled;
+
+                    dispatch(
+                        profilesApiSlice.util.updateQueryData('getProfile', user, (draft) => {
+                            // Set the object's that matches the photoId "isMain" to "true"
+                            // and set all other objets' "isMain" to "false"
+                            draft.photos.map(photo => {
+                                if (photo.id === photoId) {
+                                    photo.isMain = true;
+                                } else if (photo.id !== photoId) {
+                                    photo.isMain = false;
+                                };
+                            });
+                        })
+                    );
+                } catch (error) {
+                    console.error('Error in setMainPhoto onQueryStarted:', error);
+                };
+            },
         }),
         // Update Following (FOLLOW/UNFOLLOW)
         updateFollowing: builder.mutation({
@@ -58,24 +110,6 @@ export const profilesApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
             }),
             invalidatesTags: ['Profile', "Following"],
-            async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
-                try {
-                    await queryFulfilled;
-                    // Update the Attendees Profile CACHED data of the Event that is being viewed
-                    // TODO MAke it invalidate the Event Tag
-                    dispatch(
-                        eventsApiSlice.util.updateQueryData('getEvent', id, (draft) => {
-                            const attendeeToUpdate = draft.attendees.find(attendee => attendee.username === patch.username);
-
-                            if (attendeeToUpdate) {
-                                attendeeToUpdate.following = !attendeeToUpdate.following;
-                            };
-                        })
-                    );
-                } catch (error) {
-                    console.error('Error in onQueryStarted:', error);
-                }
-            },
         }),
         // List Followings
         listFollowings: builder.query({
