@@ -10,6 +10,29 @@ export const profilesApiSlice = apiSlice.injectEndpoints({
                 [{ type: 'Profile', id: arg }]
             ),
         }),
+        // Edit User's Profile (Bio)
+        editProfile: builder.mutation({
+            query: ({ bio, user }) => ({
+                url: `/profiles`,
+                method: 'PUT',
+                body: bio
+            }),
+            invalidatesTags: ['Profile'],
+            // async onQueryStarted({ bio, user }, { dispatch, queryFulfilled }) {
+            //     try {
+            //         // Update the getProfile CACHED data with edited User Bio
+            //         await queryFulfilled;
+
+            //         dispatch(
+            //             profilesApiSlice.util.updateQueryData('getProfile', user, (draft) => {
+            //                 console.log(draft)
+            //             })
+            //         );
+            //     } catch (error) {
+            //         console.error('Error in uploadPhoto onQueryStarted:', error);
+            //     };
+            // },
+        }),
         // ADD Photo (Upload)
         uploadPhoto: builder.mutation({
             query: ({ file, user }) => {
@@ -127,6 +150,7 @@ export const profilesApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useGetProfileQuery,
+    useEditProfileMutation,
     useUploadPhotoMutation,
     useDeletePhotoMutation,
     useSetMainPhotoMutation,

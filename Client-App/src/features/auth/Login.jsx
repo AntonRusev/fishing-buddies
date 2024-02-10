@@ -16,7 +16,6 @@ const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    // TODO Create a custom useHandleAuth hook for both Login and Register
     const handleSubmit = async (values, actions) => {
             const { persistAuth, ...obj } = values;
             const email = obj.email;
