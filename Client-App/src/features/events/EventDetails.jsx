@@ -4,7 +4,7 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { format } from "date-fns";
 
 import { useDeleteEventMutation, useGetEventQuery, useUpdateAttendanceMutation } from "./eventsApiSlice";
-import { selectCurrentUser } from "../auth/authSlice";
+import { selectCurrentImage, selectCurrentUser } from "../auth/authSlice";
 
 import { Button, Spinner, Avatar, Dropdown } from 'flowbite-react';
 import EventDetailedChat from "./EventDetailedChat";
@@ -23,15 +23,16 @@ const EventDetails = () => {
         isFetching,
         isSuccess,
     } = useGetEventQuery(id);
+    
+    const user = useSelector(selectCurrentUser);
+    const image = useSelector(selectCurrentImage);
 
     const [updateAttendance, { isLoading: updateAttendIsLoading }] = useUpdateAttendanceMutation();
     const [deleteEvent, { isLoading: deleteIsLoading }] = useDeleteEventMutation();
 
-    const user = useSelector(selectCurrentUser);
-
     // Handle ATTEND
     const handleAttendanceSubmit = async () => {
-        await updateAttendance(fishingEvent.id)
+        await updateAttendance({eventId: fishingEvent.id, user, image})
             .unwrap();
     };
     
@@ -78,7 +79,7 @@ const EventDetails = () => {
                                         arrowIcon={false}
                                         inline
                                     >
-                                        <ProfileCard profile={attendee} />
+                                        {/* <ProfileCard profile={attendee} /> */}
                                     </Dropdown>
                                 </li>
                             ))}

@@ -123,13 +123,54 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
         }),
         // UPDATE Attendance to an Event
         updateAttendance: builder.mutation({
-            query: (eventId) => ({
+            query: ({ eventId, user, image }) => ({
                 url: `/events/${eventId}/attend`,
                 method: 'POST',
             }),
-            invalidatesTags: (result, error, arg) => (
-                [{ type: 'Event', id: arg.id }]
-            ),
+            // invalidatesTags: (result, error, arg) => (
+            //     [{ type: 'Event', id: arg.id }]
+            // ),
+            async onQueryStarted({ eventId, user, image }, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled;
+
+                    // Update the getAllEvents CACHED data with updated user attendance
+                    dispatch(
+                        eventsApiSlice.util.updateQueryData('getAllEvents', eventId, (draft) => {
+                            // If the Current User is already attending the Event
+                            // remove him from the attendees,
+                            // otherwise add him to the attendees
+                            draft.apiResponse.map((event) => {
+                                if (event.id === eventId) {
+                                    const indexOfAtendee = event.attendees.findIndex(attendee => attendee.username === user);
+                                    {
+                                        indexOfAtendee !== -1
+                                            ? event.attendees.splice(indexOfAtendee, 1)
+                                            : event.attendees.push({ username: user, image: image })
+                                    }
+                                };
+                            });
+                        })
+                    );
+
+                    // Update the getEvent CACHED data with updated user attendance
+                    dispatch(
+                        eventsApiSlice.util.updateQueryData('getEvent', eventId, (draft) => {
+                            // If the Current User is already attending the Event
+                            // remove him from the attendees,
+                            // otherwise add him to the attendees
+                            const indexOfAtendee = draft.attendees.findIndex(attendee => attendee.username === user);
+                            {
+                                indexOfAtendee !== -1
+                                    ? draft.attendees.splice(indexOfAtendee, 1)
+                                    : draft.attendees.push({ username: user, image: image })
+                            }
+                        })
+                    );
+                } catch (error) {
+                    console.error('Error in updateAttendance onQueryStarted:', error);
+                };
+            },
         }),
         // DELETE Event
         deleteEvent: builder.mutation({

@@ -5,6 +5,10 @@ export default {
     'node_modules/flowbite-react/lib/esm/**/*.js'
   ],
   theme: {
+    fontFamily: {
+      'lato': ['Lato', 'serif'],
+      'serif': ['DM Serif Display', 'serif']
+    },
     extend: {},
   },
   plugins: [
