@@ -137,17 +137,24 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
                     // Update the getAllEvents CACHED data with updated user attendance
                     dispatch(
                         eventsApiSlice.util.updateQueryData('getAllEvents', eventId, (draft) => {
-                            // If the Current User is already attending the Event
-                            // remove him from the attendees,
-                            // otherwise add him to the attendees
                             draft.apiResponse.map((event) => {
                                 if (event.id === eventId) {
-                                    const indexOfAtendee = event.attendees.findIndex(attendee => attendee.username === user);
-                                    {
-                                        indexOfAtendee !== -1
-                                            ? event.attendees.splice(indexOfAtendee, 1)
-                                            : event.attendees.push({ username: user, image: image })
-                                    }
+                                    if (event.hostUsername !== user) {
+                                        // If the User is not the Host of the Event, update attendance
+                                        const indexOfAtendee = event.attendees.findIndex(attendee => attendee.username === user);
+
+                                        // If the User is already attending the Event
+                                        // remove him from the attendees,
+                                        // otherwise add him to the attendees
+                                        {
+                                            indexOfAtendee !== -1
+                                                ? event.attendees.splice(indexOfAtendee, 1)
+                                                : event.attendees.push({ username: user, image: image })
+                                        }
+                                    } else {
+                                        // If the User is the Host of the Event, update Event status(isCancelled: true/false)
+                                        event.isCancelled = !event.isCancelled;
+                                    };
                                 };
                             });
                         })
@@ -156,15 +163,22 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
                     // Update the getEvent CACHED data with updated user attendance
                     dispatch(
                         eventsApiSlice.util.updateQueryData('getEvent', eventId, (draft) => {
-                            // If the Current User is already attending the Event
-                            // remove him from the attendees,
-                            // otherwise add him to the attendees
-                            const indexOfAtendee = draft.attendees.findIndex(attendee => attendee.username === user);
-                            {
-                                indexOfAtendee !== -1
-                                    ? draft.attendees.splice(indexOfAtendee, 1)
-                                    : draft.attendees.push({ username: user, image: image })
-                            }
+                            if (draft.hostUsername !== user) {
+                                // If the User is not the Host of the Event, update attendance
+                                const indexOfAtendee = draft.attendees.findIndex(attendee => attendee.username === user);
+
+                                // If the User is already attending the Event
+                                // remove him from the attendees,
+                                // otherwise add him to the attendees
+                                {
+                                    indexOfAtendee !== -1
+                                        ? draft.attendees.splice(indexOfAtendee, 1)
+                                        : draft.attendees.push({ username: user, image: image })
+                                }
+                            } else {
+                                // If the User is the Host of the Event, update Event status(isCancelled: true/false)
+                                draft.isCancelled = !draft.isCancelled;
+                            };
                         })
                     );
                 } catch (error) {

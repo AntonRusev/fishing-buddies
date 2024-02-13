@@ -31,9 +31,8 @@ let EventCard = ({ fishingEvent }) => {
         });
     }, [fishingEvent]);
 
+    // Getting the Day, Month and Year from the Event object;
     const [day, month, year] = format(fishingEvent.date, 'dd MMM yyyy').split(' ');
-
-    console.log(fishingEvent)
 
     const content = (
         <div className="relative overflow-hidden m-4 border-2 border-white m-4 border-2 border-gray-700 dark:border-white sm:flex md:flex px-5 py-3 font-lato bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-400">

@@ -42,7 +42,7 @@ const ProfilePhotos = () => {
 
     const handleSetMainPhoto = async (id, url) => {
         if (id && url && user) {
-            await setMainPhoto({ photoId: id, user }) // Change the IsMain in the database
+            await setMainPhoto({ photoId: id, user, url }) // Change the IsMain in the database
                 .unwrap()
                 .then(dispatch(changeImage(url))) // Change user image in local state
                 .then(navigate(`/profile/${profile.username}/photos`))

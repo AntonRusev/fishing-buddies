@@ -1,4 +1,5 @@
 import { apiSlice } from "../../app/api/apiSlice";
+import { eventsApiSlice } from "../events/eventsApiSlice";
 
 export const profilesApiSlice = apiSlice.injectEndpoints({
     tagTypes: ['Profile', 'Following'],
@@ -17,28 +18,25 @@ export const profilesApiSlice = apiSlice.injectEndpoints({
                 method: 'PUT',
                 body: bio
             }),
-            invalidatesTags: ['Profile'],
-            // async onQueryStarted({ bio, user }, { dispatch, queryFulfilled }) {
-            //     try {
-            //         // Update the getProfile CACHED data with edited User Bio
-            //         await queryFulfilled;
+            // invalidatesTags: ['Profile'],
+            async onQueryStarted({ user, bio }, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled;
 
-            //         dispatch(
-            //             profilesApiSlice.util.updateQueryData('getProfile', user, (draft) => {
-            //                 console.log(draft)
-            //             })
-            //         );
-            //     } catch (error) {
-            //         console.error('Error in uploadPhoto onQueryStarted:', error);
-            //     };
-            // },
+                    // Update the getProfile CACHED data with edited User Bio
+                    dispatch(
+                        profilesApiSlice.util.updateQueryData('getProfile', user, (draft) => {
+                            draft.bio = bio.bio;
+                        })
+                    );
+                } catch (error) {
+                    console.error('Error in uploadPhoto onQueryStarted:', error);
+                };
+            },
         }),
         // ADD Photo (Upload)
         uploadPhoto: builder.mutation({
             query: ({ file, user }) => {
-                // TODO Check if Headers can be changed to ('Content-Type', file.type);
-                console.log(file.type);
-
                 const formData = new FormData();
                 formData.append("File", file); // Name should be "File", same as on backend
 
@@ -98,12 +96,12 @@ export const profilesApiSlice = apiSlice.injectEndpoints({
         }),
         // Set Photo as "Main Photo" (Avatar)
         setMainPhoto: builder.mutation({
-            query: ({ photoId, user }) => ({
+            query: ({ photoId, user, url }) => ({
                 url: `/photos/${photoId}/setMain`,
                 method: 'POST',
             }),
             // invalidatesTags: ['Profile'],
-            async onQueryStarted({ photoId, user }, { dispatch, queryFulfilled }) {
+            async onQueryStarted({ photoId, user, url }, { dispatch, queryFulfilled }) {
                 try {
                     // Update the getProfile CACHED data by setting new Main Photo
                     await queryFulfilled;
@@ -118,6 +116,23 @@ export const profilesApiSlice = apiSlice.injectEndpoints({
                                 } else if (photo.id !== photoId) {
                                     photo.isMain = false;
                                 };
+                            });
+
+                            // Set the Profile image to the new Main photo
+                            draft.image = url;
+                        })
+                    );
+
+                    // Update the getAllEvents CACHED data with updated User main Photo
+                    dispatch(
+                        eventsApiSlice.util.updateQueryData('getAllEvents', user, (draft) => {
+                            // Update all the Events attended or hosted by the User with the new main Photo
+                            draft.apiResponse.map((event) => {
+                                event.attendees.map(attendee => {
+                                    if (attendee.name === user) {
+                                        attendee.image = url;
+                                    }
+                                })
                             });
                         })
                     );
