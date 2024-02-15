@@ -1,47 +1,67 @@
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { setFilter, setStartDate } from './eventsSlice';
+import { selectFilters, setFilter } from './eventsSlice';
 
-import { Sidebar, Datepicker } from 'flowbite-react';
+import { Sidebar } from 'flowbite-react';
 
 const EventFilters = ({ totalItems }) => {
+    const [activeFilter, setActiveFilter] = useState();
+
     const dispatch = useDispatch();
+    const filters = useSelector(selectFilters);
+
+    useEffect(() => {
+        // Get the currently active filter from global state(if any)
+        Object.entries(filters.boolFilter).find(([key, value]) => {
+            if (value === true) {
+                setActiveFilter(key);
+            };
+        });
+    }, [filters]);
 
     const content = (
-        <section>
-            <Sidebar aria-label="Default sidebar example">
-                <Sidebar.Items>
-                    <Sidebar.ItemGroup>
-                        <Sidebar.Item
-                            onClick={() => dispatch(setFilter('all'))}
-                            label={totalItems}
-                            labelColor="dark"
-                        >
-                            All Events
-                        </Sidebar.Item>
-                        <Sidebar.Item
-                            onClick={() => dispatch(setFilter('isgoing'))}
-                            label={totalItems}
-                        >
-                            I'm going
-                        </Sidebar.Item>
-                        <Sidebar.Item
-                            onClick={() => dispatch(setFilter('ishost'))}
-                            label={totalItems}
-                        >
-                            I'm hosting
-                        </Sidebar.Item>
-                    </Sidebar.ItemGroup>
-                </Sidebar.Items>
-            </Sidebar>
+        <Sidebar
+            className='h-auto'
+            aria-label="Default sidebar example"
+        >
+            <Sidebar.Items>
+                <Sidebar.ItemGroup>
+                    {/* ALL EVENTS */}
+                    <Sidebar.Item
+                        onClick={(e) => dispatch(setFilter('all'))}
+                        label={activeFilter === "all" && totalItems} // Events count
+                        labelColor="dark"
+                        active={activeFilter === "all"}
+                        className='cursor-pointer'
+                    >
+                        All Events
+                    </Sidebar.Item>
 
-            {/* DATEPICKER / CALENDAR */}
-            <Datepicker inline
-                title="Filter by Starting Date"
-                weekStart={1} // Monday
-                onSelectedDateChanged={(value) => dispatch(setStartDate(value.toISOString()))} // Custom onChangeHandler coming from Flowbite-React
-            />
-        </section>
+                    {/* ISGOING EVENTS */}
+                    <Sidebar.Item
+                        onClick={(e) => dispatch(setFilter('isgoing'))}
+                        label={activeFilter === "isgoing" && totalItems} // Events count
+                        labelColor="dark"
+                        active={activeFilter === "isgoing"}
+                        className='cursor-pointer'
+                    >
+                        I'm going
+                    </Sidebar.Item>
+
+                    {/* ISHOST EVENTS */}
+                    <Sidebar.Item
+                        onClick={(e) => dispatch(setFilter('ishost'))}
+                        label={activeFilter === "ishost" && totalItems} // Events count
+                        labelColor="dark"
+                        active={activeFilter === "ishost"}
+                        className='cursor-pointer'
+                    >
+                        I'm hosting
+                    </Sidebar.Item>
+                </Sidebar.ItemGroup>
+            </Sidebar.Items>
+        </Sidebar>
     );
 
     return content;

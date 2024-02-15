@@ -5,35 +5,46 @@ import { FaRegCalendarDays } from "react-icons/fa6";
 import { BsFilterSquareFill } from "react-icons/bs";
 import { BsArrowUpSquareFill } from "react-icons/bs";
 import EventFilters from './EventFilters';
+import EventDatepicker from './EventDatepicker';
 
-const EventOptions = () => {
+const EventOptions = ({ totalItems }) => {
     const [openModal, setOpenModal] = useState(false);
-    const [option, setOption] = useState();
+    const [option, setOption] = useState('');
 
     const content = (
         <>
             <div>
+                {/* OPTIONS */}
                 <Dropdown
                     label="Options"
                     placement="top"
                     color="light"
                 >
+                    {/* FILTER */}
                     <Dropdown.Item
-                        onClick={() => setOpenModal(true)}
+                        onClick={() => {
+                            setOption('filter')
+                            setOpenModal(true)
+                        }}
                         icon={BsFilterSquareFill}
                     >
                         Filter
                     </Dropdown.Item>
                     <Dropdown.Divider />
 
+                    {/* DATEPICKER */}
                     <Dropdown.Item
-                        onClick={() => setOpenModal(true)}
+                        onClick={() => {
+                            setOption('datepicker')
+                            setOpenModal(true)
+                        }}
                         icon={FaRegCalendarDays}
                     >
                         Datepicker
                     </Dropdown.Item>
                     <Dropdown.Divider />
 
+                    {/* SCROLL TO TOP */}
                     <Dropdown.Item
                         icon={BsArrowUpSquareFill}
                         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -45,14 +56,38 @@ const EventOptions = () => {
 
             {/* MODAL */}
             <Modal
-                show={openModal}
-                onClose={() => setOpenModal(false)}
+                show={openModal && option}
+                onClose={() => {
+                    setOption('')
+                    setOpenModal(false)
+                }}
             >
-                <EventFilters />
-                <Modal.Footer>
-                    <Button onClick={() => setOpenModal(false)}>I accept</Button>
-                    <Button color="gray" onClick={() => setOpenModal(false)}>
-                        Decline
+                {/* MODAL HEADER */}
+                {option === "filter" &&
+                    <Modal.Header>Select Filter:</Modal.Header>
+                }
+
+                {/* MODAL BODY */}
+                <Modal.Body
+                    className='flex items-center justify-center'
+                >
+                    {/* FILTERS OR DATEPICKER */}
+                    {option === 'filter'
+                        ? <EventFilters totalItems={totalItems} />
+                        : <EventDatepicker />
+                    }
+                </Modal.Body>
+
+                {/* MODAL FOOTER */}
+                <Modal.Footer
+                    className='flex items-center justify-center'
+                >
+                    {/* CLOSE MODAL BUTTON */}
+                    <Button
+                        onClick={() => setOpenModal(false)}
+                        className='w-full'
+                    >
+                        Ok
                     </Button>
                 </Modal.Footer>
             </Modal>

@@ -10,6 +10,8 @@ import EventFilters from './EventFilters';
 import EventOptions from './EventOptions';
 import EventCardPlaceholder from './EventCardPlaceholder';
 import BreadcrumbNav from '../../components/common/BreadcrumbNav';
+import EventDatepicker from './EventDatepicker';
+
 import { Spinner } from 'flowbite-react';
 
 const EventDashboard = () => {
@@ -18,9 +20,7 @@ const EventDashboard = () => {
     const [loadingNext, setLoadingNext] = useState(false);
 
     const dispatch = useDispatch();
-
     const filterParams = useSelector(selectFilterParams);
-
     const [trigger, { isLoading, isSuccess, data }] = useLazyGetAllEventsQuery();
 
     useEffect(() => {
@@ -52,7 +52,7 @@ const EventDashboard = () => {
     let content;
 
     if (isLoading) {
-        // TODO - Design the Skeleton(Placeholder) to resemble the actual Card Component
+        // TODO - Design the Skeleton(Placeholder) to resemble the actual Card Component ON MOBILE AS WELL
         content = (
             <div className='flex flex-col gap-4'>
                 <EventCardPlaceholder />
@@ -77,13 +77,14 @@ const EventDashboard = () => {
                             <EventsList fishingEvents={fishingEvents} />
                         </InfiniteScroll>
                     </div>
-                    <div className='md:w-1/5 m-4 hidden lg:block'>
-                        {/* FILTERS FOR TABLET AND DESKTOP */}
+                    <div className='flex flex-col md:w-1/5 m-4 hidden lg:block'>
+                        {/* FILTERS AND DATEPICKER FOR TABLET AND DESKTOP */}
                         <EventFilters totalItems={paginationResult.totalItems} />
+                        <EventDatepicker />
                     </div>
                     <div className="fixed bottom-3 left-1/2 transform -translate-x-1/2 md:right-3/4 md:left-auto lg:hidden">
                         {/* OPTIONS FOR MOBILE ONLY */}
-                        <EventOptions />
+                        <EventOptions totalItems={paginationResult.totalItems} />
                     </div>
                 </div>
             </section>
