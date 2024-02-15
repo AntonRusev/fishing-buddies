@@ -35,7 +35,7 @@ let EventCard = ({ fishingEvent }) => {
     const [day, month, year] = format(fishingEvent.date, 'dd MMM yyyy').split(' ');
 
     const content = (
-        <div className="relative overflow-hidden m-4 border-2 border-white m-4 border-2 border-gray-700 dark:border-white sm:flex md:flex px-5 py-3 font-lato bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-400">
+        <div className="relative overflow-hidden m-4 border-2 border-gray-700 dark:border-white rounded sm:flex md:flex px-5 py-3 font-lato bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-400">
 
             {/* CANCELLED RIBBON */}
             {fishingEvent.isCancelled &&
@@ -47,8 +47,11 @@ let EventCard = ({ fishingEvent }) => {
                 </div>
             }
 
+            {/* HOST IMAGE */}
             <div className="sm:flex-shrink-0 md:flex-shrink-0">
-                <img className="object-cover inline-block min-h-full max-h-full w-full sm:w-56 md:w-56 lg:w-56 " src={host.image} alt="avatar" />
+                <NavLink to={`/profile/${host.username}`}>
+                    <img className="object-cover inline-block min-h-full max-h-full w-full sm:w-56 md:w-56 lg:w-56 " src={host.image || "/user.png"} alt="avatar" />
+                </NavLink>
             </div>
             <div className="w-full ml-3 md:mt-0 md:ml-6 sm:ml-3">
                 <div className="grid grid-cols-2 gap-4">
@@ -58,19 +61,19 @@ let EventCard = ({ fishingEvent }) => {
                         </h2>
                         <div className="mb-1 tracking-wide font-bold align-super text-gray-500 dark:text-gray-400">
 
+                            {/* BADGE */}
                             {/* If the Current User is Host or is Attending the Event show a Badge 
                                 else show the Host of the Event */}
                             {!userIsHost && !userIsAttendee
                                 ? `Hosted by ${fishingEvent.hostUsername}`
                                 : <Badge
                                     color={userIsHost ? "indigo" : "success"}
-                                    size="xs"
-                                    // className="absolute bottom-0 left-0 max-w-fit uppercase font-semibold py-2 px-4 mb-2 mr-4"
+                                    size="sm"
                                     className="max-w-fit uppercase font-semibold inline-block"
                                 >
                                     {userIsHost
-                                        ? "You are hosting this event"
-                                        : "You are attending this event"
+                                        ? "Hosting"
+                                        : "Attending"
                                     }
                                 </Badge>
                             }
@@ -80,10 +83,10 @@ let EventCard = ({ fishingEvent }) => {
                     {/* DATE */}
                     <div className="position: relative">
                         <div className="text-base font-normal uppercase pb-3 absolute top-2.5 right-0 px-0.5 pb-0.5 w-20 text-center border-2 border-gray-700 dark:border-white mr-4 font-serif text-gray-700 dark:text-white">
-                            <h3 className="text-center pt-1 -webkit-text-stroke pt-2 text-xl tracking-wider leading-tight text-lg text-600 font-bold">
+                            <h3 className="text-center pt-1 pt-2 text-xl tracking-wider leading-tight text-lg text-600 font-bold">
                                 {month}
                             </h3>
-                            <h3 className="text-2xl text-center -webkit-text-stroke tracking-wider leading-tight text-xl text-600 font-bold">
+                            <h3 className="text-2xl text-center tracking-wider leading-tight text-xl text-600 font-bold">
                                 {day}
                             </h3>
                         </div>
@@ -110,20 +113,25 @@ let EventCard = ({ fishingEvent }) => {
                 <div className="position: relative h-16 mb-2">
                     <div
                         data-tooltip-id={fishingEvent.id}
-                        className="absolute bottom-0 right-0 bg-transparent uppercase text-gray-100 font-semibold hover:text-black py-2 px-4 mb-2 mr-2"
+                        className="absolute bottom-0 right-0 bg-transparent uppercase text-gray-100 font-semibold hover:text-black py-2 px-4 mb-2"
                     >
                         {/* Show the AVATARS of the attendees */}
                         <Avatar.Group>
-                            {fishingEvent.attendees.map(attendee => {
-                                return (
-                                    <Avatar
-                                        key={attendee.image}
-                                        img={attendee.image}
-                                        rounded
-                                        stacked
-                                    />
-                                );
-                            })}
+                            {fishingEvent.attendees
+                                .slice(0, 3)
+                                .map(attendee => {
+                                    return (
+                                        <Avatar
+                                            key={attendee.image}
+                                            img={attendee.image}
+                                            rounded
+                                            stacked
+                                        />
+                                    );
+                                })}
+                            {fishingEvent.attendees.length > 3 &&
+                                <Avatar.Counter total={fishingEvent.attendees.length - 3} />
+                            }
                         </Avatar.Group>
                     </div>
 

@@ -19,7 +19,7 @@ const Header = () => {
     };
 
     const content = (
-        <Navbar fluid>
+        <Navbar fluid className="fixed w-full z-20 top-0 start-0">
             <Navbar.Brand as={NavLink} to="/">
                 {/* TODO set Logo here */}
                 {/* <img src="/favicon.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" /> */}

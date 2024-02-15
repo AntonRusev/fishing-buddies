@@ -1,8 +1,6 @@
 import { useMemo } from 'react';
 
 import EventCard from "./EventCard";
-import BreadcrumbNav from "../../components/common/BreadcrumbNav";
-
 
 const EventsList = ({ fishingEvents }) => {
 
@@ -23,13 +21,9 @@ const EventsList = ({ fishingEvents }) => {
     );
 
     return (
-        <>
-            <BreadcrumbNav />
-            <section>
-                {content}
-            </section>
-        </>
-
+        <section>
+            {content}
+        </section>
     );
 };
 

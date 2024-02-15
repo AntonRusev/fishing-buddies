@@ -38,7 +38,11 @@ const ProfileAbout = ({ profile }) => {
                         </div>
                     </div>
                     <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
-                        <img src={profile.image} alt="photo" />
+                        {/* Profile Photo/Image */}
+                        <img
+                            src={profile.image || "/user.png"} 
+                            alt="User Image"
+                        />
                     </div>
                     <NavLink
                         to={`/profile/${profile.username}/photos`}

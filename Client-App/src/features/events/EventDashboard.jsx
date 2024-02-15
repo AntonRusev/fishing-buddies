@@ -7,7 +7,9 @@ import { setPaginationParams, selectFilterParams } from './eventsSlice';
 
 import EventsList from './EventsList';
 import EventFilters from './EventFilters';
+import EventOptions from './EventOptions';
 import EventCardPlaceholder from './EventCardPlaceholder';
+import BreadcrumbNav from '../../components/common/BreadcrumbNav';
 import { Spinner } from 'flowbite-react';
 
 const EventDashboard = () => {
@@ -60,22 +62,31 @@ const EventDashboard = () => {
         );
     } else if (isSuccess) {
         content = (
-            <div className='flex'>
-                <div className='flex-shrink-0'>
-                    <InfiniteScroll
-                        pageStart={0}
-                        loadMore={handleGetNext}
-                        hasMore={!loadingNext && !!paginationResult && paginationResult.currentPage < paginationResult.totalPages}
-                        initialLoad={false}
-                        loader={<Spinner key={0} />}
-                    >
-                        <EventsList fishingEvents={fishingEvents} />
-                    </InfiniteScroll>
+            <section className='relative flex flex-col items-center'>
+                <BreadcrumbNav />
+                <div className='flex flex-col md:flex-row max-w-screen-lg justify-center'>
+                    <div className='md:w-4/5'>
+                        <InfiniteScroll
+                            pageStart={0}
+                            loadMore={handleGetNext}
+                            hasMore={!loadingNext && !!paginationResult && paginationResult.currentPage < paginationResult.totalPages}
+                            initialLoad={false}
+                            loader={<Spinner key={0} />}
+                        >
+                            {/* EVENTS LIST */}
+                            <EventsList fishingEvents={fishingEvents} />
+                        </InfiniteScroll>
+                    </div>
+                    <div className='md:w-1/5 m-4 hidden lg:block'>
+                        {/* FILTERS FOR TABLET AND DESKTOP */}
+                        <EventFilters totalItems={paginationResult.totalItems} />
+                    </div>
+                    <div className="fixed bottom-3 left-1/2 transform -translate-x-1/2 md:right-3/4 md:left-auto lg:hidden">
+                        {/* OPTIONS FOR MOBILE ONLY */}
+                        <EventOptions />
+                    </div>
                 </div>
-                <div className='flex-shrink-0'>
-                    <EventFilters totalItems={paginationResult.totalItems} />
-                </div>
-            </div>
+            </section>
         );
     };
 

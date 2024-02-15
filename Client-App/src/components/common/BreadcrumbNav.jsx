@@ -11,7 +11,7 @@ const BreadcrumbNav = ({ title = '' }) => {
     const pathString = pathname.split('/')[1];
 
     const content = (
-        <Breadcrumb aria-label="Solid background breadcrumb example" className="bg-gray-50 px-5 py-3 dark:bg-gray-800">
+        <Breadcrumb aria-label="Solid background breadcrumb example" className="bg-gray-50 px-5 py-3 dark:bg-gray-800 w-full">
             <Breadcrumb.Item as={NavLink} icon={HiHome}>
                 <NavLink to='/' >
                     Home

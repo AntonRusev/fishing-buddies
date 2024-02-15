@@ -56,9 +56,18 @@ const EventDetailedChat = ({ eventId }) => {
                         >
                             {/* Add Comment TEXT AREA */}
                             <CustomTextArea
-                                // placeholder="Add Comment"
+                                placeholder="Enter your comment (Enter to submit, SHIFT + Enter for new line)"
                                 name="body"
                                 label="Your Comment"
+                                onKeyDown={e => {
+                                    if (e.key === 'Enter' && e.shiftKey) {
+                                        return;
+                                    }
+                                    if (e.key === 'Enter' && !e.shiftKey) {
+                                        e.preventDefault();
+                                        isValid && handleSubmit();
+                                    }
+                                }}
                             />
                             {/* SUBMIT */}
                             <CustomButton

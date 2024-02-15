@@ -49,7 +49,7 @@ function App() {
             <Flowbite>
                 {/* Header */}
                 <Header />
-                <main className='content-center dark:bg-gray-900'>
+                <main className='flex flex-col mt-12 pt-2 dark:bg-gray-900'>
                     <Routes>
                         {/* Routes accessible by both guests and authenticated users */}
                         <Route path='/' element={<Home />} />
