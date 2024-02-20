@@ -5,7 +5,7 @@ const CustomTextArea = (props) => {
     const [field, meta] = useField(props.name);
 
     const content = (
-        <div className="max-w-md">
+        <div>
             <div className="mb-2 block">
                 <Label
                     htmlFor={props.name}

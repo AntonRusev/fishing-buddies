@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Formik } from 'formik';
 
-import { selectCurrentToken } from "../auth/authSlice";
-import { startSignalRConnection, stopSignalRConnection, addComment, selectComments } from "../comments/commentsSlice";
+import { selectCurrentToken } from "../../auth/authSlice";
+import { startSignalRConnection, stopSignalRConnection, addComment, selectComments } from "../../comments/commentsSlice";
 
-import { CustomTextArea, CustomButton } from "../../components/common/form";
-import ChatBubble from "../../components/common/ChatBubble";
-import { commentSchema } from "../../utils/schemas";
+import { CustomTextArea, CustomButton } from "../../../components/common/form";
+import ChatBubble from "../../../components/common/ChatBubble";
+import { commentSchema } from "../../../utils/schemas";
 
 const EventDetailedChat = ({ eventId }) => {
     const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const EventDetailedChat = ({ eventId }) => {
         return () => {
             dispatch(stopSignalRConnection());
         };
-    }, [eventId, token,  stopSignalRConnection, startSignalRConnection]);
+    }, [eventId, token, stopSignalRConnection, startSignalRConnection]);
 
     const handleSubmit = async (values, actions) => {
         try {
@@ -40,25 +40,31 @@ const EventDetailedChat = ({ eventId }) => {
     };
 
     const content = (
-        <section>
-            <h4>Chat Board:</h4>
+        <section className="bg-gray-200 rounded dark:bg-gray-900">
+            {/* HEADING */}
+            <h4 className='flex justify-center w-full py-2 bg-gray-800 text-white dark:border-gray-600 border-b border-gray-200 w-full rounded-t'>
+                Chat about this event
+            </h4>
+
             <Formik
                 initialValues={{ body: '' }}
-                validationSchema={commentSchema}
+                // validationSchema={commentSchema}
                 onSubmit={handleSubmit}
             >
                 {({ handleSubmit, isValid, isSubmitting, dirty }) => (
                     <>
+                    {/* FORM */}
                         <Form
                             onSubmit={handleSubmit}
                             autoComplete='off'
-                            className="flex max-w-md flex-col gap-4 mx-auto dark:bg-gray-900"
+                            className="flex flex-col mx-auto dark:bg-gray-900 px-2"
                         >
                             {/* Add Comment TEXT AREA */}
                             <CustomTextArea
+                                className='max-w-full  bg-gray-100 dark:bg-gray-700 dark:text-white' 
                                 placeholder="Enter your comment (Enter to submit, SHIFT + Enter for new line)"
                                 name="body"
-                                label="Your Comment"
+                                // label="Your Comment"
                                 onKeyDown={e => {
                                     if (e.key === 'Enter' && e.shiftKey) {
                                         return;
@@ -80,7 +86,7 @@ const EventDetailedChat = ({ eventId }) => {
                     </>
                 )}
             </Formik>
-            <div>
+            <div className="px-2">
                 {
                     comments?.length > 0
                         ? comments.map(c => (

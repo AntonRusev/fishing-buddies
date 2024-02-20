@@ -14,7 +14,7 @@ import Register from './features/auth/Register';
 import Header from './components/Header';
 import EventDashboard from './features/events/EventDashboard';
 import EventForm from './features/events/EventForm';
-import EventDetails from './features/events/EventDetails';
+import EventDetails from './features/events/details/EventDetails';
 import ErrorPage from './components/errors/ErrorPage';
 import ProfilePage from './features/profiles/ProfilePage';
 import ProfilePhotos from './features/profiles/ProfilePhotos';
@@ -49,7 +49,7 @@ function App() {
             <Flowbite>
                 {/* Header */}
                 <Header />
-                <main className='flex flex-col mt-12 pt-2 dark:bg-gray-900'>
+                <main className='flex flex-col font-lato mt-12 pt-2 dark:bg-gray-900'>
                     <Routes>
                         {/* Routes accessible by both guests and authenticated users */}
                         <Route path='/' element={<Home />} />

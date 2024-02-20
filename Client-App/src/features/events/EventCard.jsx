@@ -56,7 +56,8 @@ let EventCard = ({ fishingEvent }) => {
             <div className="w-full ml-3 md:mt-0 md:ml-6 sm:ml-3">
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <h2 className="mt-2 mb-1 uppercase tracking-wide text-lg text-600 font-bold align-super text-gray-700 dark:text-white">
+                        {/* TITLE */}
+                        <h2 className="mt-2 mb-1 tracking-wider text-lg text-600 font-bold font-serif align-super text-gray-700 dark:text-white">
                             {fishingEvent.title}
                         </h2>
                         <div className="mb-1 tracking-wide font-bold align-super text-gray-500 dark:text-gray-400">
@@ -67,8 +68,7 @@ let EventCard = ({ fishingEvent }) => {
                             {!userIsHost && !userIsAttendee
                                 ? `Hosted by ${fishingEvent.hostUsername}`
                                 : <Badge
-                                    color={userIsHost ? "indigo" : "success"}
-                                    size="sm"
+                                    color={userIsHost ? "purple" : "success"}
                                     className="max-w-fit uppercase font-semibold inline-block"
                                 >
                                     {userIsHost
@@ -165,6 +165,7 @@ let EventCard = ({ fishingEvent }) => {
                         // className="absolute bottom-0 right-0 bg-transparent uppercase  hover:bg-red-500 text-gray-100 font-semibold hover:text-black py-2 px-4 border-2 border-red-500 hover:border-transparent mb-2 mr-4"
                         as={NavLink}
                         to={`/events/${fishingEvent.id}`} size="xs"
+                        color="light"
                     >
                         View
                     </Button>
