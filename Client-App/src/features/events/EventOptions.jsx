@@ -1,15 +1,16 @@
-import { useState } from 'react';
-import { Dropdown, Modal, Button } from 'flowbite-react';
+import { useDispatch } from 'react-redux';
+import { Dropdown } from 'flowbite-react';
+
+import { openModal, setModalOptions } from '../modals/modalsSlice';
+
+import ModalOptions from '../modals/ModalOptions';
 
 import { FaRegCalendarDays } from "react-icons/fa6";
 import { BsFilterSquareFill } from "react-icons/bs";
 import { BsArrowUpSquareFill } from "react-icons/bs";
-import EventFilters from './EventFilters';
-import EventDatepicker from './EventDatepicker';
 
 const EventOptions = ({ totalItems }) => {
-    const [openModal, setOpenModal] = useState(false);
-    const [option, setOption] = useState('');
+    const dispatch = useDispatch();
 
     const content = (
         <>
@@ -23,8 +24,8 @@ const EventOptions = ({ totalItems }) => {
                     {/* FILTER */}
                     <Dropdown.Item
                         onClick={() => {
-                            setOption('filter')
-                            setOpenModal(true)
+                            dispatch(setModalOptions('filter'));
+                            dispatch(openModal());
                         }}
                         icon={BsFilterSquareFill}
                     >
@@ -35,8 +36,8 @@ const EventOptions = ({ totalItems }) => {
                     {/* DATEPICKER */}
                     <Dropdown.Item
                         onClick={() => {
-                            setOption('datepicker')
-                            setOpenModal(true)
+                            dispatch(setModalOptions('datepicker'));
+                            dispatch(openModal());
                         }}
                         icon={FaRegCalendarDays}
                     >
@@ -46,8 +47,8 @@ const EventOptions = ({ totalItems }) => {
 
                     {/* SCROLL TO TOP */}
                     <Dropdown.Item
-                        icon={BsArrowUpSquareFill}
                         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                        icon={BsArrowUpSquareFill}
                     >
                         Go Top
                     </Dropdown.Item>
@@ -55,42 +56,8 @@ const EventOptions = ({ totalItems }) => {
             </div>
 
             {/* MODAL */}
-            <Modal
-                show={openModal && option}
-                onClose={() => {
-                    setOption('')
-                    setOpenModal(false)
-                }}
-            >
-                {/* MODAL HEADER */}
-                {option === "filter" &&
-                    <Modal.Header>Select Filter:</Modal.Header>
-                }
-
-                {/* MODAL BODY */}
-                <Modal.Body
-                    className='flex items-center justify-center'
-                >
-                    {/* FILTERS OR DATEPICKER */}
-                    {option === 'filter'
-                        ? <EventFilters totalItems={totalItems} />
-                        : <EventDatepicker />
-                    }
-                </Modal.Body>
-
-                {/* MODAL FOOTER */}
-                <Modal.Footer
-                    className='flex items-center justify-center'
-                >
-                    {/* CLOSE MODAL BUTTON */}
-                    <Button
-                        onClick={() => setOpenModal(false)}
-                        className='w-full'
-                    >
-                        Ok
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            {/* Small screen only (responsive design)*/}
+            <ModalOptions totalItems={totalItems} />
         </>
     );
 

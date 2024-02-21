@@ -1,37 +1,36 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { Button, Spinner } from 'flowbite-react';
 
 import { useDeletePhotoMutation, useGetProfileQuery, useSetMainPhotoMutation } from "../profiles/profilesApiSlice";
 import { changeImage, selectCurrentUser } from "../auth/authSlice";
+import { openModal, closeModal, setConfirmOptions, resetConfirmOptions } from "../modals/modalsSlice";
 
 import { PhotoUploadWidget } from "../../components/common/photoUpload";
 import ProfilePhotoItem from "./ProfilePhotoItem";
-import { Button, Spinner } from 'flowbite-react';
+import ModalConfirm from "../modals/ModalConfirm";
+
 import { HiOutlineArrowLeft } from 'react-icons/hi';
-import DeleteModal from "../../components/common/modals/deleteModal";
 
 const ProfilePhotos = () => {
     const [addPhotoMode, setAddPhotoMode] = useState(false);
-    const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [idToBeDeleted, setIdToBeDeleted] = useState('');
 
     const { username } = useParams();
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const dispatch = useDispatch();
+    const user = useSelector(selectCurrentUser);
     const {
         data: profile,
         isFetching,
         isLoading: profileIsLoading,
         isSuccess
     } = useGetProfileQuery(username);
-
-    const user = useSelector(selectCurrentUser);
     const [deletePhoto, { isLoading: deleteIsLoading }] = useDeletePhotoMutation();
     const [setMainPhoto, { isLoading: setMainIsLoading }] = useSetMainPhotoMutation();
-
 
     // Check if the user is viewing own profile or someone else's
     let isOwner = false;
@@ -40,41 +39,45 @@ const ProfilePhotos = () => {
         isOwner = user === profile.username;
     };
 
+    // SET PHOTO AS MAIN
     const handleSetMainPhoto = async (id, url) => {
         if (id && url && user) {
             await setMainPhoto({ photoId: id, user, url }) // Change the IsMain in the database
                 .unwrap()
                 .then(dispatch(changeImage(url))) // Change user image in local state
-                .then(navigate(`/profile/${profile.username}/photos`))
+                .then(navigate(`/profile/${profile.username}/photos`));
         };
     };
 
+    // DELETE PHOTO
     const handleDeletePhoto = async () => {
         if (idToBeDeleted && user) {
             await deletePhoto({ photoId: idToBeDeleted, user })
                 .unwrap()
-                .then(setOpenDeleteModal(false));
+                .then(dispatch(resetConfirmOptions()))
+                .then(dispatch(closeModal()));
         };
     };
 
+    // OPEN CONFIRMATION MODAL
     const handleOpenModal = (id) => {
-        setOpenDeleteModal(true);
+        dispatch(openModal());
+        dispatch(setConfirmOptions("photo"));
         setIdToBeDeleted(id);
     };
 
     let content;
 
     if (profileIsLoading || isFetching) {
-        content = (<Spinner aria-label="Extra large spinner example" size="xl" />)
+        content = (<Spinner aria-label="Extra large spinner example" size="xl" />);
     } else if (isSuccess && profile) {
         content = (
             <>
                 <section className='container flex flex-wrap flex-col justify-between items-center mx-auto gap-2'>
                     {/* If the user is viewing his own profile */}
                     {/* Trigger button to alternate between Add Photo and View Photos views*/}
-                    {isOwner
-
-                        ? <Button
+                    {isOwner &&
+                        <Button
                             onClick={() => setAddPhotoMode(!addPhotoMode)}
                             size="lg"
                             className="my-3"
@@ -82,9 +85,9 @@ const ProfilePhotos = () => {
 
                             {!addPhotoMode
                                 ? "Add Photo"
-                                : "Cancel"}
+                                : "Cancel"
+                            }
                         </Button>
-                        : ''
                     }
 
                     {/* UPLOAD PHOTO or PHOTOS LIST view */}
@@ -112,19 +115,12 @@ const ProfilePhotos = () => {
                         </Button>
                     </NavLink>
 
-                    {/* DELETE MODAL */}
-                    {openDeleteModal &&
-                        <DeleteModal
-                            trigger={openDeleteModal}
-                            closeModal={setOpenDeleteModal}
-                            deleteHandler={handleDeletePhoto}
-                            textString={"photo"}
-                        />
-                    }
+                    {/* DELETE CONFIRM MODAL */}
+                    <ModalConfirm deleteHandler={handleDeletePhoto} />
                 </section >
             </>
         );
-    }
+    };
 
     return content;
 };

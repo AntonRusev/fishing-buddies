@@ -46,6 +46,7 @@ const EventDetails = () => {
                 </div>
 
                 {/* DETAILS ATTENDEES SIDEBAR */}
+                {/* NOT visible on small screens */}
                 <div className="flex flex-col mx-4 hidden lg:block">
                     <EventDetailedAttendees fishingEvent={fishingEvent} />
                 </div>

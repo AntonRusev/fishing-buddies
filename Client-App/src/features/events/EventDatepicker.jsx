@@ -30,7 +30,8 @@ const EventDatepicker = () => {
 
     if (chosenDate) {
         content = (
-            <Datepicker inline
+            <Datepicker
+                inline
                 title="Filter by Starting Date"
                 weekStart={1} // Monday
                 defaultDate={chosenDate}

@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Button } from 'flowbite-react';
 
 import { useDeleteEventMutation, useUpdateAttendanceMutation } from "../eventsApiSlice";
 import { selectCurrentImage, selectCurrentUser } from "../../auth/authSlice";
+import { openModal, closeModal, setConfirmOptions, resetConfirmOptions } from "../../modals/modalsSlice";
 
-import DeleteModal from "../../../components/common/modals/deleteModal";
+import ModalConfirm from "../../modals/ModalConfirm";
 
 const EventDetailedButtons = ({ fishingEvent }) => {
-    const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [isAttending, setIsAttending] = useState(false);
 
     const navigate = useNavigate();
 
+    const dispatch = useDispatch();
     const user = useSelector(selectCurrentUser);
     const image = useSelector(selectCurrentImage);
-
     const [updateAttendance, { isLoading: updateAttendIsLoading }] = useUpdateAttendanceMutation();
     const [deleteEvent, { isLoading: deleteIsLoading }] = useDeleteEventMutation();
 
@@ -42,7 +42,8 @@ const EventDetailedButtons = ({ fishingEvent }) => {
         if (fishingEvent.id) {
             await deleteEvent(fishingEvent.id)
                 .unwrap()
-                .then(setOpenDeleteModal(false))
+                .then(dispatch(resetConfirmOptions()))
+                .then(dispatch(closeModal()))
                 .then(navigate('/events'))
                 .catch((error) => console.log(error));
         };
@@ -91,8 +92,6 @@ const EventDetailedButtons = ({ fishingEvent }) => {
                     <Button
                         as={NavLink}
                         to={`/manage/${fishingEvent.id}`}
-                        // size="sm"
-                        // className='mx-auto'
                         className="flex-grow font-semibold"
                         disabled={updateAttendIsLoading || deleteIsLoading}
                         color="dark"
@@ -104,8 +103,10 @@ const EventDetailedButtons = ({ fishingEvent }) => {
                 {/* If the User is Host of the Event */}
                 {fishingEvent.hostUsername === user &&
                     <Button
-                        onClick={() => setOpenDeleteModal(true)}
-                        // size="sm"
+                        onClick={() => {
+                            dispatch(setConfirmOptions('event'));
+                            dispatch(openModal());
+                        }}
                         isProcessing={deleteIsLoading}
                         disabled={updateAttendIsLoading || deleteIsLoading}
                         color="failure"
@@ -116,15 +117,8 @@ const EventDetailedButtons = ({ fishingEvent }) => {
                 }
             </div>
 
-            {/* DELETE MODAL */}
-            {openDeleteModal &&
-                <DeleteModal
-                    trigger={openDeleteModal}
-                    closeModal={setOpenDeleteModal}
-                    deleteHandler={handleDeleteEvent}
-                    textString={"event"}
-                />
-            }
+            {/* DELETE CONFIRM MODAL */}
+            <ModalConfirm deleteHandler={handleDeleteEvent} />
         </>
     );
 
