@@ -5,7 +5,7 @@ const PhotoCropper = ({ imagePreview, setCropper }) => {
     const content = (
         <Cropper
             src={imagePreview}
-            style={{ height: 200, width: '100%' }}
+            // style={{ height: 200, width: 'auto' }}
             initialAspectRatio={1}
             aspectRatio={1}
             preview='.img-preview'

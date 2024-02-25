@@ -7,6 +7,7 @@ import { useDeletePhotoMutation, useGetProfileQuery, useSetMainPhotoMutation } f
 import { changeImage, selectCurrentUser } from "../auth/authSlice";
 import { openModal, closeModal, setConfirmOptions, resetConfirmOptions } from "../modals/modalsSlice";
 
+import ProfileHeader from "./ProfileHeader";
 import { PhotoUploadWidget } from "../../components/common/photoUpload";
 import ProfilePhotoItem from "./ProfilePhotoItem";
 import ModalConfirm from "../modals/ModalConfirm";
@@ -72,15 +73,16 @@ const ProfilePhotos = () => {
         content = (<Spinner aria-label="Extra large spinner example" size="xl" />);
     } else if (isSuccess && profile) {
         content = (
-            <>
-                <section className='container flex flex-wrap flex-col justify-between items-center mx-auto gap-2'>
+            <article className="flex flex-col items-center">
+                <ProfileHeader />
+                <div className='flex flex-col w-full gap-2 bg-gray-100 p-2 rounded xl:max-w-screen-xl sm:items-start sm:w-3/4 dark:bg-gray-800'>
                     {/* If the user is viewing his own profile */}
                     {/* Trigger button to alternate between Add Photo and View Photos views*/}
                     {isOwner &&
                         <Button
                             onClick={() => setAddPhotoMode(!addPhotoMode)}
                             size="lg"
-                            className="my-3"
+                            className="my-3 mx-2"
                         >
 
                             {!addPhotoMode
@@ -93,32 +95,31 @@ const ProfilePhotos = () => {
                     {/* UPLOAD PHOTO or PHOTOS LIST view */}
                     {addPhotoMode
                         ? <PhotoUploadWidget setAddPhotoMode={setAddPhotoMode} user={user} />
-                        : <ul className='container flex flex-wrap justify-between items-center mx-auto gap-6'>
-                            {profile.photos.map(p => (
-                                <ProfilePhotoItem
-                                    key={p.id}
-                                    photo={p}
-                                    handleOpenModal={handleOpenModal}
-                                    handleSetMainPhoto={handleSetMainPhoto}
-                                    deleteIsLoading={deleteIsLoading}
-                                    setMainIsLoading={setMainIsLoading}
-                                    isOwner={isOwner}
-                                />
-                            ))}
+                        : <ul className='container flex flex-wrap justify-evenly items-center mx-auto gap-6'>
+                            {profile.photos.length > 0
+                                ? profile.photos.map(p => (
+                                    <ProfilePhotoItem
+                                        key={p.id}
+                                        photo={p}
+                                        handleOpenModal={handleOpenModal}
+                                        handleSetMainPhoto={handleSetMainPhoto}
+                                        deleteIsLoading={deleteIsLoading}
+                                        setMainIsLoading={setMainIsLoading}
+                                        isOwner={isOwner}
+                                    />
+                                ))
+                                : <p className="ml-4 text-gray-500 italic tracking-wide dark:text-gray-300">
+                                    There are no photos to be shown.
+                                </p>
+                            }
+                            { }
                         </ul>
                     }
 
-                    {/* BACK BUTTON */}
-                    <NavLink to={`/profile/${profile.username}`} >
-                        <Button outline>
-                            <HiOutlineArrowLeft className="h-6 w-6" />
-                        </Button>
-                    </NavLink>
-
                     {/* DELETE CONFIRM MODAL */}
                     <ModalConfirm deleteHandler={handleDeletePhoto} />
-                </section >
-            </>
+                </div>
+            </article>
         );
     };
 

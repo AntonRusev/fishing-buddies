@@ -1,52 +1,69 @@
-import { Button, Card } from 'flowbite-react';
-import { useState } from 'react';
+import React, { useState } from "react";
+import { Button } from 'flowbite-react';
 
 import { HiTrash, HiBadgeCheck } from 'react-icons/hi';
 
-const ProfilePhotoItem = ({ photo, handleOpenModal, handleSetMainPhoto, deleteIsLoading, setMainIsLoading, isOwner }) => {
+let ProfilePhotoItem = ({ photo, handleOpenModal, handleSetMainPhoto, deleteIsLoading, setMainIsLoading, isOwner }) => {
     const [targetPhoto, setTargetPhoto] = useState('');
+
+    // Reset the target photo in order to show only one element with isProcessing spinner at a time
+    const resetTargetPhoto = () => {
+        setTimeout(() => {
+            setTargetPhoto('');
+        }, "2000");
+    };
 
     const content = (
         <li>
-            <Card
-                className="max-w-sm items-center "
-                imgAlt="Meaningful alt text for an image that is not purely decorative"
-                imgSrc={photo.url}
-            >
+            <div className="relative w-80 h-auto rounded overflow-none">
+                {/* IMAGE */}
+                <img
+                    src={photo.url}
+                    className='w-full rounded'
+                    alt="picture"
+                />
+                {/* If User is Owner */}
                 {!photo.isMain && isOwner
-                    && <Button.Group outline >
+                    && <div className="block">
+                        {/* SET PHOTO AS MAIN BUTTON */}
                         <Button
+                            id={photo.id}
                             onClick={() => (
                                 setTargetPhoto(photo.id),
-                                handleSetMainPhoto(photo.id, photo.url)
+                                handleSetMainPhoto(photo.id, photo.url),
+                                resetTargetPhoto()
                             )}
                             gradientMonochrome="success"
-                            isProcessing={setMainIsLoading && photo.id == targetPhoto}
+                            isProcessing={setMainIsLoading && photo.id === targetPhoto}
                             disabled={setMainIsLoading || deleteIsLoading}
+                            className='absolute bottom-1 left-1 rounded-lg shadow-2xl'
                         >
-                            {/* If isLoading hide the icon and show Spinner instead */}
-                            {photo.id != targetPhoto && <HiBadgeCheck className="mr-3 h-4 w-4" />}
-                            Set Main
+                            <HiBadgeCheck className="h-6 w-6" />
                         </Button>
+
+                        {/* DELETE BUTTON */}
                         <Button
                             onClick={() => (
                                 setTargetPhoto(photo.id),
-                                handleOpenModal(photo.id)
+                                handleOpenModal(photo.id),
+                                resetTargetPhoto()
                             )}
                             gradientMonochrome="failure"
-                            isProcessing={deleteIsLoading && photo.id == targetPhoto}
+                            isProcessing={deleteIsLoading && photo.id === targetPhoto}
                             disabled={setMainIsLoading || deleteIsLoading}
+                            className='absolute bottom-1 right-1 rounded-lg shadow-2xl'
                         >
-                            {photo.id != targetPhoto && <HiTrash className="mr-3 h-4 w-4" />}
-                            {/* &nbsp; => empty space */}
-                            Delete &nbsp; &nbsp;
+                            <HiTrash className="h-6 w-6" />
                         </Button>
-                    </Button.Group>}
-            </Card>
+                    </div>
+                }
+            </div>
         </li>
     );
 
     return content;
 };
+
+ProfilePhotoItem = React.memo(ProfilePhotoItem);
 
 export default ProfilePhotoItem;

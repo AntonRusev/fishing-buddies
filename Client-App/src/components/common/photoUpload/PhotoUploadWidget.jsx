@@ -26,10 +26,13 @@ const PhotoUploadWidget = ({ setAddPhotoMode, user }) => {
     };
 
     const content = (
-        <article className='container flex flex-wrap flex-col justify-center items-center mx-auto gap-2'>
+        <article className='container flex flex-wrap flex-col justify-center items-center px-2 gap-2'>
             {/* PHOTO DROPZONE */}
             {files && files.length === 0 && (
-                <div>
+                <div className="w-full max-w-screen-sm">
+                    <h6 className="text-gray-500 text-center text-lg font-bold tracking-wide dark:text-white">
+                        Add Photo
+                    </h6>
                     <PhotoDropzone
                         setFiles={setFiles}
                     />
@@ -47,16 +50,19 @@ const PhotoUploadWidget = ({ setAddPhotoMode, user }) => {
                     </div>
 
 
-                    <div className="flex flex-col items-center gap-2">
+                    <div className="flex flex-col items-center w-full gap-2">
                         {/* PREVIEW OF CROPPED PHOTO */}
                         <div className="img-preview" style={{ minHeight: 200, minWidth: 200, overflow: 'hidden' }} />
-                        <Button.Group>
 
+                        {/* BUTTONS */}
+                        <Button.Group className="flex justify-stretch w-full my-2 sm:w-auto">
                             {/* UPLOAD PHOTO */}
                             <Button
                                 onClick={() => handleUpload()}
                                 isProcessing={isLoading || isFetching}
                                 disabled={isLoading || isFetching}
+                                size="xl"
+                                className="flex-grow"
                             >
                                 Add
                             </Button>
@@ -65,6 +71,8 @@ const PhotoUploadWidget = ({ setAddPhotoMode, user }) => {
                             <Button
                                 onClick={() => setFiles([])}
                                 disabled={isLoading || isFetching}
+                                size="xl"
+                                className="flex-grow"
                             >
                                 Reset
                             </Button>

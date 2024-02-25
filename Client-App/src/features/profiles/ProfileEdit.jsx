@@ -25,7 +25,7 @@ const ProfileEdit = ({ setEditMode }) => {
     };
 
     const content = (
-        <>
+        <div className="flex flex-col justify-center align-center items-center w-full">
             <Formik
                 initialValues={{ bio: '' }}
                 validationSchema={userBioSchema}
@@ -36,7 +36,7 @@ const ProfileEdit = ({ setEditMode }) => {
                         <Form
                             onSubmit={handleSubmit}
                             autoComplete='off'
-                            className="flex max-w-md flex-col gap-4 mx-auto dark:bg-gray-900"
+                            className="flex w-full max-w-lg flex-col gap-4 p-2 dark:bg-gray-900"
                         >
                             {/* Edit Bio TEXT AREA */}
                             <CustomTextArea
@@ -44,24 +44,31 @@ const ProfileEdit = ({ setEditMode }) => {
                                 name="bio"
                                 label="Bio:"
                             />
-                            {/* SUBMIT */}
-                            <CustomButton
-                                isValid={isValid}
-                                dirty={dirty}
-                                isSubmitting={isSubmitting}
-                                value={"Save"}
-                            />
-                            {/* CANCEL BUTTON */}
-                            <Button
-                                onClick={() => setEditMode(false)}
-                            >
-                                Cancel
-                            </Button>
+
+                            {/* BUTTONS */}
+                            <div className='flex gap-4 justify-stretch'>
+                                {/* SUBMIT */}
+                                <CustomButton
+                                    isValid={isValid}
+                                    dirty={dirty}
+                                    isSubmitting={isSubmitting}
+                                    value={"Save"}
+                                />
+                                {/* CANCEL BUTTON */}
+                                <Button
+                                    onClick={() => setEditMode(false)}
+                                    className="flex-grow"
+                                >
+                                    Cancel
+                                </Button>
+                            </div>
+
+
                         </Form>
                     </>
                 )}
             </Formik>
-        </>
+        </div>
     );
 
     return content;

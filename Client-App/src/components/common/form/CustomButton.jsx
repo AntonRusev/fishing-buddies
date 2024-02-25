@@ -7,7 +7,8 @@ const CustomButton = (props) => {
             disabled={!isValid || !dirty || isSubmitting}
             isProcessing={isSubmitting}
             type="submit"
-            className='mx-auto'
+            // className='mx-auto'
+            className='flex-grow'
         >
             {value}
         </Button>
