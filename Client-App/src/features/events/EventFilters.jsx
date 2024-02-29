@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Sidebar } from 'flowbite-react';
 
 import { selectFilters, setFilter } from './eventsSlice';
-
-import { Sidebar } from 'flowbite-react';
 
 const EventFilters = ({ totalItems }) => {
     const [activeFilter, setActiveFilter] = useState();
@@ -19,10 +18,10 @@ const EventFilters = ({ totalItems }) => {
             };
         });
     }, [filters]);
-
+    
     const content = (
         <Sidebar
-            className='h-auto'
+            className='h-auto py-2 mx-auto'
             aria-label="Default sidebar example"
         >
             <Sidebar.Items>
@@ -30,7 +29,7 @@ const EventFilters = ({ totalItems }) => {
                     {/* ALL EVENTS */}
                     <Sidebar.Item
                         onClick={(e) => dispatch(setFilter('all'))}
-                        label={activeFilter === "all" && totalItems} // Events count
+                        label={activeFilter === "all" && `${totalItems}`} // Events count
                         labelColor="dark"
                         active={activeFilter === "all"}
                         className='cursor-pointer'
@@ -41,7 +40,7 @@ const EventFilters = ({ totalItems }) => {
                     {/* ISGOING EVENTS */}
                     <Sidebar.Item
                         onClick={(e) => dispatch(setFilter('isgoing'))}
-                        label={activeFilter === "isgoing" && totalItems} // Events count
+                        label={activeFilter === "isgoing" && `${totalItems}`} // Events count
                         labelColor="dark"
                         active={activeFilter === "isgoing"}
                         className='cursor-pointer'
@@ -52,7 +51,7 @@ const EventFilters = ({ totalItems }) => {
                     {/* ISHOST EVENTS */}
                     <Sidebar.Item
                         onClick={(e) => dispatch(setFilter('ishost'))}
-                        label={activeFilter === "ishost" && totalItems} // Events count
+                        label={activeFilter === "ishost" && `${totalItems}`} // Events count
                         labelColor="dark"
                         active={activeFilter === "ishost"}
                         className='cursor-pointer'

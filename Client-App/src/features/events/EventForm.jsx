@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { Form, Formik } from 'formik';
@@ -10,8 +10,9 @@ import { CustomTextInput, CustomButton, CustomTextArea, CustomSelectInput, Custo
 
 import { eventSchema } from "../../utils/schemas";
 import { categoryOptions } from "../../utils/options/categoryOptions";
+import getCentralTimeDate from "../../utils/getCentralTimeDate";
 
-const EventForm = () => {
+let EventForm = () => {
     const [event, setEvent] = useState({
         id: '',
         title: '',
@@ -21,8 +22,8 @@ const EventForm = () => {
         region: '',
     });
 
-    const navigate = useNavigate();
     const { id } = useParams();
+    const navigate = useNavigate();
 
     let fishingEvent;
     if (id) {
@@ -49,15 +50,21 @@ const EventForm = () => {
 
     const handleSubmit = async (values, actions) => {
         try {
+            // Parsing the date to UTC time
+            const customDate = getCentralTimeDate(values.date);
+
             if (id) {
                 // If there is an Id, Editing the Event
-                await editEvent({ ...values })
+                await editEvent({ ...values, date: customDate })
                     .unwrap()
-                    .then(navigate(`/events/${id}`));
+                    .then(setTimeout(() => {
+                        // delay before navigating to the newly created event
+                        navigate(`/events/${id}`);
+                    }, "1000"));
             } else {
                 // If there is no Id, generating one and Creating an Event
                 const newId = uuid();
-                await createEvent({ ...values, id: newId })
+                await createEvent({ ...values, date: customDate, id: newId })
                     .unwrap()
                     .then(navigate(`/events/${newId}`));
             };
@@ -69,7 +76,7 @@ const EventForm = () => {
     };
 
     const content = (
-        <>
+        <section className="p-2 mt-10 dark:bg-gray-900">
             <Formik
                 validationSchema={eventSchema}
                 enableReinitialize
@@ -97,14 +104,6 @@ const EventForm = () => {
                                 label="Event description"
                             />
 
-                            {/* DATE */}
-                            <CustomDatepicker
-                                name='date'
-                                minDate={new Date()}
-                                weekStart={1} // Monday
-                                title="Event Date"
-                            />
-
                             {/* CATEGORY */}
                             <CustomSelectInput
                                 name="category"
@@ -117,6 +116,14 @@ const EventForm = () => {
                                 placeholder="Burgas"
                                 name="region"
                                 label="Region"
+                            />
+
+                            {/* DATE */}
+                            <CustomDatepicker
+                                name='date'
+                                minDate={new Date()}
+                                weekStart={1} // Monday
+                                title="Event Date"
                             />
 
                             {/* SUBMIT */}
@@ -135,10 +142,12 @@ const EventForm = () => {
                     </>
                 )}
             </Formik>
-        </>
+        </section>
     );
 
     return content;
 };
+
+EventForm = React.memo(EventForm);
 
 export default EventForm;

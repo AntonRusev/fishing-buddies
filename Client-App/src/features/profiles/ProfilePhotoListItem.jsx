@@ -3,7 +3,7 @@ import { Button } from 'flowbite-react';
 
 import { HiTrash, HiBadgeCheck } from 'react-icons/hi';
 
-let ProfilePhotoItem = ({ photo, handleOpenModal, handleSetMainPhoto, deleteIsLoading, setMainIsLoading, isOwner }) => {
+let ProfilePhotoListItem = ({ photo, handleOpenModal, handleSetMainPhoto, deleteIsLoading, setMainIsLoading, isOwner }) => {
     const [targetPhoto, setTargetPhoto] = useState('');
 
     // Reset the target photo in order to show only one element with isProcessing spinner at a time
@@ -22,6 +22,7 @@ let ProfilePhotoItem = ({ photo, handleOpenModal, handleSetMainPhoto, deleteIsLo
                     className='w-full rounded'
                     alt="picture"
                 />
+                
                 {/* If User is Owner */}
                 {!photo.isMain && isOwner
                     && <div className="block">
@@ -64,6 +65,6 @@ let ProfilePhotoItem = ({ photo, handleOpenModal, handleSetMainPhoto, deleteIsLo
     return content;
 };
 
-ProfilePhotoItem = React.memo(ProfilePhotoItem);
+ProfilePhotoListItem = React.memo(ProfilePhotoListItem);
 
-export default ProfilePhotoItem;
+export default ProfilePhotoListItem;

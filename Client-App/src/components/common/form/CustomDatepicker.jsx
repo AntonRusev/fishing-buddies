@@ -7,6 +7,7 @@ const CustomDatepicker = (props) => {
     const content = (
         <>
             <Datepicker
+                className='mx-auto'
                 {...field}
                 {...props}
                 onSelectedDateChanged={value => setValue(value)} // Custom onChangeHandler coming from Flowbite-React
@@ -15,6 +16,7 @@ const CustomDatepicker = (props) => {
                         ? "failure" // If field is touched and validation error - red background
                         : meta.touched && "success" // If field is touched but no validation error - green background
                 }
+                inline
             />
             {meta.touched && meta.error
                 ? <Label>{meta.error}</Label>

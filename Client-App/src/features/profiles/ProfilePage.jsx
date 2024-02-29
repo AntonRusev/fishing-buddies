@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
-import { Spinner } from 'flowbite-react';
 
 import { useGetProfileQuery } from "./profilesApiSlice";
 
 import ProfileAbout from "./ProfileAbout";
 import ProfileHeader from "./ProfileHeader";
+import CustomSpinner from "../../components/common/CustomSpinner";
 
 const ProfilePage = () => {
     const { username } = useParams();
@@ -16,18 +16,26 @@ const ProfilePage = () => {
         isSuccess
     } = useGetProfileQuery(username);
 
-    let content;
+    let profileView;
 
     if (isFetching || isLoading) {
-        content = (<Spinner aria-label="Extra large spinner example" size="xl" />);
-    } else if (isSuccess && profile) {
-        content = (
-            <div className="flex flex-col justify-center align-center items-center">
-                <ProfileHeader />
-                <ProfileAbout profile={profile} />
+        profileView = (
+            <div className="flex w-full xl:max-w-screen-xl py-8 mx-2 bg-gray-50 rounded dark:bg-gray-800 sm:w-3/4">
+                <CustomSpinner />
             </div>
         );
+    } else if (isSuccess && profile) {
+        profileView = (
+            <ProfileAbout profile={profile} />
+        );
     };
+
+    const content = (
+        <div className="flex flex-col justify-center align-center items-center dark:bg-gray-900">
+            <ProfileHeader />
+            {profileView}
+        </div>
+    );
 
     return content;
 };

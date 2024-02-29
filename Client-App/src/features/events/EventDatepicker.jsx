@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { format } from "date-fns";
+import { Datepicker } from 'flowbite-react';
 
 import { selectFilters, setStartDate } from './eventsSlice';
 
-import { Datepicker } from 'flowbite-react';
-
-import { Spinner } from 'flowbite-react';
+import CustomSpinner from '../../components/common/CustomSpinner';
+import getCentralTimeDate from '../../utils/getCentralTimeDate';
 
 const EventDatepicker = () => {
     const [chosenDate, setChosenDate] = useState();
@@ -35,11 +35,15 @@ const EventDatepicker = () => {
                 title="Filter by Starting Date"
                 weekStart={1} // Monday
                 defaultDate={chosenDate}
-                onSelectedDateChanged={(value) => dispatch(setStartDate(value.toISOString()))} // Custom onChangeHandler coming from Flowbite-React
+                onSelectedDateChanged={(value) => {
+                    dispatch(setStartDate(getCentralTimeDate(value)));
+                }} // Custom onChangeHandler coming from Flowbite-React
             />
         );
     } else {
-        content = (<Spinner />);
+        content = (
+            <CustomSpinner />
+        );
     };
 
     return content;

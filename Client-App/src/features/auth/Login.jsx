@@ -6,7 +6,6 @@ import { useLoginMutation } from '../auth/authApiSlice';
 import { setCredentials } from '../auth/authSlice';
 
 import { CustomTextInput, CustomCheckbox, CustomButton } from '../../components/common/form';
-import BreadcrumbNav from '../../components/common/BreadcrumbNav';
 
 import { loginSchema } from '../../utils/schemas';
 
@@ -17,67 +16,64 @@ const Login = () => {
     const navigate = useNavigate();
 
     const handleSubmit = async (values, actions) => {
-            const { persistAuth, ...obj } = values;
-            const email = obj.email;
+        const { persistAuth, ...obj } = values;
+        const email = obj.email;
 
-            // using params: email and password 
-            await login({ ...obj })
-                .unwrap()
-                .then((payload) => dispatch(setCredentials({ ...payload, email, persistAuth })))
-                .then(() => actions.resetForm())
-                .then(() => navigate('/events'))
-                .catch((error) => console.log(error));
+        // using params: email and password 
+        await login({ ...obj })
+            .unwrap()
+            .then((payload) => dispatch(setCredentials({ ...payload, email, persistAuth })))
+            .then(() => actions.resetForm())
+            .then(() => navigate('/events'))
+            .catch((error) => console.log(error));
     };
 
     const content = (
-        <>
+        <section className="p-2 mt-10 dark:bg-gray-900">
             <Formik
                 initialValues={{ email: '', password: '' }}
                 validationSchema={loginSchema}
                 onSubmit={handleSubmit}
             >
                 {({ handleSubmit, isValid, isSubmitting, dirty }) => (
-                    <>
-                        <BreadcrumbNav />
-                        <Form
-                            onSubmit={handleSubmit}
-                            autoComplete='off'
-                            className="flex max-w-md flex-col gap-4 mx-auto dark:bg-gray-900"
-                        >
-                            {/* EMAIL */}
-                            <CustomTextInput
-                                placeholder="name@email.com"
-                                name="email"
-                                label="Your email"
-                                type="email"
-                            />
+                    <Form
+                        onSubmit={handleSubmit}
+                        autoComplete='off'
+                        className="flex max-w-md flex-col gap-4 mx-auto dark:bg-gray-900"
+                    >
+                        {/* EMAIL */}
+                        <CustomTextInput
+                            placeholder="name@email.com"
+                            name="email"
+                            label="Your email"
+                            type="email"
+                        />
 
-                            {/* PASSWORD */}
-                            <CustomTextInput
-                                placeholder="********"
-                                name="password"
-                                label="Your password"
-                                type="password"
-                            />
+                        {/* PASSWORD */}
+                        <CustomTextInput
+                            placeholder="********"
+                            name="password"
+                            label="Your password"
+                            type="password"
+                        />
 
-                            {/* CHECKBOX */}
-                            <CustomCheckbox
-                                name="persistAuth"
-                                label="Remember me"
-                            />
+                        {/* CHECKBOX */}
+                        <CustomCheckbox
+                            name="persistAuth"
+                            label="Remember me"
+                        />
 
-                            {/* SUBMIT */}
-                            <CustomButton
-                                isValid={isValid}
-                                dirty={dirty}
-                                isSubmitting={isSubmitting}
-                                value='Login'
-                            />
-                        </Form>
-                    </>
+                        {/* SUBMIT */}
+                        <CustomButton
+                            isValid={isValid}
+                            dirty={dirty}
+                            isSubmitting={isSubmitting}
+                            value='Login'
+                        />
+                    </Form>
                 )}
             </Formik>
-        </>
+        </section>
     );
 
     return content;

@@ -16,8 +16,8 @@ const ProfileAbout = ({ profile }) => {
 
     if (profile && !editMode) {
         content = (
-            <article className="flex w-full xl:max-w-screen-xl mx-2 bg-gray-50 rounded dark:bg-gray-800 sm:w-3/4">
-                <div className="flex flex-col w-full content-between px-4 py-2 sm:flex-row lg:gap-8 xl:gap-0">
+            <article className="flex w-full xl:max-w-screen-xl mx-2 bg-gray-50 rounded sm:w-3/4 dark:bg-gray-900">
+                <div className="flex flex-col w-full content-between px-4 py-4 rounded sm:flex-row lg:gap-8 xl:gap-0 dark:bg-gray-800">
                     <div className="flex flex-col w-full ml-4 place-self-center">
                         {/* TITLE*/}
                         <h4 className="mr-auto font-bold text-lg text-gray-900 font-serif tracking-wide dark:text-white">
@@ -25,7 +25,7 @@ const ProfileAbout = ({ profile }) => {
                         </h4>
 
                         {/* BIO */}
-                        <div className='flex justify-center py-6 font-light  text-gray-500 md:text-lg lg:text-xl dark:text-gray-400'>
+                        <div className='flex justify-center py-6 font-light whitespace-pre-wrap text-gray-500 md:text-lg lg:text-xl dark:text-gray-400'>
                             {profile.bio}
                         </div>
                     </div>
@@ -38,7 +38,6 @@ const ProfileAbout = ({ profile }) => {
                         {profile.username === user &&
                             <Button
                                 onClick={() => setEditMode(true)}
-                            // className='w-auto'
                             >
                                 Edit
                             </Button>
@@ -50,6 +49,7 @@ const ProfileAbout = ({ profile }) => {
                                 {profile.followersCount}
                                 <span>Followers</span>
                             </div>
+                            
                             {/* FOLLOWING */}
                             <div className="flex flex-col m-2">
                                 {profile.followingCount}

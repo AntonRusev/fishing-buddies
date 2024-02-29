@@ -5,11 +5,10 @@ import { openModal, setModalOptions } from '../modals/modalsSlice';
 
 import ModalOptions from '../modals/ModalOptions';
 
+import { BsFilterSquareFill, BsArrowUpSquareFill } from "react-icons/bs";
 import { FaRegCalendarDays } from "react-icons/fa6";
-import { BsFilterSquareFill } from "react-icons/bs";
-import { BsArrowUpSquareFill } from "react-icons/bs";
 
-const EventOptions = ({ totalItems }) => {
+const EventOptions = ({ user, totalItems }) => {
     const dispatch = useDispatch();
 
     const content = (
@@ -22,16 +21,21 @@ const EventOptions = ({ totalItems }) => {
                     color="light"
                 >
                     {/* FILTER */}
-                    <Dropdown.Item
-                        onClick={() => {
-                            dispatch(setModalOptions('filter'));
-                            dispatch(openModal());
-                        }}
-                        icon={BsFilterSquareFill}
-                    >
-                        Filter
-                    </Dropdown.Item>
-                    <Dropdown.Divider />
+                    {/* Only for authenticated users */}
+                    {user &&
+                        <>
+                            <Dropdown.Item
+                                onClick={() => {
+                                    dispatch(setModalOptions('filter'));
+                                    dispatch(openModal());
+                                }}
+                                icon={BsFilterSquareFill}
+                            >
+                                Filter
+                            </Dropdown.Item>
+                            <Dropdown.Divider />
+                        </>
+                    }
 
                     {/* DATEPICKER */}
                     <Dropdown.Item

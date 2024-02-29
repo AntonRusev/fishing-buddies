@@ -1,9 +1,9 @@
 import { useState } from "react";
+import { Button } from 'flowbite-react';
 
 import { useUploadPhotoMutation } from "../../../features/profiles/profilesApiSlice";
 
 import { PhotoCropper, PhotoDropzone } from "./";
-import { Button } from 'flowbite-react';
 
 const PhotoUploadWidget = ({ setAddPhotoMode, user }) => {
     const [files, setFiles] = useState([]);
@@ -30,8 +30,8 @@ const PhotoUploadWidget = ({ setAddPhotoMode, user }) => {
             {/* PHOTO DROPZONE */}
             {files && files.length === 0 && (
                 <div className="w-full max-w-screen-sm">
-                    <h6 className="text-gray-500 text-center text-lg font-bold tracking-wide dark:text-white">
-                        Add Photo
+                    <h6 className="text-gray-500 text-lg font-bold tracking-wide dark:text-white">
+                        Select Photo:
                     </h6>
                     <PhotoDropzone
                         setFiles={setFiles}

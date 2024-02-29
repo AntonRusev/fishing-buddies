@@ -1,8 +1,7 @@
 import { apiSlice } from "../../app/api/apiSlice";
-import { current } from 'immer';
 
 export const eventsApiSlice = apiSlice.injectEndpoints({
-    tagTypes: ['Event'],
+    tagTypes: ['Event', 'Profile'],
     endpoints: builder => ({
         // Get All Events
         getAllEvents: builder.query({
@@ -127,9 +126,9 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
                 url: `/events/${eventId}/attend`,
                 method: 'POST',
             }),
-            // invalidatesTags: (result, error, arg) => (
-            //     [{ type: 'Event', id: arg.id }]
-            // ),
+            invalidatesTags: (result, error, arg) => (
+                [{ type: 'Profile', id: arg.id }]
+            ),
             async onQueryStarted({ eventId, user, image }, { dispatch, queryFulfilled }) {
                 try {
                     await queryFulfilled;

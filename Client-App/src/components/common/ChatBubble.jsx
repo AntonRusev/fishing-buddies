@@ -42,7 +42,7 @@ const ChatBubble = ({ comment }) => {
                     </span>
                 </div>
 
-                <p className="text-sm font-normal py-2.5 text-gray-900 dark:text-white">
+                <p className="text-sm font-normal py-2.5 whitespace-pre-wrap text-gray-900 dark:text-white">
                     <span
                         dir='ltr' // DIR
                     >
@@ -52,9 +52,11 @@ const ChatBubble = ({ comment }) => {
                 </p>
 
                 {/* For User's own messages only */}
-                {comment.username === user
-                    ? <span className="text-sm font-normal text-gray-500 dark:text-gray-400">Delivered</span>
-                    : ""}
+                {comment.username === user &&
+                    <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+                        Delivered
+                    </span>
+                }
             </div>
         </div>
     );

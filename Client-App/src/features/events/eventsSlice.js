@@ -1,4 +1,5 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { logOut, setCredentials } from "../auth/authSlice";
 
 const eventsSlice = createSlice({
     name: 'events',
@@ -52,10 +53,58 @@ const eventsSlice = createSlice({
             // On selecting a filter, reset pageNumber back to 1 to start over again
             state.pagination.pageNumber = 1;
         },
-    }
+        resetAll: (state, action) => {
+            // Reset all the state in the slice to default
+            state.pagination = {
+                pageNumber: 1,
+                pageSize: 3,
+            };
+            state.filters = {
+                boolFilter: {
+                    all: false,
+                    isgoing: false,
+                    ishost: false
+                },
+                startDate: null,
+            };
+        }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(logOut, (state) => {
+                // Reset pagination and filters state upon logout
+                state.pagination = {
+                    pageNumber: 1,
+                    pageSize: 3,
+                };
+                state.filters = {
+                    boolFilter: {
+                        all: false,
+                        isgoing: false,
+                        ishost: false
+                    },
+                    startDate: null,
+                };
+            })
+            .addCase(setCredentials, (state) => {
+                // Reset pagination and filters state upon login
+                state.pagination = {
+                    pageNumber: 1,
+                    pageSize: 3,
+                };
+                state.filters = {
+                    boolFilter: {
+                        all: false,
+                        isgoing: false,
+                        ishost: false
+                    },
+                    startDate: null,
+                };
+            });
+    },
 });
 
-export const { setPaginationParams, setFilter, setStartDate } = eventsSlice.actions;
+export const { setPaginationParams, setFilter, setStartDate, resetAll } = eventsSlice.actions;
 
 export default eventsSlice.reducer;
 
@@ -80,5 +129,4 @@ export const selectFilterParams = createSelector(selectPagination, selectFilters
     };
 
     return filterParams;
-    // Should look similar to this: http://localhost:5000/api/events?pageNumber=1&pageSize=2&all=true&startDate=2024-02-28T22:00:00.000Z
 });

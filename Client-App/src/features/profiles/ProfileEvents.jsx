@@ -1,12 +1,13 @@
 import { useState, useMemo } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { format } from "date-fns";
-import { Button, ButtonGroup, Card } from "flowbite-react";
+import { Button, ButtonGroup } from "flowbite-react";
 
 import { useListProfileEventsQuery } from "./profilesApiSlice";
 
 import ProfileHeader from "./ProfileHeader";
-import EventCardPlaceholder from "../events/EventCardPlaceholder";
+import CustomSpinner from "../../components/common/CustomSpinner";
+
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
 
 const ProfileEvents = () => {
@@ -17,13 +18,8 @@ const ProfileEvents = () => {
 
     const profileEventsList = useMemo(() => {
         if (isLoading || isFetching) {
-            // TODO - Design the Skeleton(Placeholder) to resemble the actual Card Component
             return (
-                <div className='flex flex-col gap-4'>
-                    <EventCardPlaceholder />
-                    <EventCardPlaceholder />
-                    <EventCardPlaceholder />
-                </div>
+                <CustomSpinner text={`Loading ${predicate} events...`} />
             );
         } else if (isSuccess && data.length > 0) {
             return (
@@ -64,9 +60,9 @@ const ProfileEvents = () => {
     });
 
     let content = (
-        <article className="flex flex-col justify-center align-center items-center">
+        <article className="flex flex-col justify-center align-center items-center dark:bg-gray-900">
             <ProfileHeader />
-            <div className="flex flex-col w-full items-center bg-gray-50 rounded xl:max-w-screen-xl sm:w-3/4 dark:bg-gray-800">
+            <div className="flex flex-col w-full items-center pb-8 md:mb-8 bg-gray-50 rounded xl:max-w-screen-xl sm:w-3/4 dark:bg-gray-800">
                 <div className="flex flex-col w-full items-center bg-gray-50 rounded xl:max-w-screen-xl sm:w-3/4 dark:bg-gray-800" >
                     {/* NAV BUTTONS */}
                     <ButtonGroup

@@ -15,7 +15,11 @@ const ProfileNavigation = ({ username }) => {
             {/* Only shown on small screen */}
             <div className="sm:hidden flex w-full p-2">
                 <Dropdown
-                    renderTrigger={() => <Button color="gray" className="w-full">{predicate.toUpperCase() || 'Profile Menu'}</Button>}
+                    renderTrigger={() => (
+                        <Button className="w-full" color="gray">
+                            {predicate.toUpperCase() || 'Profile Menu'}
+                        </Button>
+                    )}
                     dismissOnClick={true}
                     className="w-full -ml-2"
                 >

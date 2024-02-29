@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 import { Flowbite } from 'flowbite-react';
 import { ToastContainer } from 'react-toastify';
 
-
 import { setCredentials } from './features/auth/authSlice';
 
 import Home from '../src/components/Home';
@@ -49,7 +48,7 @@ function App() {
             <Flowbite>
                 {/* Header */}
                 <Header />
-                <main className='flex flex-col font-lato mt-12 pt-2 dark:bg-gray-900'>
+                <main className='flex flex-col h-screen font-lato pt-14 dark:bg-gray-900'>
                     <Routes>
                         {/* Routes accessible by both guests and authenticated users */}
                         <Route path='/' element={<Home />} />

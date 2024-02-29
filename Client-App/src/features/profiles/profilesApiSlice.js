@@ -2,7 +2,7 @@ import { apiSlice } from "../../app/api/apiSlice";
 import { eventsApiSlice } from "../events/eventsApiSlice";
 
 export const profilesApiSlice = apiSlice.injectEndpoints({
-    tagTypes: ['Profile', 'Following'],
+    tagTypes: ['Profile', 'Following', 'Event'],
     endpoints: builder => ({
         // Get Profile
         getProfile: builder.query({
@@ -159,6 +159,9 @@ export const profilesApiSlice = apiSlice.injectEndpoints({
         // List Events related to a User(isAttending, IsHost)
         listProfileEvents: builder.query({
             query: ({ username, predicate }) => `/profiles/${username}/events?predicate=${predicate}`,
+            providesTags: (result = [], error, arg) => [
+                'Profile', ...result.map(({ id }) => ({ type: 'Profile', id }))
+            ],
         }),
     })
 });

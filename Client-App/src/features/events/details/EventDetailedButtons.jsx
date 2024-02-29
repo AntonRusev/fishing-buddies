@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
+import { compareAsc } from 'date-fns';
 import { Button } from 'flowbite-react';
 
 import { useDeleteEventMutation, useUpdateAttendanceMutation } from "../eventsApiSlice";
@@ -19,6 +20,9 @@ const EventDetailedButtons = ({ fishingEvent }) => {
     const image = useSelector(selectCurrentImage);
     const [updateAttendance, { isLoading: updateAttendIsLoading }] = useUpdateAttendanceMutation();
     const [deleteEvent, { isLoading: deleteIsLoading }] = useDeleteEventMutation();
+
+    // Checking if the Event has already passed(true or false)
+    const pastEvent = (compareAsc(new Date(), fishingEvent.date)) > -1;
 
     useEffect(() => {
         // Check if viewing User is attending the Event
@@ -53,14 +57,15 @@ const EventDetailedButtons = ({ fishingEvent }) => {
         <>
             <div className="flex justify-stretch tracking-wider mt-2 gap-2">
                 {/* ATTEND BUTTON */}
-                {user === fishingEvent.hostUsername
+                {/* Only available for future events */}
+                {user === fishingEvent.hostUsername && !pastEvent
                     ?
                     // If the User is Host of the Event
                     <Button
                         onClick={handleAttendanceSubmit}
                         size="sm"
                         isProcessing={updateAttendIsLoading}
-                        disabled={updateAttendIsLoading || deleteIsLoading}
+                        disabled={updateAttendIsLoading || deleteIsLoading }
                         color="dark"
                         className="flex-grow font-semibold"
                     >
@@ -69,8 +74,8 @@ const EventDetailedButtons = ({ fishingEvent }) => {
                             : "Activate Event"
                         }
                     </Button>
-                    :
-                    // If the User is NOT Host of the Event
+                    : user && !pastEvent &&
+                    // If the User is authenticated and NOT Host of the Event
                     <Button
                         onClick={handleAttendanceSubmit}
                         size="sm"
