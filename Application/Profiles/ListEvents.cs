@@ -36,9 +36,9 @@ namespace Application.Profiles
                 // Get past or future events, or events hosted, by a particular user
                 query = request.Predicate switch
                 {
-                    "past" => query.Where(a => a.Date <= DateTime.Now),
+                    "past" => query.Where(a => a.Date <= DateTime.UtcNow),
                     "hosting" => query.Where(a => a.HostUsername == request.Username),
-                    _ => query.Where(a => a.Date >= DateTime.Now) // Default case is always "future"
+                    _ => query.Where(a => a.Date >= DateTime.UtcNow) // Default case is always "future"
                 };
 
                 var events = await query.ToListAsync();
