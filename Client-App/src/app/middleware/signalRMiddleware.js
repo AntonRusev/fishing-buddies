@@ -17,7 +17,7 @@ export const signalRMiddleware = (store) => (next) => (action) => {
                     // Open WebSocket connection to the SignalR Hub, where eventId is the name of the Hub for the particular Event
                     // and JWT is send in the query
                     connection = new HubConnectionBuilder()
-                        .withUrl(`http://localhost:5000/chat?eventId=${eventId}`, {
+                        .withUrl(import.meta.env.VITE_CHAT_URL + `?eventId=${eventId}`, {
                             accessTokenFactory: () => token
                         })
                         .withAutomaticReconnect()

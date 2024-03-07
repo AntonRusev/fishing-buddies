@@ -31,8 +31,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// TODO Fix the CORS policy
-// app.UseCors("CorsPolicy");
 app.UseCors(builder => builder
      //  .AllowAnyOrigin()
      .WithOrigins("http://localhost:3000", "http://localhost")
@@ -43,12 +41,19 @@ app.UseCors(builder => builder
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Serving the index.html from the wwwroot with kestrel server
+app.UseDefaultFiles();
+// Serving the content from wwwroot
+app.UseStaticFiles();
+
 app.MapControllers();
 app.MapHub<ChatHub>("/chat");
+app.MapFallbackToController("Index", "Fallback");
 
 // Creating the Database
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
+
 try
 {
     var context = services.GetRequiredService<DataContext>(); // Events
