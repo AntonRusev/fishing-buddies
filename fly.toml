@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for fishing-buddies on 2024-03-07T17:33:53+02:00
+# fly.toml app configuration file generated for fishing-buddies on 2024-03-08T10:32:35+02:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -7,12 +7,12 @@ app = 'fishing-buddies'
 primary_region = 'otp'
 
 [build]
-  image = 'antonrusev/fishing-buddies:latest'
+  image = 'antonrusev/fishing-buddies'
 
 [env]
-  ASPNETCORE_URLS="http://+:8080"
-  Cloudinary__CloudName="def5gz9ss"
-  Cloudinary__ApiKey="494718911552283"
+  ASPNETCORE_URLS = 'http://+:8080'
+  Cloudinary__ApiKey = '494718911552283'
+  Cloudinary__CloudName = 'def5gz9ss'
 
 [http_service]
   internal_port = 8080
