@@ -25,10 +25,37 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();
 
+// __Security policy options__
+// Prevents the MIME-sniffing of the content type:
+app.UseXContentTypeOptions();
+// Controls what information the browser includes when navigating away from the app:
+app.UseReferrerPolicy(opt => opt.NoReferrer());
+// Adds cross-site scripting protection Header:
+app.UseXXssProtection(opt => opt.EnabledWithBlockMode());
+// Adds Header that prevents the app being used inside an "iframe", protecting it from "click-jacking":
+app.UseXfo(opt => opt.Deny());
+// Protecting from cross-site scripting attacks(XSS), by "white-sourcing" approved content:
+app.UseCsp(opt => opt
+        .BlockAllMixedContent()
+        .StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com"))
+        .FontSources(s => s.Self().CustomSources("https://fonts.gstatic.com"))
+        .FormActions(s => s.Self())
+        .ImageSources(s => s.Self().CustomSources("blob:", "https://res.cloudinary.com"))
+        .ScriptSources(s => s.Self())
+    );
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+else
+{
+    // Adds "Strict Transport Policy" Header (only in Production mode!)
+    app.Use(async (context, next) => {
+        context.Response.Headers.Append("Strict-Transport-Security", "max-age=31536000");
+        await next.Invoke();
+    });
 }
 
 app.UseCors(builder => builder
