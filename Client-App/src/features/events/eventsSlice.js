@@ -6,7 +6,7 @@ const eventsSlice = createSlice({
     initialState: {
         pagination: {
             pageNumber: 1,
-            pageSize: 3,
+            pageSize: 5,
         },
         filters: {
             boolFilter: {
@@ -57,7 +57,7 @@ const eventsSlice = createSlice({
             // Reset all the state in the slice to default
             state.pagination = {
                 pageNumber: 1,
-                pageSize: 3,
+                pageSize: 5,
             };
             state.filters = {
                 boolFilter: {
@@ -75,7 +75,7 @@ const eventsSlice = createSlice({
                 // Reset pagination and filters state upon logout
                 state.pagination = {
                     pageNumber: 1,
-                    pageSize: 3,
+                    pageSize: 5,
                 };
                 state.filters = {
                     boolFilter: {
@@ -90,7 +90,7 @@ const eventsSlice = createSlice({
                 // Reset pagination and filters state upon login
                 state.pagination = {
                     pageNumber: 1,
-                    pageSize: 3,
+                    pageSize: 5,
                 };
                 state.filters = {
                     boolFilter: {

@@ -33,7 +33,11 @@ const ProfileEvents = () => {
                             <NavLink to={`/events/${event.id}`}>
                                 <div className="sm:flex-shrink-0 md:flex-shrink-0">
                                     {/* IMAGE */}
-                                    <img className="object-cover inline-block min-h-full max-h-full w-full sm:w-72 md:w-72 lg:w-72 h-44 rounded-t-lg" src={`/${event.category}.png`} alt="fishing ground" />
+                                    <img
+                                        className="object-cover inline-block min-h-full max-h-full w-full sm:w-72 md:w-72 lg:w-72 h-44 rounded-t-lg"
+                                        src={`/${event.category}.jpg`}
+                                        alt="fishing ground"
+                                    />
                                 </div>
                                 <div className="p-5">
                                     {/* TITLE */}

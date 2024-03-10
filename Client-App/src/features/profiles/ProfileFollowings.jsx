@@ -35,7 +35,7 @@ const ProfileFollowings = () => {
                         // LIST OF FOLLOWINGS
                         <ProfileCard profile={f} key={f.username + predicate} />
                     ))
-                    : <p className="ml-4 text-gray-500 italic tracking-wide dark:text-gray-300">
+                    : <p className="ml-auto text-gray-500 italic tracking-wide dark:text-gray-300">
                         {/* Show message that the user has no followers or is not following anyone */}
                         {predicate === "following"
                             ? `${username} is not following anyone.`

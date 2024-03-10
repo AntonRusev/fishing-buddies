@@ -17,19 +17,24 @@ const EventDetailedHeader = ({ fishingEvent }) => {
 
                 {/* BACKGROUND PICTURE */}
                 <img
-                    src={`/${fishingEvent.category}.png`}
-                    alt="bg-picture"
                     className="absolute inset-0 h-full w-full object-cover"
+                    src={`/${fishingEvent.category}.jpg`}
+                    alt="bg-picture"
                 />
 
                 {/* FADE */}
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40"></div>
-                
-                {/* TEXTS */}
-                <h3 className="z-10 mt-3 text-3xl font-bold text-white font-serif tracking-wider">{fishingEvent.title}</h3>
+
+                {/* TITLE */}
+                <h3 className="z-10 mt-3 text-3xl font-bold text-white font-serif tracking-wider">
+                    {fishingEvent.title}
+                </h3>
+
+                {/* HOST */}
                 <div className="z-10 gap-y-1 overflow-hidden text-sm leading-6 text-gray-300">
                     Hosted by
                     <span className="font-bold">
+                        {/* PROFILE LINK */}
                         <NavLink to={`/profile/${fishingEvent.hostUsername}`}> {fishingEvent.hostUsername}</NavLink>
                     </span>
                 </div>

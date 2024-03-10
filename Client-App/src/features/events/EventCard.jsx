@@ -122,7 +122,7 @@ let EventCard = ({ fishingEvent }) => {
                                 .map(attendee => {
                                     return (
                                         <Avatar
-                                            key={attendee.image}
+                                            key={attendee.username}
                                             img={attendee.image}
                                             rounded
                                             stacked

@@ -37,11 +37,11 @@ app.UseXfo(opt => opt.Deny());
 // Protecting from cross-site scripting attacks(XSS), by "white-sourcing" approved content:
 app.UseCsp(opt => opt
         .BlockAllMixedContent()
-        .StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com"))
+        .StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com").UnsafeInline())
         .FontSources(s => s.Self().CustomSources("https://fonts.gstatic.com"))
         .FormActions(s => s.Self())
         .ImageSources(s => s.Self().CustomSources("blob:", "https://res.cloudinary.com"))
-        .ScriptSources(s => s.Self())
+        .ScriptSources(s => s.Self().UnsafeInline())
     );
 
 if (app.Environment.IsDevelopment())
