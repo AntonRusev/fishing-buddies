@@ -8,6 +8,7 @@ import { setCredentials } from '../auth/authSlice';
 import { CustomTextInput, CustomCheckbox, CustomButton } from '../../components/common/form';
 
 import { registerSchema } from '../../utils/schemas';
+import FbLogin from './FbLogin';
 
 const Register = () => {
     const [register] = useRegisterMutation();
@@ -89,6 +90,9 @@ const Register = () => {
                     </Form>
                 )}
             </Formik>
+            
+            {/* FACEBOOK SIGN IN BUTTON */}
+            <FbLogin />
         </section>
     );
 

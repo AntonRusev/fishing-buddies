@@ -7,12 +7,13 @@ app = 'fishing-buddies'
 primary_region = 'otp'
 
 [build]
-  image = 'antonrusev/fishing-buddies'
+  image = "antonrusev/fishing-buddies"
 
 [env]
-  ASPNETCORE_URLS = 'http://+:8080'
-  Cloudinary__ApiKey = '494718911552283'
-  Cloudinary__CloudName = 'def5gz9ss'
+  ASPNETCORE_URLS = "http://+:8080"
+  Cloudinary__ApiKey = "494718911552283"
+  Cloudinary__CloudName = "def5gz9ss"
+  Facebook__AppId= "3618209665088182"
 
 [http_service]
   internal_port = 8080
