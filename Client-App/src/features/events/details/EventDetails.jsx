@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 import { useGetEventQuery } from "../eventsApiSlice";
-import { selectCurrentUser } from "../../auth/authSlice";
+import { selectCurrentUsername } from "../../auth/authSlice";
 
 import EventDetailedHeader from "./EventDetailedHeader";
 import EventDetailedAttendees from "./EventDetailedAttendees";
@@ -20,7 +20,7 @@ const EventDetails = () => {
         isSuccess,
     } = useGetEventQuery(id);
 
-    const user = useSelector(selectCurrentUser);
+    const user = useSelector(selectCurrentUsername);
 
     let content;
 

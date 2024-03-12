@@ -1,12 +1,17 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Spinner } from 'flowbite-react';
+
+import { selectUser } from "../auth/authSlice";
 
 import { useGetProfileQuery } from "./profilesApiSlice";
 import ProfileNavigation from "./ProfileNavigation";
 
 let ProfileHeader = () => {
     const { username } = useParams();
+
+    const user = useSelector(selectUser);
 
     const {
         data: profile,
@@ -30,7 +35,8 @@ let ProfileHeader = () => {
                     {/* USER'S IMAGE */}
                     <img
                         className="object-cover inline-block min-h-full max-h-full w-full sm:w-36 md:w-36 lg:w-36"
-                        src={profile.image || "/user.png"}
+                        // If user is owner of the profile, set image from local state instead of response
+                        src={(profile.username === user.username ? user.image : profile.image) || "/user.png"}
                         alt="avatar"
                     />
                     {/* FOLLOWING RIBBON */}

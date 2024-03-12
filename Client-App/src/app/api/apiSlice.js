@@ -9,7 +9,7 @@ export const apiSlice = createApi({
         credentials: 'include',
         prepareHeaders: (headers, { getState }) => {
             // If there is JWT in the Auth state, send it with the request
-            const token = getState().auth.token;
+            const token = getState().auth.user.token;
             if (token) {
                 headers.set("Authorization", `Bearer ${token}`);
             };

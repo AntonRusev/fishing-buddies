@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-import { selectCurrentUser } from "../auth/authSlice";
+import { selectCurrentUsername } from "../auth/authSlice";
 import { useUpdateFollowingMutation } from "./profilesApiSlice";
 
 import { Button } from 'flowbite-react';
@@ -10,7 +10,7 @@ const FollowButton = ({ profile }) => {
     const { id } = useParams();
     const [updateFollowing, { isLoading, isFetching }] = useUpdateFollowingMutation();
 
-    const user = useSelector(selectCurrentUser);
+    const user = useSelector(selectCurrentUsername);
 
     if (!user || !profile.username || user === profile.username) {
         // User can not follow or unfollow themselves;

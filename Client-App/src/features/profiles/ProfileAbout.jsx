@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Button } from 'flowbite-react';
 
-import { selectCurrentUser } from '../auth/authSlice';
+import { selectCurrentUsername } from '../auth/authSlice';
 
 import FollowButton from './FollowButton';
 import ProfileEdit from './ProfileEdit';
@@ -10,7 +10,7 @@ import ProfileEdit from './ProfileEdit';
 const ProfileAbout = ({ profile }) => {
     const [editMode, setEditMode] = useState(false);
 
-    const user = useSelector(selectCurrentUser);
+    const user = useSelector(selectCurrentUsername);
 
     let content;
 

@@ -50,6 +50,8 @@ namespace API.Controllers
                 return Unauthorized();
             };
 
+            // Adding a Refresh Token to the account of the User
+            await SetRefreshToken(user);
             return CreateUserObject(user);
         }
 
@@ -77,6 +79,8 @@ namespace API.Controllers
 
             if (result.Succeeded)
             {
+                // Adding a Refresh Token to the account of the User
+                await SetRefreshToken(user);
                 return CreateUserObject(user);
             }
 
@@ -90,6 +94,8 @@ namespace API.Controllers
             var user = await _userManager.Users.Include(p => p.Photos)
             .FirstOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
 
+            // Adding a Refresh Token to the account of the User
+            await SetRefreshToken(user); // TODO - Decide if this is appropriate place for Refresh Token
             return CreateUserObject(user);
         }
 
@@ -137,7 +143,57 @@ namespace API.Controllers
 
             if (!result.Succeeded) return BadRequest("Problem creating user account");
 
+            // Adding a Refresh Token to the account of the User
+            await SetRefreshToken(user);
             return CreateUserObject(user);
+        }
+
+        [Authorize]
+        [HttpPost("refreshToken")]
+        public async Task<ActionResult<UserDto>> RefreshToken()
+        {
+            // Extracting the Refresh Token from the Cookies
+            var refreshToken = Request.Cookies["refreshToken"];
+
+            // Getting the User that makes the request
+            var user = await _userManager.Users
+                .Include(r => r.RefreshTokens)
+                .Include(p => p.Photos)
+                .FirstOrDefaultAsync(x => x.UserName == User.FindFirstValue(ClaimTypes.Name));
+
+            if (user == null) return Unauthorized();
+
+            // Getting the old(previous) Refresh Token
+            var oldToken = user.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken);
+
+            // If the old Refresh Token is expired, not sending a new one
+            if (oldToken != null && !oldToken.IsActive) return Unauthorized();
+
+            // Revoking the Old Token
+            if (oldToken != null) oldToken.Revoked = DateTime.UtcNow;
+
+            return CreateUserObject(user);
+        }
+
+        private async Task SetRefreshToken(AppUser user)
+        {
+            // Generating Refresh Token
+            var refreshToken = _tokenService.GenerateRefreshToken();
+
+            // Assigning the Refresh Token to a User
+            user.RefreshTokens.Add(refreshToken);
+            await _userManager.UpdateAsync(user);
+
+            // Generating Cookies
+            var cookieOptions = new CookieOptions
+            {
+                // The Token won't be accessible via JavaScript
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(7)
+            };
+
+            // Including the Refresh Token in the Response
+            Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
         }
 
         private UserDto CreateUserObject(AppUser user)

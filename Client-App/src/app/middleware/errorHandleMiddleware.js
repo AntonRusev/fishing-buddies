@@ -3,13 +3,15 @@ import {
     isRejectedWithValue,
 } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+
 import { router } from "../router/routes";
+import { logOut } from "../../features/auth/authSlice";
 
 export const errorHandleMiddleware =
-    (api) => (next) => (action) => {
+    (store) => (next) => (action) => {
         // isRejectedWithValue Or isRejected
         if (isRejected(action) || isRejectedWithValue(action)) {
-            
+
             switch (action.payload?.status) {
                 case 400:
                     // If request method is GET redirect to /not-found
@@ -21,7 +23,17 @@ export const errorHandleMiddleware =
                     break;
 
                 case 401:
-                    toast.error("Unauthorized")
+                    // Finding the www-authentication Header
+                    const headerEntriesArray = Array.from(action.meta?.baseQueryMeta.response.headers.entries());
+
+                    // Checking if the 401 is because of expired/invalid Refresh Token
+                    if (headerEntriesArray.length > 1 && headerEntriesArray[1][1]?.includes('Bearer error="invalid_token')) {
+                        // If Refresh Token has expired, logout the User
+                        store.dispatch(logOut());
+                        toast.error("Session expired- please login again");
+                    } else {
+                        toast.error("Unauthorized");
+                    };
                     break;
 
                 case 403:
@@ -33,7 +45,7 @@ export const errorHandleMiddleware =
                     break;
 
                 case 500:
-                    toast.error('navigate to /server-error');
+                    router.navigate('/server-error');
                     break;
 
                 case "PARSING_ERROR":

@@ -17,7 +17,6 @@ namespace API.Extensions
             // Adding a Header with the pagination info and params to the Http Response 
             // {"currentPage":X,"itemsPerPage":X,"totalItems":X,"totalPages":X}
             response.Headers.Append("Pagination", JsonSerializer.Serialize(paginationHeader));
-            response.Headers.Append("Access-Control-Expose-Headers", "Pagination");
         }
     }
 }

@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { Button } from 'flowbite-react';
 
 import { useGetProfileQuery } from "../profiles/profilesApiSlice";
-import { selectCurrentUser } from "../auth/authSlice";
+import { selectUser } from "../auth/authSlice";
 
 import ProfileHeader from "./ProfileHeader";
 import { PhotoUploadWidget } from "../../components/common/photoUpload";
@@ -16,7 +16,7 @@ const ProfilePhotos = () => {
 
     const { username } = useParams();
 
-    const user = useSelector(selectCurrentUser);
+    const user = useSelector(selectUser);
     const {
         data: profile,
         isFetching,
@@ -28,7 +28,7 @@ const ProfilePhotos = () => {
     let isOwner = false;
 
     if (profile) {
-        isOwner = user === profile.username;
+        isOwner = user.username === profile.username;
     };
 
     let photosView;
@@ -39,7 +39,7 @@ const ProfilePhotos = () => {
         );
     } else if (isSuccess && profile) {
         photosView = (
-            <ProfilePhotoList profile={profile} user={user} isOwner={isOwner} />
+            <ProfilePhotoList profile={profile} user={user.username} isOwner={isOwner} />
         );
     };
 

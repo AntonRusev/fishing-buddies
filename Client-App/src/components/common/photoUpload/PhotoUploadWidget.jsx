@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Button } from 'flowbite-react';
 
 import { useUploadPhotoMutation } from "../../../features/profiles/profilesApiSlice";
+import { changeImage } from "../../../features/auth/authSlice";
 
 import { PhotoCropper, PhotoDropzone } from "./";
 
@@ -10,13 +12,17 @@ const PhotoUploadWidget = ({ setAddPhotoMode, user }) => {
     const [cropper, setCropper] = useState();
 
     const [uploadPhoto, { isLoading, isFetching }] = useUploadPhotoMutation();
+    const dispatch = useDispatch();
 
     function handleUpload() {
         try {
             if (cropper) {
                 cropper.getCroppedCanvas().toBlob(async (blob) => {
-                    await uploadPhoto({ file: blob, user })
-                        .then(response => console.log(response))
+                    await uploadPhoto({
+                        file: blob,
+                        user: user.username
+                    })
+                        .then((response) => user.image=== null && dispatch(changeImage(response.url)))
                         .then(data => setAddPhotoMode(false)) // Close the PhotoUploadWidget upon upload
                 });
             };

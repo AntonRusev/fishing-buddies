@@ -5,7 +5,7 @@ import { compareAsc } from 'date-fns';
 import { Button } from 'flowbite-react';
 
 import { useDeleteEventMutation, useUpdateAttendanceMutation } from "../eventsApiSlice";
-import { selectCurrentImage, selectCurrentUser } from "../../auth/authSlice";
+import { selectUser } from "../../auth/authSlice";
 import { openModal, closeModal, setConfirmOptions, resetConfirmOptions } from "../../modals/modalsSlice";
 
 import ModalConfirm from "../../modals/ModalConfirm";
@@ -13,20 +13,19 @@ import ModalConfirm from "../../modals/ModalConfirm";
 const EventDetailedButtons = ({ fishingEvent }) => {
     const [isAttending, setIsAttending] = useState(false);
 
-    const navigate = useNavigate();
-
     const dispatch = useDispatch();
-    const user = useSelector(selectCurrentUser);
-    const image = useSelector(selectCurrentImage);
+    const user = useSelector(selectUser);
     const [updateAttendance, { isLoading: updateAttendIsLoading }] = useUpdateAttendanceMutation();
     const [deleteEvent, { isLoading: deleteIsLoading }] = useDeleteEventMutation();
+    
+    const navigate = useNavigate();
 
     // Checking if the Event has already passed(true or false)
     const pastEvent = (compareAsc(new Date(), fishingEvent.date)) > -1;
 
     useEffect(() => {
         // Check if viewing User is attending the Event
-        const attendance = fishingEvent.attendees.some(attendee => attendee.username === user);
+        const attendance = fishingEvent.attendees.some(attendee => attendee.username === user.username);
 
         if (attendance) {
             setIsAttending(true);
@@ -37,7 +36,11 @@ const EventDetailedButtons = ({ fishingEvent }) => {
 
     // Handle ATTEND
     const handleAttendanceSubmit = async () => {
-        await updateAttendance({ eventId: fishingEvent.id, user, image })
+        await updateAttendance({
+            eventId: fishingEvent.id,
+            user: user.username,
+            image: user.image
+        })
             .unwrap();
     };
 
@@ -58,14 +61,14 @@ const EventDetailedButtons = ({ fishingEvent }) => {
             <div className="flex justify-stretch tracking-wider mt-2 gap-2">
                 {/* ATTEND BUTTON */}
                 {/* Only available for future events */}
-                {user === fishingEvent.hostUsername && !pastEvent
+                {user.username === fishingEvent.hostUsername && !pastEvent
                     ?
                     // If the User is Host of the Event
                     <Button
                         onClick={handleAttendanceSubmit}
                         size="sm"
                         isProcessing={updateAttendIsLoading}
-                        disabled={updateAttendIsLoading || deleteIsLoading }
+                        disabled={updateAttendIsLoading || deleteIsLoading}
                         color="dark"
                         className="flex-grow font-semibold"
                     >
@@ -74,7 +77,7 @@ const EventDetailedButtons = ({ fishingEvent }) => {
                             : "Activate Event"
                         }
                     </Button>
-                    : user && !pastEvent &&
+                    : user.username && !pastEvent &&
                     // If the User is authenticated and NOT Host of the Event
                     <Button
                         onClick={handleAttendanceSubmit}
@@ -93,7 +96,7 @@ const EventDetailedButtons = ({ fishingEvent }) => {
 
                 {/* EDIT BUTTON */}
                 {/* If the User is Host of the Event */}
-                {fishingEvent.hostUsername === user &&
+                {fishingEvent.hostUsername === user.username &&
                     <Button
                         as={NavLink}
                         to={`/manage/${fishingEvent.id}`}
@@ -106,7 +109,7 @@ const EventDetailedButtons = ({ fishingEvent }) => {
                 }
                 {/* DELETE BUTTON */}
                 {/* If the User is Host of the Event */}
-                {fishingEvent.hostUsername === user &&
+                {fishingEvent.hostUsername === user.username &&
                     <Button
                         onClick={() => {
                             dispatch(setConfirmOptions('event'));

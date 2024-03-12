@@ -2,6 +2,10 @@ import { apiSlice } from "../../app/api/apiSlice";
 
 export const authApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
+        // GET AUTHENTICATED USER
+        getAuthUser: builder.query({
+            query: () => '/account'
+        }),
         // LOGIN
         login: builder.mutation({
             query: credentials => ({
@@ -26,11 +30,21 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
             })
         }),
+        // REFRESH TOKEN 
+        refreshTokenApi: builder.mutation({
+            // Getting a new Refresh Token
+            query: () => ({
+                url: '/account/refreshToken',
+                method: 'POST',
+            })
+        }),
     })
 })
 
 export const {
+    useLazyGetAuthUserQuery,
     useLoginMutation,
     useRegisterMutation,
     useFbLoginMutation,
+    useRefreshTokenApiMutation,
 } = authApiSlice;

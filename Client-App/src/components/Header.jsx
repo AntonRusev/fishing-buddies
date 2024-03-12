@@ -2,15 +2,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Avatar, Dropdown, Navbar, DarkThemeToggle } from 'flowbite-react';
 
-import { selectCurrentUser, selectCurrentImage, selectCurrentEmail, logOut } from "../features/auth/authSlice";
+import { selectUser, logOut } from "../features/auth/authSlice";
 
 const Header = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const user = useSelector(selectCurrentUser);
-    const userImage = useSelector(selectCurrentImage);
-    const email = useSelector(selectCurrentEmail);
+    const user = useSelector(selectUser);
 
     const HandleLogOut = () => {
         dispatch(logOut());
@@ -36,7 +34,7 @@ const Header = () => {
 
             <div className="flex md:order-2">
                 {/* Show User Profile only if user is authenticated */}
-                {user
+                {user.username
                     ?
                     <Dropdown
                         arrowIcon={false}
@@ -44,7 +42,7 @@ const Header = () => {
                         label={
                             <Avatar
                                 alt="User settings"
-                                img={userImage}
+                                img={user.image}
                                 rounded
                             />
                         }
@@ -52,18 +50,18 @@ const Header = () => {
                         {/* USERNAME AND EMAIL */}
                         <Dropdown.Header>
                             <span className="block text-sm">
-                                {user}
+                                {user.username}
                             </span>
 
                             <span className="block truncate text-sm font-medium">
-                                {email}
+                                {user.email}
                             </span>
                         </Dropdown.Header>
 
                         {/* MY PROFILE PAGE */}
                         <Dropdown.Item
                             as={NavLink}
-                            to={`/profile/${user}`}
+                            to={`/profile/${user.username}`}
                         >
                             My Profile
                         </Dropdown.Item>
@@ -82,7 +80,7 @@ const Header = () => {
                     </Dropdown>
                     :
                     // DARK MODE TOGGLE if there is no authenticated User, small screen size
-                    !user && <DarkThemeToggle className="hidden md:inline-block mr-auto" />
+                    !user.username && <DarkThemeToggle className="hidden md:inline-block mr-auto" />
                 }
 
                 {/* TOGGLE BUTTON FOR NAV BAR */}
@@ -107,7 +105,7 @@ const Header = () => {
                 </Navbar.Link>
 
                 {/* If User is authenticated show Create(Event) link, otherwise show Login and Register */}
-                {user
+                {user.username
                     ? <Navbar.Link
                         className="text-white"
                         as={NavLink}

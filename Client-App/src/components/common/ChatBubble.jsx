@@ -2,10 +2,10 @@ import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { formatDistanceToNow } from 'date-fns';
 
-import { selectCurrentUser } from "../../features/auth/authSlice";
+import { selectCurrentUsername } from "../../features/auth/authSlice";
 
 const ChatBubble = ({ comment }) => {
-    const user = useSelector(selectCurrentUser);
+    const user = useSelector(selectCurrentUsername);
 
     const content = (
         // If the viewing user is the author of the message 

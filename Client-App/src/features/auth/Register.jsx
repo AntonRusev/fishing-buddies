@@ -5,7 +5,7 @@ import { Form, Formik } from 'formik';
 import { useRegisterMutation } from '../auth/authApiSlice';
 import { setCredentials } from '../auth/authSlice';
 
-import { CustomTextInput, CustomCheckbox, CustomButton } from '../../components/common/form';
+import { CustomTextInput, CustomButton } from '../../components/common/form';
 
 import { registerSchema } from '../../utils/schemas';
 import FbLogin from './FbLogin';
@@ -17,13 +17,13 @@ const Register = () => {
     const navigate = useNavigate();
 
     const handleSubmit = async (values, actions) => {
-        const { persistAuth, rePass, ...obj } = values;
+        const { rePass, ...obj } = values;
         const email = obj.email;
 
         // using params: email, username and password 
         await register({ ...obj })
             .unwrap()
-            .then((payload) => dispatch(setCredentials({ ...payload, email, persistAuth })))
+            .then((payload) => dispatch(setCredentials({ ...payload, email })))
             .then(() => actions.resetForm())
             .then(() => navigate('/events'))
             .catch((error) => console.log(error));
@@ -72,12 +72,6 @@ const Register = () => {
                             name="rePass"
                             label="Repeat password"
                             type="password"
-                        />
-
-                        {/* CHECKBOX */}
-                        <CustomCheckbox
-                            name="persistAuth"
-                            label="Remember me"
                         />
 
                         {/* SUBMIT */}

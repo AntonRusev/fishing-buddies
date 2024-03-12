@@ -5,7 +5,7 @@ import { Spinner } from 'flowbite-react';
 
 import { useLazyGetAllEventsQuery } from './eventsApiSlice';
 import { setPaginationParams, selectFilterParams } from './eventsSlice';
-import { selectCurrentUser } from '../auth/authSlice';
+import { selectCurrentUsername } from '../auth/authSlice';
 
 import EventsList from './EventsList';
 import EventFilters from './EventFilters';
@@ -20,7 +20,7 @@ const EventDashboard = () => {
     const [loadingNext, setLoadingNext] = useState(false);
 
     const dispatch = useDispatch();
-    const user = useSelector(selectCurrentUser);
+    const user = useSelector(selectCurrentUsername);
     const filterParams = useSelector(selectFilterParams);
     const [trigger, { isLoading, isSuccess, data }] = useLazyGetAllEventsQuery();
 

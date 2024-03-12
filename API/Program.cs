@@ -64,7 +64,8 @@ app.UseCors(builder => builder
      .WithOrigins("https://localhost:3000", "https://localhost", "https://localhost:5000")
      .AllowAnyMethod()
      .AllowAnyHeader()
-     .AllowCredentials());
+     .AllowCredentials()
+     .WithExposedHeaders("WWW-Authenticate", "Pagination"));
 
 app.UseAuthentication();
 app.UseAuthorization();

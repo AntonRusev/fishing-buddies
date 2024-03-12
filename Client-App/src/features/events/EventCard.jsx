@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { format } from "date-fns";
 
-import { selectCurrentUser } from "../auth/authSlice";
+import { selectCurrentUsername } from "../auth/authSlice";
 
 import { Button, Avatar, Badge } from 'flowbite-react';
 import { Tooltip as ReactTooltip } from 'react-tooltip'
@@ -14,7 +14,7 @@ let EventCard = ({ fishingEvent }) => {
     const [userIsHost, setUserIsHost] = useState(false);
     const [userIsAttendee, setUserIsAttendee] = useState(false);
 
-    const user = useSelector(selectCurrentUser);
+    const user = useSelector(selectCurrentUsername);
 
     useEffect(() => {
         fishingEvent.attendees.map(attendee => {

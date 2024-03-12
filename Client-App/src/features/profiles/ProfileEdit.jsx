@@ -2,14 +2,14 @@ import { useSelector } from 'react-redux';
 import { Form, Formik } from 'formik';
 
 import { useEditProfileMutation } from './profilesApiSlice';
-import { selectCurrentUser } from '../auth/authSlice';
+import { selectCurrentUsername } from '../auth/authSlice';
 
 import { CustomButton, CustomTextArea } from '../../components/common/form'
 import { userBioSchema } from '../../utils/schemas';
 import { Button } from 'flowbite-react';
 
 const ProfileEdit = ({ setEditMode }) => {
-    const user = useSelector(selectCurrentUser);
+    const user = useSelector(selectCurrentUsername);
 
     const [editProfile] = useEditProfileMutation();
 

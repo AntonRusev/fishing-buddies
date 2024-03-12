@@ -5,10 +5,10 @@ import { Form, Formik } from 'formik';
 import { useLoginMutation } from '../auth/authApiSlice';
 import { setCredentials } from '../auth/authSlice';
 
-import { CustomTextInput, CustomCheckbox, CustomButton } from '../../components/common/form';
+import FbLogin from './FbLogin';
+import { CustomTextInput, CustomButton } from '../../components/common/form';
 
 import { loginSchema } from '../../utils/schemas';
-import FbLogin from './FbLogin';
 
 const Login = () => {
     const [login] = useLoginMutation();
@@ -17,13 +17,13 @@ const Login = () => {
     const navigate = useNavigate();
 
     const handleSubmit = async (values, actions) => {
-        const { persistAuth, ...obj } = values;
+        const { ...obj } = values;
         const email = obj.email;
 
         // using params: email and password 
         await login({ ...obj })
             .unwrap()
-            .then((payload) => dispatch(setCredentials({ ...payload, email, persistAuth })))
+            .then((payload) => dispatch(setCredentials({ ...payload, email })))
             .then(() => actions.resetForm())
             .then(() => navigate('/events'))
             .catch((error) => console.log(error));
@@ -56,12 +56,6 @@ const Login = () => {
                             name="password"
                             label="Your password"
                             type="password"
-                        />
-
-                        {/* CHECKBOX */}
-                        <CustomCheckbox
-                            name="persistAuth"
-                            label="Remember me"
                         />
 
                         {/* SUBMIT */}

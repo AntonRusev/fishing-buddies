@@ -37,6 +37,8 @@ namespace API.Middleware
                         IssuerSigningKey = key,
                         ValidateIssuer = false,   // Not used in the JWT so has to be set to false 
                         ValidateAudience = false, // Not used in the JWT so has to be set to false 
+                        ValidateLifetime = true, // Lifetime of a token has 5 minute window, by default
+                        ClockSkew = TimeSpan.Zero, // Removes the 5 minute window ^
                     };
 
                     options.Events = new JwtBearerEvents
