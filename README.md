@@ -44,9 +44,6 @@ The deployed application can be found at https://fishing-buddies.fly.dev/
 *IMPORTANT: The application uses PostgreSQL database, so one has to be provided for testing purposes!*
 *The easiest way to access one is to run it in a Docker Container. More info can be found [here](https://hub.docker.com/_/postgres).*
 
-#### Dockerized:
-The Docker image of the application can be pulled from antonrusev/fishing-buddies:latest
-
 #### Git Clone and Installation:
 Enter the following commands in the terminal-
 ```

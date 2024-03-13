@@ -32,7 +32,7 @@ const EventDetails = () => {
         );
     } else if (isSuccess && fishingEvent) {
         content = (
-            <article className="flex justify-center font-lato pt-8 lg:pt-20 bg-gray-50 dark:bg-gray-900">
+            <article className="flex justify-center h-full font-lato pt-8 lg:pt-20 bg-gray-50 dark:bg-gray-900">
                 <div className="flex flex-col mx-4 w-full justify-start max-w-2xl lg:mx-0 lg:ml-2">
                     {/* DETAILS HEADER */}
                     <EventDetailedHeader fishingEvent={fishingEvent} />

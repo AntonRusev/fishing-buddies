@@ -25,9 +25,9 @@ export const errorHandleMiddleware =
                 case 401:
                     // Finding the www-authentication Header
                     const headerEntriesArray = Array.from(action.meta?.baseQueryMeta.response.headers.entries());
-
                     // Checking if the 401 is because of expired/invalid Refresh Token
-                    if (headerEntriesArray.length > 1 && headerEntriesArray[1][1]?.includes('Bearer error="invalid_token')) {
+                    // In development the proper header is at headerEntriesArray[1][1], in build its [5][1]
+                    if (headerEntriesArray.length > 1 && headerEntriesArray[5][1]?.includes('Bearer error="invalid_token')) {
                         // If Refresh Token has expired, logout the User
                         store.dispatch(logOut());
                         toast.error("Session expired- please login again");

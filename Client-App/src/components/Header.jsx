@@ -20,17 +20,17 @@ const Header = () => {
             className="fixed w-full z-20 top-0 start-0 text-white bg-gray-900"
             fluid
         >
+            {/* FISHING BUDDIES LOGO */}
             <Navbar.Brand
                 as={NavLink}
                 to="/"
             >
-                {/* TODO set Logo here */}
-                {/* <img src="/Logo.png" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" /> */}
-                <span className="self-center whitespace-nowrap text-xl font-semibold text-gray-600">
-                    Fishing Buddies
-                </span>
+                <div className="align-center font-serif">
+                        <h3 className="text-cyan-600 font-cinzel font-light text-2xl leading-1.3 tracking-wide">
+                            Fishing <span className="bg-cyan-600 text-gray-900 inline-block leading-1.8 px-2">Buddies</span>
+                        </h3>
+                </div>
             </Navbar.Brand>
-
 
             <div className="flex md:order-2">
                 {/* Show User Profile only if user is authenticated */}

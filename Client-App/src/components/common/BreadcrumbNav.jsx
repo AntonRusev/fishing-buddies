@@ -21,7 +21,7 @@ const BreadcrumbNav = () => {
     const content = (
         <Breadcrumb
             aria-label="breadcrumb"
-            className="w-full px-5 py-3 dark:bg-gray-800"
+            className="w-full px-5 py-3 dark:bg-gray-900"
         >
             {/* PATH */}
             <Breadcrumb.Item icon={HiCollection}>

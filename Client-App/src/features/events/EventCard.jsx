@@ -35,7 +35,7 @@ let EventCard = ({ fishingEvent }) => {
     const [day, month, year] = format(fishingEvent.date, 'dd MMM yyyy').split(' ');
 
     const content = (
-        <div className="relative overflow-hidden m-4 border-2 border-gray-700 dark:border-white rounded sm:flex md:flex px-5 py-3 font-lato bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-400">
+        <div className="relative overflow-hidden m-4 border-2 border-cyan-600 dark:border-white rounded sm:flex md:flex px-5 py-3 font-lato bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-400">
 
             {/* CANCELLED RIBBON */}
             {fishingEvent.isCancelled &&
