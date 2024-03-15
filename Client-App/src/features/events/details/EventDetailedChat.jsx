@@ -40,7 +40,7 @@ const EventDetailedChat = ({ eventId }) => {
     };
 
     const content = (
-        <section className="bg-gray-200 rounded dark:bg-gray-900">
+        <section className="bg-gray-200 rounded mb-4 dark:bg-gray-900">
             {/* HEADING */}
             <h4 className='flex justify-center w-full py-2 bg-gray-800 text-white dark:border-gray-600 border-b border-gray-200 w-full rounded-t'>
                 Chat about this event
@@ -92,7 +92,7 @@ const EventDetailedChat = ({ eventId }) => {
                         ? comments.map(c => (
                             <ChatBubble key={c.id} comment={c} />
                         ))
-                        : 'No comments'
+                        : <p className="py-4 text-center italic text-gray-600 dark:text-gray-300">No comments.</p>
                 }
             </div>
         </section>

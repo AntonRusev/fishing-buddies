@@ -23,6 +23,7 @@ import ProfileEvents from './features/profiles/ProfileEvents';
 import RequireAuth from './features/auth/RequireAuth';
 import GuestOnly from './features/auth/GuestOnly';
 import TokenComponent from './components/TokenComponent';
+import About from './components/About';
 
 import './App.css';
 import CustomSpinner from './components/common/CustomSpinner';
@@ -75,10 +76,11 @@ function App() {
                     {/* Refresh Token Functionality */}
                     <TokenComponent />
 
-                    <main className='flex flex-col h-screen font-lato pt-14 dark:bg-gray-900'>
+                    <main className='flex flex-col min-h-screen font-lato pt-14 dark:bg-gray-900'>
                         <Routes>
                             {/* Routes accessible by both guests and authenticated users */}
                             <Route path='/' element={<Home />} />
+                            <Route path='/about' element={<About />} />
                             <Route path='/events' element={<EventDashboard />} />
                             <Route path='/events/:id' element={<EventDetails />} />
 

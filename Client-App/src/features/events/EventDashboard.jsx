@@ -89,18 +89,18 @@ const EventDashboard = () => {
         <div className='relative flex flex-col items-center dark:bg-gray-900'>
             {/* Showing selected filter and start date */}
             <BreadcrumbNav />
-            <div className='flex flex-col md:flex-row max-w-screen-lg justify-center w-full'>
+            <div className='flex flex-col mt-12 md:flex-row max-w-screen-lg justify-center w-full'>
                 {/* EVENTS LIST (or Event skeleton placeholders) */}
                 {shownList}
 
-                <div className='flex flex-col md:w-1/5 m-2 hidden lg:block'>
+                <div className='flex flex-col md:w-1/5 m-2 hidden xl:block'>
                     {/* FILTERS AND DATEPICKER FOR TABLET AND DESKTOP */}
                     <EventDatepicker />
                     {/* Show filters only to authenticated users */}
                     {user && <EventFilters totalItems={paginationResult.totalItems} />}
                 </div>
 
-                <div className="fixed bottom-3 left-1/2 transform -translate-x-1/2 md:right-3/4 md:left-auto lg:hidden">
+                <div className="fixed bottom-3 left-1/2 transform -translate-x-1/2 md:right-3/4 md:left-auto xl:hidden">
                     {/* OPTIONS FOR MOBILE ONLY */}
                     <EventOptions user={user} totalItems={paginationResult.totalItems} />
                 </div>

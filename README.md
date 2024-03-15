@@ -10,6 +10,7 @@ The deployed application can be found at https://fishing-buddies.fly.dev/
 | [Technologies](#technologies)
 | [Installation](#installation)
 | [Structure](#structure)
+| [Security](#security)
 | [Roadmap](#roadmap)
 | [Endpoints](#endpoints)
 
@@ -28,7 +29,9 @@ All users can view a list of all events, detailed info of any unique event and o
 |---
 
 #### Features
-The application features authorization and authentication of users, client and server-side data validation, persisting data, all CRUD operations, error handling, WebSocket protocol, photo-uploading to a third party service(Cloudinary), user followings, event attendance, various filtering mechanisms, responsive design, and more...
+The application features authorization and authentication of users(*and Facebook login**), Refresh Token functionality, client and server-side data validation, persisting data, all CRUD operations, error handling, WebSocket protocol, photo-uploading to a third party service(Cloudinary), user followings, event attendance, various filtering mechanisms, responsive design, dark and light themes, and more...
+
+**As Facebook requires a business account, in order to allow the developers to get access to data from users without "app role" set up, if you want to test the feature, contact me(either by the email or the phone number, provided in my CV/Portfolio), so that I can set up your Facebook account with an app role.*
 
 ## Technologies
 
@@ -56,6 +59,7 @@ dotnet run
 The application will be accessible at `localhost:5000`
 
 ## Structure
+
 "Fishing Buddies" is an application consisting of multiple projects and is built using Clean Architecture, with CQRS and Mediator patterns. Each project has it's own responsibility: 
 + "API" - receives HTTP requests and responds to them.
 + "Application" - processes business logic.
@@ -65,7 +69,18 @@ The application will be accessible at `localhost:5000`
 
 The Client-App itself utilizes Redux, a state management library, to maintain a centralized and predictable state. Redux stores the entire application state in a single store, making it easier to manage and update data. The major features- authentication, events and profiles, among others, are separated into their own slices. 
 
+## Security
+
+### Headers
+The application is graded `"A"` for Content Security Policies on [securityheaders.com](https://securityheaders.com/?q=https%3A%2F%2Ffishing-buddies.fly.dev%2F&followRedirects=on)
+
+### Refresh Token
+The application uses a *Refresh Token* cookie. The token is valid for only 1 minute(for testing and showcase purposes), so even if the JWT, that is stored in the Local Storage, is compromised, the user profile cannot be authenticated, if the *Refresh Token* is revoked and the User is auto-logged out in their next visit to the app.
+
 ## Roadmap
+
+There are still some details that need taking care of, but apart from that, there is still one very important part of the project missing - testing. 
+Next on my list is adding unit and implementation tests.
 
 ## Endpoints:
 The API Endpoints can be found [here](./API/Endpoints.md).

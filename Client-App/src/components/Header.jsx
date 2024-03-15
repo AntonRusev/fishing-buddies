@@ -26,13 +26,13 @@ const Header = () => {
                 to="/"
             >
                 <div className="align-center font-serif">
-                        <h3 className="text-cyan-600 font-cinzel font-light text-2xl leading-1.3 tracking-wide">
-                            Fishing <span className="bg-cyan-600 text-gray-900 inline-block leading-1.8 px-2">Buddies</span>
-                        </h3>
+                    <h3 className="text-cyan-600 font-light text-2xl leading-1.3 tracking-wide">
+                        Fishing <span className="bg-cyan-600 text-gray-900 inline-block leading-1.8 px-2">Buddies</span>
+                    </h3>
                 </div>
             </Navbar.Brand>
 
-            <div className="flex md:order-2">
+            <div className="flex sm:justify-end md:w-40 lg:w-48 md:order-2">
                 {/* Show User Profile only if user is authenticated */}
                 {user.username
                     ?
@@ -80,7 +80,7 @@ const Header = () => {
                     </Dropdown>
                     :
                     // DARK MODE TOGGLE if there is no authenticated User, small screen size
-                    !user.username && <DarkThemeToggle className="hidden md:inline-block mr-auto" />
+                    !user.username && <DarkThemeToggle className="hidden md:inline-block" />
                 }
 
                 {/* TOGGLE BUTTON FOR NAV BAR */}
@@ -94,6 +94,14 @@ const Header = () => {
                     as={NavLink}
                     to="/">
                     Home
+                </Navbar.Link>
+
+                <Navbar.Link
+                    className="text-white"
+                    as={NavLink}
+                    to="/about"
+                >
+                    About
                 </Navbar.Link>
 
                 <Navbar.Link

@@ -20,7 +20,7 @@ Guest users can access:
 + The list of events.
 + Details for any unique event.
 + Other users' profiles
-+ The Login and Register components.
++ The Login and Register(+ Sign In with Facebook) components.
 + Dark or light theme option.
 + Event filtering option, but only by starting date.
 
@@ -30,7 +30,7 @@ Registered users have access to:
 + Editing, Deleting and Disabling/Enabling their own Events.
 + Confirming or cancelling Attendance to other users' Events.
 + The Followers feature- the option to "follow" other users or being "followed" by them.
-+ Uploading photos and selecting one of them as Main photo(Avatar).
++ Uploading photos, deleting already uploaded photos, and selecting one of them as Main photo(Avatar).
 + Adding their own User Bio.
 + View any given Event's chat board and write chat messages. 
 + Various event filtering options, such as if the user is attending or if is host.
