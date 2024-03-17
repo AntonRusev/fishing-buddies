@@ -35,7 +35,7 @@ namespace API.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(1), // Setting JWT's expiration date
+                Expires = DateTime.UtcNow.AddMinutes(5), // Setting JWT's expiration date
                 SigningCredentials = credentials,
             };
 

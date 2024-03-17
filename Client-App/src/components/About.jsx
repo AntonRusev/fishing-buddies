@@ -23,9 +23,9 @@ const About = () => {
 
                             {/* CONTENT */}
                             <Accordion.Content className='bg-white'>
-                                <p className="mb-2 whitespace-pre-wrap text-gray-500 dark:text-gray-400">
+                                <div className="mb-2 whitespace-pre-wrap text-gray-500 dark:text-gray-400">
                                     {x.content}
-                                </p>
+                                </div>
                             </Accordion.Content>
                         </Accordion.Panel>
                     ))}
