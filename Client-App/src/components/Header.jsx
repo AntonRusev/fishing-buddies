@@ -10,7 +10,7 @@ const Header = () => {
 
     const user = useSelector(selectUser);
 
-    const HandleLogOut = () => {
+    const handleLogOut = () => {
         dispatch(logOut());
         navigate('/');
     };
@@ -32,7 +32,10 @@ const Header = () => {
                 </div>
             </Navbar.Brand>
 
-            <div className="flex sm:justify-end md:w-40 lg:w-48 md:order-2">
+            <div
+                className="flex sm:justify-end md:w-40 lg:w-48 md:order-2"
+                data-testid="avatar-dropdown"
+            >
                 {/* Show User Profile only if user is authenticated */}
                 {user.username
                     ?
@@ -74,7 +77,7 @@ const Header = () => {
                         <Dropdown.Divider />
 
                         {/* LOGOUT */}
-                        <Dropdown.Item onClick={() => HandleLogOut()}>
+                        <Dropdown.Item onClick={() => handleLogOut()}>
                             Sign out
                         </Dropdown.Item>
                     </Dropdown>

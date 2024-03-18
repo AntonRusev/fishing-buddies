@@ -31,11 +31,9 @@ export const errorHandleMiddleware =
                         store.dispatch(logOut());
                         toast.error("Session expired- please login again");
                     };
-                    console.log(action)
-                    console.log(headerEntriesArray)
                     // Checking if the 401 is because of expired/invalid Refresh Token
                     if (headerEntriesArray.length > 1) {
-                        // In development the proper header is at headerEntriesArray[1][1], in production it's [8][1]
+                        // In development the proper header is at headerEntriesArray[1][1], in production(deployed) it's [8][1]
                         if (process.env.NODE_ENV === 'production' && headerEntriesArray[8][1]?.includes('Bearer error="invalid_token')) {
                             expiredTokenLogout();
                         } else if (process.env.NODE_ENV === 'development' && headerEntriesArray[1][1]?.includes('Bearer error="invalid_token')) {
