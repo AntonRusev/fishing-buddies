@@ -41,6 +41,7 @@ const Register = () => {
                         onSubmit={handleSubmit}
                         autoComplete='off'
                         className="flex max-w-md flex-col gap-4 mx-auto"
+                        data-testid="form-register"
                     >
                         {/* EMAIL */}
                         <CustomTextInput
@@ -64,6 +65,7 @@ const Register = () => {
                             name="password"
                             label="Your password"
                             type="password"
+                            data-testid="register-password"
                         />
 
                         {/* RePass - REPEAT PASSWORD */}
@@ -72,6 +74,7 @@ const Register = () => {
                             name="rePass"
                             label="Repeat password"
                             type="password"
+                            data-testid="register-rePass"
                         />
 
                         {/* SUBMIT */}

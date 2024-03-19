@@ -1,19 +1,12 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { screen, fireEvent, act, waitFor } from '@testing-library/react';
 
 import { renderWithProviders } from '../../utils/test-utils';
+
 import Header from '../../components/Header';
+import { mockUser } from '../../test/mocks/userState';
 
 describe("testing Header", () => {
-    // User Mockup
-    const mockUser = {
-        user: {
-            username: "Name",
-            token: "Token",
-            image: "ImageURL",
-            email: "Email",
-        }
-    };
 
     it("is showing the Title of the app", () => {
         renderWithProviders(<Header />);
@@ -149,8 +142,9 @@ describe("testing Header", () => {
 
         expect(global.window.location.pathname).toBe(`/profile/${mockUser.user.username}`);
     });
+
     it("is logging out as intended", async () => {
-        const { getByTestId } = renderWithProviders(<Header />, {
+        const { getByTestId, queryByText } = renderWithProviders(<Header />, {
             preloadedState: {
                 auth: mockUser
             },
@@ -168,6 +162,21 @@ describe("testing Header", () => {
 
         await waitFor(() => {
             expect(global.window.location.pathname).toBe('/');
+        });
+        await waitFor(() => {
+            expect(queryByText('My Profile')).not.toBeInTheDocument();
+        });
+        await waitFor(() => {
+            expect(queryByText('Sign out')).not.toBeInTheDocument();
+        });
+        await waitFor(() => {
+            expect(queryByText('Create')).not.toBeInTheDocument();
+        });
+        await waitFor(() => {
+            expect(queryByText('Login')).toBeInTheDocument();
+        });
+        await waitFor(() => {
+            expect(queryByText('Register')).toBeInTheDocument();
         });
     });
 

@@ -66,7 +66,10 @@ let EventForm = () => {
                 const newId = uuid();
                 await createEvent({ ...values, date: customDate, id: newId })
                     .unwrap()
-                    .then(navigate(`/events/${newId}`));
+                    .then(setTimeout(() => {
+                        // delay before navigating to the newly created event
+                        navigate(`/events/${newId}`);
+                    }, "1000"));
             };
 
             actions.resetForm();

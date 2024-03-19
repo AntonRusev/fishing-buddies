@@ -86,7 +86,10 @@ const EventDashboard = () => {
     };
 
     const content = (
-        <div className='relative flex flex-col items-center dark:bg-gray-900'>
+        <div 
+        className='relative flex flex-col items-center dark:bg-gray-900'
+        data-testid="events-dashboard"
+        >
             {/* Showing selected filter and start date */}
             <BreadcrumbNav />
             <div className='flex flex-col mt-12 md:flex-row max-w-screen-lg justify-center w-full'>
