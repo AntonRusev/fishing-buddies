@@ -4,7 +4,7 @@ import { screen, fireEvent, act, waitFor } from '@testing-library/react';
 import { renderWithProviders } from '../../utils/test-utils';
 
 import Header from '../../components/Header';
-import { mockUser } from '../../test/mocks/userState';
+import { mockUser } from '../../test/mocks/state/userState';
 
 describe("testing Header", () => {
 

@@ -20,6 +20,7 @@ const EventDetailedAttendees = ({ fishingEvent }) => {
                     <li
                         key={attendee.username}
                         className="py-3 sm:py-4"
+                        data-testid="event-details-attendee"
                     >
                         <div className="flex items-center space-x-4 px-2">
                             <div className="shrink-0">

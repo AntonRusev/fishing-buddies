@@ -19,23 +19,29 @@ let EventCard = ({ fishingEvent }) => {
     useEffect(() => {
         fishingEvent.attendees.map(attendee => {
             if (attendee.username === fishingEvent.hostUsername) {
+                // Get the host User info(image, etc) from the attendee that maches the hostUsername of the Event
                 setHost(attendee);
                 if (attendee.username === user) {
+                    // If the authenticated User is host of the Event
                     setUserIsHost(true);
                 };
             };
 
             if (attendee.username === user) {
+                // If the authenticated User is one of attendees of the Event
                 setUserIsAttendee(true);
             };
         });
     }, [fishingEvent]);
 
     // Getting the Day, Month and Year from the Event object;
-    const [day, month, year] = format(fishingEvent.date, 'dd MMM yyyy').split(' ');
+    const [day, month] = format(fishingEvent.date, 'dd MMM yyyy').split(' ');
 
     const content = (
-        <div className="relative overflow-hidden m-4 border-2 border-cyan-600 dark:border-white rounded sm:flex md:flex px-5 py-3 font-lato bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-400">
+        <div
+            className="relative overflow-hidden m-4 border-2 border-cyan-600 dark:border-white rounded sm:flex md:flex px-5 py-3 font-lato bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-400"
+            data-testid="event-card"
+        >
 
             {/* CANCELLED RIBBON */}
             {fishingEvent.isCancelled &&
@@ -126,6 +132,7 @@ let EventCard = ({ fishingEvent }) => {
                                             img={attendee.image}
                                             rounded
                                             stacked
+                                            data-testid="card-event-attendee"
                                         />
                                     );
                                 })}
@@ -135,15 +142,17 @@ let EventCard = ({ fishingEvent }) => {
                         </Avatar.Group>
                     </div>
 
+                    {/* TODO Fix the tooltip popover in build */}
                     {/* TOOLTIP POPOVER ATTENDEES */}
-                    <ReactTooltip
+                    {/* <ReactTooltip
                         id={fishingEvent.id}
                         opacity={1}
                         style={{ backgroundColor: "#64748b" }}
+                        className="flex flex-col"
                     >
-                        <div className="flex flex-col">
-                            {/* Show tooltip popover with all atendees' names */}
-                            <h5 className="font-semibold text-white">
+                        <div className="flex flex-col"> */}
+                    {/* Show tooltip popover with all atendees' names */}
+                    {/* <h5 className="font-semibold text-white">
                                 Attendees:
                             </h5>
                             {fishingEvent.attendees.map(an => {
@@ -157,7 +166,7 @@ let EventCard = ({ fishingEvent }) => {
                                 );
                             })}
                         </div>
-                    </ReactTooltip>
+                    </ReactTooltip> */}
 
                     {/* VIEW BUTTON/LINK */}
                     <Button

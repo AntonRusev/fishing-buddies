@@ -51,12 +51,16 @@ The deployed application can be found at https://fishing-buddies.fly.dev/
 Enter the following commands in the terminal-
 ```
 git clone https://github.com/AntonRusev/fishing-buddies.git
+cd .\fishing-buddies\API
+dotnet run
+
+<<Open New Terminal (in VSCode Ctrl + Shift + `)>>
+
 cd .\fishing-buddies\Client-App
 npm install
-cd ..\API
-dotnet run
+npm run dev
 ```
-The application will be accessible at `localhost:5000`
+The application will be accessible at `https://localhost:3000/` in development mode, and if built, at `https://localhost:5000/`.
 
 ## Structure
 
@@ -75,12 +79,11 @@ The Client-App itself utilizes Redux, a state management library, to maintain a 
 The application is graded `"A"` for Content Security Policies on [securityheaders.com](https://securityheaders.com/?q=https%3A%2F%2Ffishing-buddies.fly.dev%2F&followRedirects=on)
 
 ### Refresh Token
-The application uses a *Refresh Token* cookie. The token is valid for only 1 minute(for testing and showcase purposes), so even if the JWT, that is stored in the Local Storage, is compromised, the user profile cannot be authenticated, if the *Refresh Token* is revoked and the User is auto-logged out in their next visit to the app.
+The application uses a *Refresh Token* cookie. The token is valid for 5 minutes, so even if the JWT, that is stored in the Local Storage, is compromised, the user profile cannot be authenticated, if the *Refresh Token* is revoked and the User is auto-logged out in their next visit to the app.
 
 ## Roadmap
 
-There are still some details that need taking care of, but apart from that, there is still one very important part of the project missing - testing. 
-Next on my list is adding unit and implementation tests.
+Currently, the focus is on expanding the pool of unit and integration tests.
 
 ## Endpoints:
 The API Endpoints can be found [here](./API/Endpoints.md).

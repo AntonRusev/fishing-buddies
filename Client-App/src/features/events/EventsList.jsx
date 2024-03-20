@@ -21,7 +21,7 @@ const EventsList = ({ fishingEvents }) => {
     );
 
     return (
-        <section>
+        <section data-testid="events-list">
             {content}
         </section>
     );

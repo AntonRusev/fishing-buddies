@@ -1,7 +1,7 @@
 // User Mockup
 export const mockUser = {
     user: {
-        username: "Name",
+        username: "User",
         token: "Token",
         image: "ImageURL",
         email: "Email",

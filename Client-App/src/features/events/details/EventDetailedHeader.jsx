@@ -35,7 +35,12 @@ const EventDetailedHeader = ({ fishingEvent }) => {
                     Hosted by
                     <span className="font-bold">
                         {/* PROFILE LINK */}
-                        <NavLink to={`/profile/${fishingEvent.hostUsername}`}> {fishingEvent.hostUsername}</NavLink>
+                        <NavLink
+                            to={`/profile/${fishingEvent.hostUsername}`}
+                            data-testid="event-details-hostlink"
+                        >
+                            {fishingEvent.hostUsername}
+                        </NavLink>
                     </span>
                 </div>
             </div>
