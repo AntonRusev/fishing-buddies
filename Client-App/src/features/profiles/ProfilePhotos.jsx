@@ -35,7 +35,7 @@ const ProfilePhotos = () => {
 
     if (profileIsLoading || isFetching) {
         photosView = (
-            <CustomSpinner text={`Loading ${username}'s photos...`} />
+            <CustomSpinner text={`Loading ${profile}'s photos...`} />
         );
     } else if (isSuccess && profile) {
         photosView = (

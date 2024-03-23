@@ -31,7 +31,10 @@ const ProfilePage = () => {
     };
 
     const content = (
-        <div className="flex flex-col justify-center align-center items-center dark:bg-gray-900">
+        <div
+            className="flex flex-col justify-center align-center items-center dark:bg-gray-900"
+            data-testid="profile-page"
+        >
             <ProfileHeader />
             {profileView}
         </div>

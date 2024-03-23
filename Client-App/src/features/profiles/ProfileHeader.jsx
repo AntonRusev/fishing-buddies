@@ -51,23 +51,31 @@ let ProfileHeader = () => {
                 <div className="w-full ml-3 md:mt-0 md:ml-6 sm:ml-3">
                     {/* USERNAME */}
                     <h3 className="flex mt-2 mb-1 tracking-wider font-serif text-4xl text-600 font-bold font-serif text-gray-700 dark:text-white">
-                        {username}' Profile
+                        {profile.username}'s Profile
                     </h3>
                 </div>
             </>
         );
-    }
+    };
 
-    const content = (
-        <div className="flex flex-col items-center w-full m-4">
-            <div className="relative overflow-hidden xl:max-w-screen-xl sm:w-3/4 items-center mt-4 rounded-t sm:flex md:flex px-5 py-3 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-400">
-                {profileHeaderView}
+    let content;
+    
+    if (profile) {
+        content = (
+            <div className="flex flex-col items-center w-full m-4">
+                <div className="relative overflow-hidden xl:max-w-screen-xl sm:w-3/4 items-center mt-4 rounded-t sm:flex md:flex px-5 py-3 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-400">
+                    {profileHeaderView}
+                </div>
+
+                {/* PROFILE NAVIGATION */}
+                <ProfileNavigation username={profile.username} />
             </div>
-
-            {/* PROFILE NAVIGATION */}
-            <ProfileNavigation username={username} />
-        </div>
-    );
+        );
+    } else {
+        content = (
+            <div className="flex flex-col items-center w-full m-4">No profile to be shown.</div>
+        );
+    };
 
     return content;
 };

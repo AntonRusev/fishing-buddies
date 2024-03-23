@@ -38,6 +38,7 @@ let ProfilePhotoListItem = ({ photo, handleOpenModal, handleSetMainPhoto, delete
                             isProcessing={setMainIsLoading && photo.id === targetPhoto}
                             disabled={setMainIsLoading || deleteIsLoading}
                             className='absolute bottom-1 left-1 rounded-lg shadow-2xl'
+                            data-testid="profile-photo-button-setmain"
                         >
                             <HiBadgeCheck className="h-6 w-6" />
                         </Button>
@@ -53,6 +54,7 @@ let ProfilePhotoListItem = ({ photo, handleOpenModal, handleSetMainPhoto, delete
                             isProcessing={deleteIsLoading && photo.id === targetPhoto}
                             disabled={setMainIsLoading || deleteIsLoading}
                             className='absolute bottom-1 right-1 rounded-lg shadow-2xl'
+                            data-testid="profile-photo-button-delete"
                         >
                             <HiTrash className="h-6 w-6" />
                         </Button>

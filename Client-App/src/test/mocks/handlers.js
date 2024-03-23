@@ -95,7 +95,7 @@ export const handlers = [
             paginationResult: '{"currentPage":1,"itemsPerPage":5,"totalItems":3,"totalPages":1}',
         });
     }),
-    http.get('https://localhost:5000/api/events/:id', async (req, res, ctx) => {
+    http.get('https://localhost:5000/api/events/:id', async () => {
         await delay(150)
         return HttpResponse.json(
             {
@@ -135,5 +135,47 @@ export const handlers = [
                 ]
             }
         )
+    }),
+    http.delete('https://localhost:5000/api/events/:id', () => {
+        return HttpResponse.json({})
+    }),
+    http.post('https://localhost:5000/api/events/:id/attend', () => {
+        return HttpResponse.json({})
+    }),
+    http.post('https://localhost:5000/api/photos/:id/setMain', () => {
+        return HttpResponse.json({})
+    }),
+    http.delete('https://localhost:5000/api/photos/:id', async () => {
+        await delay(150)
+        return HttpResponse.json({})
+    }),
+    http.get('https://localhost:5000/api/profiles/:username', async () => {
+        await delay(150)
+        return HttpResponse.json({
+            username: "mockusername1",
+            bio: "Bio1",
+            image: "Image1",
+            following: false,
+            followersCount: 2,
+            followingCount: 3,
+            photos: [
+                {
+                    id: "photoId1",
+                    url: "photoUrl1",
+                    isMain: true
+                },
+                {
+                    id: "photoId2",
+                    url: "photoUrl2",
+                    isMain: false
+                }
+            ],
+        })
+    }),
+    http.put('https://localhost:5000/api/profiles', () => {
+        return HttpResponse.json({})
+    }),
+    http.post('https://localhost:5000/chat/negotiate', () => {
+        return HttpResponse.json({})
     }),
 ];

@@ -1,5 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
-import { MemoryRouter, Routes, Route, BrowserRouter } from 'react-router-dom';
+import { describe, expect, it } from 'vitest';
 import { format } from "date-fns";
 import { screen, fireEvent, act, waitFor } from '@testing-library/react';
 
@@ -9,7 +8,7 @@ import { mockUser } from '../../../test/mocks/state/userState';
 import EventDetails from '../../../features/events/details/EventDetails';
 
 describe("testing EventDetails", () => {
-    window.history.pushState({}, '', '/events/1')
+    window.history.pushState({}, '', '/events/1');
 
     it("shows the details page", async () => {
         renderWithProviders(<EventDetails />);
@@ -24,7 +23,7 @@ describe("testing EventDetails", () => {
     it("shows the the proper Event data", async () => {
         renderWithProviders(<EventDetails />);
 
-        const date = format("2024-04-07T14:00:12.399877Z", 'dd MMM yyyy')
+        const date = format("2024-04-07T14:00:12.399877Z", 'dd MMM yyyy');
 
         await waitFor(() => {
             expect(screen.queryByText("Event 1")).toBeInTheDocument();
@@ -43,7 +42,7 @@ describe("testing EventDetails", () => {
         await waitFor(() => {
             const pictureElement = screen.getByAltText('bg-picture'); // Image alt text
             expect(pictureElement).toBeVisible();
-            expect(pictureElement).toHaveAttribute('src', '/flowing-freshwater.jpg')
+            expect(pictureElement).toHaveAttribute('src', '/flowing-freshwater.jpg');
         });
 
     });
@@ -147,6 +146,125 @@ describe("testing EventDetails", () => {
 
         await waitFor(() => {
             expect(global.window.location.pathname).toBe(`/profile/Attendee2`);
+        });
+    });
+
+    it("does not show the chat to not authenticated users", async () => {
+        renderWithProviders(<EventDetails />);
+
+        await waitFor(() => {
+            expect(screen.queryByText("Chat about this event")).not.toBeInTheDocument();
+            expect(screen.queryByText("No comments.")).not.toBeInTheDocument();
+        });
+    });
+
+    it("shows the chat to authenticated users with no comments", async () => {
+        renderWithProviders(<EventDetails />, {
+            preloadedState: {
+                auth: mockUser
+            }
+        });
+
+        await waitFor(() => {
+            expect(screen.queryByText("Chat about this event")).toBeInTheDocument();
+            expect(screen.queryByText("No comments.")).toBeInTheDocument();
+        });
+    });
+
+    // it("is working as intended when pressing add comment", async () => {
+    //     renderWithProviders(<EventDetails />, {
+    //         preloadedState: {
+    //             auth: mockUser
+    //         }
+    //     });
+
+    //     let commentInput;
+    //     let buttonElement;
+
+    //     await waitFor(() => {
+    //         commentInput = screen.getByPlaceholderText('Enter your comment (Enter to submit, SHIFT + Enter for new line)');
+    //         buttonElement = screen.getByRole('button', { name: /Add Comment/i });
+
+    //         expect(commentInput).toBeInTheDocument();
+    //         expect(buttonElement).toBeInTheDocument();
+    //         expect(buttonElement).toHaveAttribute('disabled');
+    //     });
+
+    //     act(() => {
+    //         fireEvent.change(commentInput, { target: { value: 'First comment!' } });
+    //         fireEvent.blur(commentInput);
+    //     });
+
+    //     await waitFor(() => {
+    //         expect(buttonElement).not.toHaveAttribute('disabled');
+    //     });
+
+    //     act(() => {
+    //         fireEvent.click(buttonElement);
+    //     });
+
+    //     await waitFor(() => {
+    //         expect(commentInput).toHaveValue('');        // Resets the input field
+    //         // TODO wait for websocket MSW testing support release
+    //         // expect(screen.queryByText("First comment!")).toBeInTheDocument();
+    //     });
+    // });
+
+    it("is working as intended when Edit button is clicked", async () => {
+        renderWithProviders(<EventDetails />, {
+            preloadedState: {
+                auth: { user: { username: "Host1" } }
+            }
+        });
+
+        let buttonElement;
+
+        await waitFor(() => {
+            buttonElement = screen.queryByText("Edit");
+            expect(buttonElement).toBeInTheDocument();
+        });
+
+        act(() => {
+            fireEvent.click(buttonElement);
+        });
+
+        await waitFor(() => {
+            expect(global.window.location.pathname).toBe('/manage/1');
+        });
+    });
+
+    it("is working as intended when Remove button is clicked", async () => {
+        renderWithProviders(<EventDetails />, {
+            preloadedState: {
+                auth: { user: { username: "Host1" } }
+            }
+        });
+
+        let removeButtonElement;
+        let confirmButtonElement;
+
+        await waitFor(() => {
+            removeButtonElement = screen.queryByText("Remove");
+            expect(removeButtonElement).toBeInTheDocument();
+        });
+
+        act(() => {
+            fireEvent.click(removeButtonElement);
+        });
+
+        await waitFor(() => {
+            confirmButtonElement = screen.queryByText("Yes, I'm sure");
+
+            expect(screen.getByText("Are you sure you want to delete this event?")).toBeInTheDocument();
+            expect(confirmButtonElement).toBeInTheDocument();
+        });
+
+        act(() => {
+            fireEvent.click(confirmButtonElement);
+        });
+
+        await waitFor(() => {
+            expect(global.window.location.pathname).toBe('/events');
         });
     });
 });

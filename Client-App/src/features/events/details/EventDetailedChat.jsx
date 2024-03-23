@@ -7,7 +7,6 @@ import { startSignalRConnection, stopSignalRConnection, addComment, selectCommen
 
 import { CustomTextArea, CustomButton } from "../../../components/common/form";
 import ChatBubble from "../../../components/common/ChatBubble";
-import { commentSchema } from "../../../utils/schemas";
 
 const EventDetailedChat = ({ eventId }) => {
     const dispatch = useDispatch();
@@ -40,7 +39,7 @@ const EventDetailedChat = ({ eventId }) => {
     };
 
     const content = (
-        <section className="bg-gray-200 rounded mb-4 dark:bg-gray-900">
+        <section className="bg-gray-200 rounded mb-4 dark:bg-gray-900"        >
             {/* HEADING */}
             <h4 className='flex justify-center w-full py-2 bg-gray-800 text-white dark:border-gray-600 border-b border-gray-200 w-full rounded-t'>
                 Chat about this event
@@ -53,7 +52,7 @@ const EventDetailedChat = ({ eventId }) => {
             >
                 {({ handleSubmit, isValid, isSubmitting, dirty }) => (
                     <>
-                    {/* FORM */}
+                        {/* FORM */}
                         <Form
                             onSubmit={handleSubmit}
                             autoComplete='off'
@@ -61,7 +60,7 @@ const EventDetailedChat = ({ eventId }) => {
                         >
                             {/* Add Comment TEXT AREA */}
                             <CustomTextArea
-                                className='max-w-full  bg-gray-100 dark:bg-gray-700 dark:text-white' 
+                                className='max-w-full  bg-gray-100 dark:bg-gray-700 dark:text-white'
                                 placeholder="Enter your comment (Enter to submit, SHIFT + Enter for new line)"
                                 name="body"
                                 // label="Your Comment"
