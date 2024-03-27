@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { format } from "date-fns";
 import { screen, fireEvent, act, waitFor } from '@testing-library/react';
+import { format } from "date-fns";
 
 import { renderWithProviders } from '../../../utils/test-utils';
 import { mockUser } from '../../../test/mocks/state/userState';

@@ -11,7 +11,7 @@ describe("testing ProfilePage", () => {
     it("shows the profile page", async () => {
         renderWithProviders(<ProfilePage />);
 
-        expect(screen.getByText("Loading...")).toBeInTheDocument();
+        expect(screen.getByText("Loading profile page...")).toBeInTheDocument();
 
         await waitFor(() => {
             expect(screen.queryByTestId("profile-page")).toBeVisible();

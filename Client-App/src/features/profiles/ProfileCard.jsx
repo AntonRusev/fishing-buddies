@@ -4,7 +4,10 @@ import FollowButton from './FollowButton';
 
 const ProfileCard = ({ profile }) => {
     const content = (
-        <div className="w-full min-w-64 max-w-72 p-3 mx-auto rounded-lg bg-white text-gray-500 dark:bg-gray-700 dark:text-gray-300">
+        <div
+            className="w-full min-w-64 max-w-72 p-3 mx-auto rounded-lg bg-white text-gray-500 dark:bg-gray-700 dark:text-gray-300"
+            data-testid="profile-followings-card"
+        >
             <div className="mb-2 flex items-center justify-between">
                 {/* IMAGE */}
                 <NavLink to={`/profile/${profile.username}`}>
@@ -30,7 +33,7 @@ const ProfileCard = ({ profile }) => {
             <p className="mb-4 min-h-12 text-sm">
                 {profile.bio}
             </p>
-            
+
             <ul className="flex text-sm">
                 {/* FOLLOWING */}
                 <li className="me-2">

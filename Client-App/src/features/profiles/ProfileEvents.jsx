@@ -15,7 +15,7 @@ const ProfileEvents = () => {
     const { username } = useParams();
 
     const { data, isLoading, isFetching, isSuccess } = useListProfileEventsQuery({ username, predicate }, { skip: !predicate });
-
+    
     const profileEventsList = useMemo(() => {
         if (isLoading || isFetching) {
             return (
@@ -29,6 +29,7 @@ const ProfileEvents = () => {
                         <div
                             key={event.id}
                             className="max-w-sm col-span-1 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                            data-testid="profile-events-item"
                         >
                             <NavLink to={`/events/${event.id}`}>
                                 <div className="sm:flex-shrink-0 md:flex-shrink-0">

@@ -16,29 +16,28 @@ const ProfilePage = () => {
         isSuccess
     } = useGetProfileQuery(username);
 
-    let profileView;
+    let content;
 
     if (isFetching || isLoading) {
-        profileView = (
-            <div className="flex w-full xl:max-w-screen-xl py-8 mx-2 bg-gray-50 rounded dark:bg-gray-800 sm:w-3/4">
-                <CustomSpinner />
+        content = (
+            <div className="flex flex-col justify-center align-center mt-16 items-center dark:bg-gray-900 min-h-96">
+                <div className="flex w-full xl:max-w-screen-xl mx-2 px-12 sm:w-3/4 dark:bg-gray-900">
+                    <CustomSpinner text={"Loading profile page..."} />
+                </div>
             </div>
         );
     } else if (isSuccess && profile) {
-        profileView = (
-            <ProfileAbout profile={profile} />
+        content = (
+            <div
+                className="flex flex-col justify-center align-center items-center dark:bg-gray-900"
+                data-testid="profile-page"
+            >
+                <ProfileHeader />
+                <ProfileAbout profile={profile} />
+            </div>
+
         );
     };
-
-    const content = (
-        <div
-            className="flex flex-col justify-center align-center items-center dark:bg-gray-900"
-            data-testid="profile-page"
-        >
-            <ProfileHeader />
-            {profileView}
-        </div>
-    );
 
     return content;
 };

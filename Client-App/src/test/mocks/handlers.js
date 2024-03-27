@@ -2,24 +2,24 @@ import { http, HttpResponse, delay } from 'msw';
 
 export const handlers = [
     http.post('https://localhost:5000/api/account/login', async () => {
-        await delay(150)
+        await delay(150);
         return HttpResponse.json({
             username: "Name",
             token: "Token",
             image: "ImageURL",
-        }, { status: 200 })
+        }, { status: 200 });
     }),
     http.post('https://localhost:5000/api/account/register', async () => {
-        await delay(150)
+        await delay(150);
         return HttpResponse.json({
             username: "Name",
             token: "Token",
             image: "ImageURL",
-        }, { status: 200 })
+        }, { status: 200 });
     }),
     http.get('https://localhost:5000/api/events', async () => {
         // https://localhost:5000/api/events?pageNumber=1&pageSize=5
-        await delay(150)
+        await delay(150);
         return HttpResponse.json({
             apiResponse:
                 [
@@ -96,7 +96,7 @@ export const handlers = [
         });
     }),
     http.get('https://localhost:5000/api/events/:id', async () => {
-        await delay(150)
+        await delay(150);
         return HttpResponse.json(
             {
                 id: "1",
@@ -134,23 +134,23 @@ export const handlers = [
                     },
                 ]
             }
-        )
+        );
     }),
     http.delete('https://localhost:5000/api/events/:id', () => {
-        return HttpResponse.json({})
+        return HttpResponse.json({});
     }),
     http.post('https://localhost:5000/api/events/:id/attend', () => {
-        return HttpResponse.json({})
+        return HttpResponse.json({});
     }),
     http.post('https://localhost:5000/api/photos/:id/setMain', () => {
-        return HttpResponse.json({})
+        return HttpResponse.json({});
     }),
     http.delete('https://localhost:5000/api/photos/:id', async () => {
-        await delay(150)
-        return HttpResponse.json({})
+        await delay(150);
+        return HttpResponse.json({});
     }),
     http.get('https://localhost:5000/api/profiles/:username', async () => {
-        await delay(150)
+        await delay(150);
         return HttpResponse.json({
             username: "mockusername1",
             bio: "Bio1",
@@ -170,12 +170,71 @@ export const handlers = [
                     isMain: false
                 }
             ],
-        })
+        });
     }),
     http.put('https://localhost:5000/api/profiles', () => {
-        return HttpResponse.json({})
+        return HttpResponse.json({});
     }),
     http.post('https://localhost:5000/chat/negotiate', () => {
-        return HttpResponse.json({})
+        return HttpResponse.json({});
+    }),
+    http.get('https://localhost:5000/api/profiles/:username/events', async () => {
+        await delay(150);
+        return HttpResponse.json(
+            [
+                {
+                    id: "1",
+                    title: "title1",
+                    category: "calm-freshwater",
+                    date: "2024-01-07T14:00:12.399641Z"
+                },
+                {
+                    id: "2",
+                    title: "title2",
+                    category: "saltwater",
+                    date: "2024-08-07T14:00:12.399887Z"
+                },
+                {
+                    id: "3",
+                    title: "title3",
+                    category: "flowing-freshwater",
+                    date: "2024-10-07T14:00:12.399889Z"
+                },
+            ]
+        )
+    }),
+    http.get('https://localhost:5000/api/follow/:username', async () => {
+        await delay(150);
+        return HttpResponse.json(
+            [
+                {
+                    username: "mockuser1",
+                    bio: "bio1",
+                    image: "image1",
+                    following: false,
+                    followersCount: 1,
+                    followingCount: 2,
+                    photos: []
+                },
+                {
+                    username: "mockuser2",
+                    bio: "bio2",
+                    image: "image2",
+                    following: true,
+                    followersCount: 3,
+                    followingCount: 3,
+                    photos: []
+                },
+                {
+                    username: "mockuser3",
+                    bio: "bio3",
+                    image: "image3",
+                    following: false,
+                    followersCount: 0,
+                    followingCount: 0,
+                    photos: []
+                },
+            ]
+        )
     }),
 ];
