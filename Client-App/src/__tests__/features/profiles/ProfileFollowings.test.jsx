@@ -7,7 +7,7 @@ import ProfileFollowings from '../../../features/profiles/ProfileFollowings';
 import { mockUser } from '../../../test/mocks/state/userState';
 
 describe("testing ProfileFollowings", () => {
-    window.history.pushState({}, '', '/profile/mockusername1/followers')
+    window.history.pushState({}, '', '/profile/mockusername1/followers');
 
     it("shows the profile followings page with followers predicate", async () => {
         renderWithProviders(<ProfileFollowings />);

@@ -6,7 +6,7 @@ import ProfilePage from '../../../features/profiles/ProfilePage';
 
 
 describe("testing ProfilePage", () => {
-    window.history.pushState({}, '', '/profile/mockusername1')
+    window.history.pushState({}, '', '/profile/mockusername1');
 
     it("shows the profile page", async () => {
         renderWithProviders(<ProfilePage />);

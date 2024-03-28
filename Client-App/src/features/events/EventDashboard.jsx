@@ -10,7 +10,7 @@ import { selectCurrentUsername } from '../auth/authSlice';
 import EventsList from './EventsList';
 import EventFilters from './EventFilters';
 import EventOptions from './EventOptions';
-import EventCardPlaceholder from './EventCardPlaceholder';
+import EventCardPlaceholder from './card/EventCardPlaceholder';
 import EventDatepicker from './EventDatepicker';
 import BreadcrumbNav from '../../components/common/BreadcrumbNav';
 

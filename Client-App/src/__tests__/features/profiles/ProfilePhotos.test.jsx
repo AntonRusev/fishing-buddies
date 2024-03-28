@@ -5,7 +5,7 @@ import { renderWithProviders } from '../../../utils/test-utils';
 import ProfilePhotos from '../../../features/profiles/ProfilePhotos';
 
 describe("testing ProfilePhotos", () => {
-    window.history.pushState({}, '', '/profile/mockusername1')
+    window.history.pushState({}, '', '/profile/mockusername1');
 
     it("shows the list of profile photos", async () => {
         renderWithProviders(<ProfilePhotos />);

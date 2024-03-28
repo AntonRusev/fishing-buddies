@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import EventCard from "./EventCard";
+import EventCard from "./card/EventCard";
 
 const EventsList = ({ fishingEvents }) => {
 

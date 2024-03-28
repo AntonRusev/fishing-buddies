@@ -21,18 +21,22 @@ let EventForm = () => {
         date: new Date(),
         region: '',
     });
-
+    
+    // Get the Event Id from URL params
     const { id } = useParams();
     const navigate = useNavigate();
 
+    const [createEvent] = useCreateEventMutation();
+    const [editEvent] = useEditEventMutation();
+
     let fishingEvent;
+
     if (id) {
+        // If there is an Id, an Event is being edited,
+        // if there is no Id, an Event is being created
         const { data } = useGetEventQuery(id);
         fishingEvent = data;
     };
-
-    const [createEvent] = useCreateEventMutation();
-    const [editEvent] = useEditEventMutation();
 
     useEffect(() => {
         // If editing an Event, populate the input fields with the existing properties
@@ -42,7 +46,7 @@ let EventForm = () => {
                 title: fishingEvent.title,
                 category: fishingEvent.category,
                 description: fishingEvent.description,
-                date: fishingEvent.date,
+                date: new Date(fishingEvent.date),
                 region: fishingEvent.region,
             });
         };
@@ -67,7 +71,7 @@ let EventForm = () => {
                 await createEvent({ ...values, date: customDate, id: newId })
                     .unwrap()
                     .then(setTimeout(() => {
-                        // delay before navigating to the newly created event
+                        // delay before navigating to the edited event
                         navigate(`/events/${newId}`);
                     }, "1000"));
             };
@@ -79,7 +83,10 @@ let EventForm = () => {
     };
 
     const content = (
-        <section className="p-2 mt-10 dark:bg-gray-900">
+        <section
+            className="p-2 mt-10 dark:bg-gray-900"
+            data-testid="event-form"
+        >
             <Formik
                 validationSchema={eventSchema}
                 enableReinitialize
@@ -127,6 +134,7 @@ let EventForm = () => {
                                 minDate={new Date()}
                                 weekStart={1} // Monday
                                 title="Event Date"
+                                defaultDate={event.date}
                             />
 
                             {/* SUBMIT */}

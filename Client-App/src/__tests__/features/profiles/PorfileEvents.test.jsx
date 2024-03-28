@@ -6,7 +6,7 @@ import { renderWithProviders } from '../../../utils/test-utils';
 import ProfileEvents from '../../../features/profiles/ProfileEvents';
 
 describe("testing ProfileEvents", () => {
-    window.history.pushState({}, '', '/profile/mockusername1/events')
+    window.history.pushState({}, '', '/profile/mockusername1/events');
 
     it("shows the profile events page", async () => {
         renderWithProviders(<ProfileEvents />);
