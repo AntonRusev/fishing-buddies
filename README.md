@@ -16,7 +16,7 @@ The deployed application can be found at https://fishing-buddies.fly.dev/
 
 ## About
 
-### "Social Network" application for fishermen and fisherwomen
+### "Social Network" application for fans of fishing
 
 The purpose of "Fishing Buddies" is to provide people interested in fishing, with a platform, where they can create, or attend events, and interact with other fishing enthusiasts. 
 
@@ -29,7 +29,7 @@ All users can view a list of all events, detailed info of any unique event and o
 |---
 
 #### Features
-The application features authorization and authentication of users(*and Facebook login**), Refresh Token functionality, client and server-side data validation, persisting data, all CRUD operations, error handling, WebSocket protocol, photo-uploading to a third party service(Cloudinary), user followings, event attendance, various filtering mechanisms, responsive design, dark and light themes, and more...
+The application features authorization and authentication of users(*and Facebook sign-in**), email confirmation upon registration, Refresh Token functionality, client and server-side data validation, persisting data, all CRUD operations, error handling, WebSocket protocol, photo-uploading to a third party service(Cloudinary), user followings, event attendance, various filtering mechanisms, responsive design, dark and light themes, and more...
 
 **As Facebook requires a business account, in order to allow the developers to get access to data from users without "app role" set up, if you want to test the feature, contact me(either by the email or the phone number, provided in my CV/Portfolio), so that I can set up your Facebook account with an app role.*
 
@@ -37,6 +37,8 @@ The application features authorization and authentication of users(*and Facebook
 
 "Fishing Buddies" is a full-stack application, developed with `React` and `ASP.NET Core`.
 It is a multi-project solution that is built using Clean Architecture and the CQRS and Mediator pattern. Among the tools and utilities used in the development of this project are: `Vite`, `Redux-Toolkit`, `RTK-Query`, `Tailwind`, `Flowbite`, `React-Router-Dom`, `Formik`, `React-Infinite-Scroller`, `AutoMapper`, `SignalR`, `MediatR`, `.Net Core Identity` and others...
+
+`React Testing Library`, `Vitest` and `Mock Service Worker` are used for testing the client application.
 
 ## Installation
 
@@ -86,4 +88,5 @@ The application uses a *Refresh Token* cookie. The token is valid for 5 minutes,
 Currently, the focus is on expanding the pool of unit and integration tests.
 
 ## Endpoints:
-The API Endpoints can be found [here](./API/Endpoints.md).
+| [The API Endpoints can be found here](./API/Endpoints.md)
+|---

@@ -1,19 +1,16 @@
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import { Form, Formik } from 'formik';
 
 import { useRegisterMutation } from '../auth/authApiSlice';
-import { setCredentials } from '../auth/authSlice';
 
 import { CustomTextInput, CustomButton } from '../../components/common/form';
+import FbLogin from './FbLogin';
 
 import { registerSchema } from '../../utils/schemas';
-import FbLogin from './FbLogin';
 
 const Register = () => {
     const [register] = useRegisterMutation();
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleSubmit = async (values, actions) => {
@@ -23,9 +20,8 @@ const Register = () => {
         // using params: email, username and password 
         await register({ ...obj })
             .unwrap()
-            .then((payload) => dispatch(setCredentials({ ...payload, email })))
             .then(() => actions.resetForm())
-            .then(() => navigate('/events'))
+            .then(() => navigate(`/account/registerSuccess?email=${email}`))
             .catch((error) => console.log(error));
     };
 
@@ -87,9 +83,18 @@ const Register = () => {
                     </Form>
                 )}
             </Formik>
-            
+
             {/* FACEBOOK SIGN IN BUTTON */}
             <FbLogin />
+
+            {/* LOGIN LINK */}
+            <p className='mx-auto mt-6 max-w-md w-full text-center text-gray-500 dark:text-gray-300 md:mt-12'>
+                <span>Already have an account? </span>
+                <NavLink
+                    className="underline text-purple-500"
+                    to="/login"
+                >Login Here.</NavLink>
+            </p>
         </section>
     );
 

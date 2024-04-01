@@ -14,6 +14,7 @@ primary_region = 'otp'
   Cloudinary__ApiKey = "494718911552283"
   Cloudinary__CloudName = "def5gz9ss"
   Facebook__AppId= "3618209665088182"
+  Sendgrid__User="fishing-buddies"
 
 [http_service]
   internal_port = 8080

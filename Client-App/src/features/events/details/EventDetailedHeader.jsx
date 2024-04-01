@@ -32,7 +32,7 @@ const EventDetailedHeader = ({ fishingEvent }) => {
 
                 {/* HOST */}
                 <div className="z-10 gap-y-1 overflow-hidden text-sm leading-6 text-gray-300">
-                    Hosted by
+                    <span>Hosted by </span>
                     <span className="font-bold">
                         {/* PROFILE LINK */}
                         <NavLink

@@ -4,7 +4,7 @@ import { format } from "date-fns";
 
 import { renderWithProviders } from '../../../utils/test-utils';
 
-import EventCard from '../../../features/events/EventCard';
+import EventCard from '../../../features/events/card/EventCard';
 import { mockEvent } from '../../../test/mocks/state/eventState';
 
 describe("testing EventCard", () => {

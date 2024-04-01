@@ -9,9 +9,11 @@ import { useLazyGetAuthUserQuery } from './features/auth/authApiSlice';
 import { selectUser, setCredentials, setToken } from './features/auth/authSlice';
 
 import Home from '../src/components/Home';
+import Header from './components/Header';
 import Login from '../src/features/auth/Login';
 import Register from './features/auth/Register';
-import Header from './components/Header';
+import RegisterSuccess from './features/auth/RegisterSuccess';
+import ConfirmEmail from './features/auth/ConfirmEmail';
 import EventDashboard from './features/events/EventDashboard';
 import EventForm from './features/events/EventForm';
 import EventDetails from './features/events/details/EventDetails';
@@ -24,9 +26,9 @@ import RequireAuth from './features/auth/RequireAuth';
 import GuestOnly from './features/auth/GuestOnly';
 import TokenComponent from './components/TokenComponent';
 import About from './components/About';
+import CustomSpinner from './components/common/CustomSpinner';
 
 import './App.css';
-import CustomSpinner from './components/common/CustomSpinner';
 
 function App() {
     const user = useSelector(selectUser);
@@ -101,6 +103,8 @@ function App() {
                             <Route element={<GuestOnly />}>
                                 <Route path='/login' element={<Login />} />
                                 <Route path='/register' element={<Register />} />
+                                <Route path='/account/registerSuccess' element={<RegisterSuccess />} />
+                                <Route path='/account/verifyEmail' element={<ConfirmEmail />} />
                             </Route>
 
                             {/* SERVER ERROR */}

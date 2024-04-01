@@ -19,7 +19,8 @@ export const authApiSlice = apiSlice.injectEndpoints({
             query: credentials => ({
                 url: '/account/register',
                 method: 'POST',
-                body: { ...credentials }
+                body: { ...credentials },
+                responseHandler: (response) => response.text(), // parsing non-JSON response
             })
         }),
         // FACEBOOK LOGIN
@@ -38,6 +39,21 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
             })
         }),
+        // VERIFY EMAIL
+        verifyEmail: builder.mutation({
+            query: ({ token, email }) => ({
+                url: `/account/verifyEmail?token=${token}&email=${email}`,
+                method: 'POST',
+                responseHandler: (response) => response.text(), // parsing non-JSON response
+            })
+        }),
+        // RESEND EMAIL CONFIRM
+        resendEmailConfirm: builder.query({
+            query: ({ email }) => ({
+                url: `/account/resendEmailConfirmationLink?email=${email}`,
+                responseHandler: (response) => response.text(), // parsing non-JSON response
+            })
+        }),
     })
 })
 
@@ -47,4 +63,6 @@ export const {
     useRegisterMutation,
     useFbLoginMutation,
     useRefreshTokenApiMutation,
+    useVerifyEmailMutation,
+    useLazyResendEmailConfirmQuery,
 } = authApiSlice;

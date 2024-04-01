@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import { Form, Formik } from 'formik';
 
 import { useLoginMutation } from '../auth/authApiSlice';
@@ -72,6 +72,15 @@ const Login = () => {
 
             {/* FACEBOOK SIGN IN BUTTON */}
             <FbLogin />
+
+            {/* REGISTER LINK */}
+            <p className='mx-auto mt-6 max-w-md w-full text-center text-gray-500 dark:text-gray-300 md:mt-12'>
+                <span>Don't have account yet? </span>
+                <NavLink
+                    className="underline text-purple-500"
+                    to="/register"
+                >Register Now.</NavLink>
+            </p>
         </section>
     );
 

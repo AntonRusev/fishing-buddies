@@ -24,6 +24,7 @@ Request Body: {email, password}
 POST /api/account/register
 Authorization: -
 Request Body: {email, username, password}
+Response: Text/Non-JSON
 ```
 
 #### Get Current User
@@ -31,6 +32,36 @@ Request Body: {email, username, password}
 GET /api/account
 Authorization: Token
 Request Body: -
+```
+
+#### Facebook Sign-In
+```
+POST /api/account/fbLogin?accessToken=${accessToken}
+Authorization: -
+Request Body: -
+```
+
+#### Refresh Token
+```
+POST /api/account/refreshToken
+Authorization: Token
+Request Body: -
+```
+
+#### Email Verification
+```
+POST /api/account/verifyEmail?token={token}&email={email}
+Authorization: -
+Request Body: -
+Response: Text/Non-JSON
+```
+
+#### Resend Confirmation Email
+```
+GET /api/account/resendEmailConfirmationLink?email={email}
+Authorization: -
+Request Body: -
+Response: Text/Non-JSON
 ```
 
 ## EVENTS

@@ -14,6 +14,7 @@
  + The input forms and the respective data are managed with `Formik`, and `Yup` is used for validation. 
  + `React Infinite Scroller` is used for pagination. 
  + `SignalR` is chosen for *WebSocket* connection management.
+ + `React Testing Library`, `Vitest` and `Mock Service Worker` are used for testing.
 
 ### Features
 Guest users can access:

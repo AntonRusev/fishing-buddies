@@ -18,9 +18,9 @@ let ProfilePhotoListItem = ({ photo, handleOpenModal, handleSetMainPhoto, delete
             <div className="relative w-80 h-auto rounded overflow-none">
                 {/* IMAGE */}
                 <img
-                    src={photo.url}
-                    className='w-full rounded'
-                    alt="picture"
+                    src={photo.url || "/user.png"}
+                    className='w-full rounded text-gray-600 text-center dark:text-gray-200'
+                    alt="user picture"
                 />
                 
                 {/* If User is Owner */}

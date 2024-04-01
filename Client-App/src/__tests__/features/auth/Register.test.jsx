@@ -125,7 +125,7 @@ describe("testing Register", () => {
 
         // Redirects
         await waitFor(() => {
-            expect(global.window.location.pathname).toBe('/events');
+            expect(global.window.location.pathname).toBe('/account/registerSuccess');
         });
     });
 });
