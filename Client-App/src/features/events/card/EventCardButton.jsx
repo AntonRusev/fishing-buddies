@@ -8,7 +8,7 @@ const EventCardButton = ({ fishingEvent }) => {
             as={NavLink}
             to={`/events/${fishingEvent.id}`}
             size="xs"
-            color="light"
+            color="dark"
         >
             View
         </Button>

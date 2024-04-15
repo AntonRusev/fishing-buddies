@@ -11,7 +11,7 @@ describe("testing ProfilePhotos", () => {
         renderWithProviders(<ProfilePhotos />);
 
         await waitFor(() => {
-            const pictureElements = screen.getAllByAltText('picture'); // Image alt text
+            const pictureElements = screen.getAllByAltText('user picture'); // Image alt text
             expect(pictureElements).toHaveLength(2);
             expect(pictureElements[0]).toBeVisible();
             expect(pictureElements[1]).toBeVisible();

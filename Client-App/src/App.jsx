@@ -55,7 +55,7 @@ function App() {
     if (isLoading) {
         // LOADER/SPINNER
         content = (
-            <div className='flex flex-col items-center justify-center h-screen w-full dark:bg-gray-900'>
+            <div className='flex flex-col items-center justify-center h-screen w-full bg-gray-50 dark:bg-gray-900'>
                 <CustomSpinner text="Application is loading..." />
             </div>
         );
@@ -78,7 +78,7 @@ function App() {
                     {/* Refresh Token Functionality */}
                     <TokenComponent />
 
-                    <main className='flex flex-col min-h-screen font-lato pt-14 dark:bg-gray-900'>
+                    <main className='flex flex-col min-h-screen font-lato pt-14 bg-gray-50 dark:bg-gray-900'>
                         <Routes>
                             {/* Routes accessible by both guests and authenticated users */}
                             <Route path='/' element={<Home />} />

@@ -5,7 +5,7 @@ import FollowButton from './FollowButton';
 const ProfileCard = ({ profile }) => {
     const content = (
         <div
-            className="w-full min-w-64 max-w-72 p-3 mx-auto rounded-lg bg-white text-gray-500 dark:bg-gray-700 dark:text-gray-300"
+            className="w-full min-w-64 max-w-72 p-3 mx-auto border-gray-200 shadow rounded-lg bg-gray-50 text-gray-500 dark:bg-gray-700 dark:text-gray-300"
             data-testid="profile-followings-card"
         >
             <div className="mb-2 flex items-center justify-between">

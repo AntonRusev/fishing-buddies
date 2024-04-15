@@ -10,7 +10,7 @@ import EventCardRegion from "./EventCardRegion";
 let EventCard = ({ fishingEvent }) => {
     const content = (
         <div
-            className="relative overflow-hidden m-4 border-2 border-cyan-600 dark:border-white rounded sm:flex md:flex px-5 py-3 font-lato bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-400"
+            className="relative overflow-hidden m-4 border-2 border-cyan-600 dark:border-white rounded sm:flex md:flex px-5 py-3 font-lato bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-400"
             data-testid="event-card"
         >
             {/* CANCELLED RIBBON */}
@@ -47,7 +47,7 @@ let EventCard = ({ fishingEvent }) => {
                 <EventCardRegion fishingEvent={fishingEvent} />
 
                 {/* DESCRIPTION */}
-                <p className="mb-2 mt-2 mr-6 text-gray-300 md:w-3/4 lg:w-3/4 text-gray-500 dark:text-gray-200 ">
+                <p className="mb-2 mt-2 mr-6 md:w-3/4 lg:w-3/4 text-gray-500 dark:text-gray-200 ">
                     {/* Shortening the description, if it's longer than 80 symbols */}
                     {fishingEvent.description && fishingEvent.description.length > 80
                         ? (fishingEvent.description)?.substring(0, 80) + "..."

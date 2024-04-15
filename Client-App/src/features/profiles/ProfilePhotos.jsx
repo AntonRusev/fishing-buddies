@@ -47,7 +47,7 @@ const ProfilePhotos = () => {
         <article className="flex flex-col items-center dark:bg-gray-900">
             <ProfileHeader />
 
-            <div className='flex flex-col w-full gap-2 bg-gray-100 p-2 pb-8 md:mb-8 rounded xl:max-w-screen-xl sm:items-start sm:w-3/4 dark:bg-gray-800'>
+            <div className='flex flex-col w-full gap-2 bg-white p-2 pb-8 md:mb-8 rounded xl:max-w-screen-xl sm:items-start sm:w-3/4 dark:bg-gray-800'>
                 {/* If the user is viewing his own profile */}
                 {/* Trigger button to alternate between Add Photo and View Photos modes*/}
                 {

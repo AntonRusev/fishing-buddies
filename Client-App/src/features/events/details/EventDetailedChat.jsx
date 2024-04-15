@@ -41,7 +41,7 @@ const EventDetailedChat = ({ eventId }) => {
     const content = (
         <section className="bg-gray-200 rounded mb-4 dark:bg-gray-900"        >
             {/* HEADING */}
-            <h4 className='flex justify-center w-full py-2 bg-gray-800 text-white dark:border-gray-600 border-b border-gray-200 w-full rounded-t'>
+            <h4 className='flex justify-center py-2 bg-gray-800 text-white dark:border-gray-600 border-b border-gray-200 w-full rounded-t'>
                 Chat about this event
             </h4>
 

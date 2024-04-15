@@ -16,7 +16,7 @@ const ProfileAbout = ({ profile }) => {
 
     if (profile && !editMode) {
         content = (
-            <article className="flex w-full xl:max-w-screen-xl mx-2 bg-gray-50 rounded sm:w-3/4 dark:bg-gray-900">
+            <article className="flex w-full xl:max-w-screen-xl mx-2 bg-white rounded sm:w-3/4 dark:bg-gray-900">
                 <div className="flex flex-col w-full content-between px-4 py-4 rounded sm:flex-row lg:gap-8 xl:gap-0 dark:bg-gray-800">
                     <div className="flex flex-col w-full ml-4 place-self-center">
                         {/* TITLE*/}

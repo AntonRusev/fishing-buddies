@@ -11,7 +11,7 @@ const CustomBanner = () => {
         return (
             <article className='w-full mt-4 -mb-4 mx-auto xl:max-w-screen-xl'>
                 <Banner>
-                    <div className="flex w-full flex-col justify-between rounded border-b border-gray-200 bg-gray-50 p-4 dark:border-gray-600 dark:bg-gray-700 md:flex-row">
+                    <div className="flex w-full flex-col justify-between rounded border-b border-gray-200 bg-gray-100 p-4 dark:border-gray-600 dark:bg-gray-700 md:flex-row">
                         <div className="mb-4 md:mb-0 md:mr-4">
                             <h2 className="mb-1 text-base font-semibold text-gray-900 dark:text-white">
                                 Experience all features

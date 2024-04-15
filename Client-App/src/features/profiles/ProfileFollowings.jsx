@@ -52,7 +52,7 @@ const ProfileFollowings = () => {
             {/* HEADER */}
             <ProfileHeader />
 
-            <div className="flex flex-col w-full items-start pb-8 md:mb-8 bg-gray-50 rounded xl:max-w-screen-xl sm:w-3/4 dark:bg-gray-800">
+            <div className="flex flex-col w-full items-start pb-8 md:mb-8 bg-white rounded xl:max-w-screen-xl sm:w-3/4 dark:bg-gray-800">
                 {/* TITLE */}
                 <h4 className="m-4 ml-8 font-bold text-lg text-gray-900 font-serif tracking-wide dark:text-white">
                     {capitalizeFirstLetter(predicate)}

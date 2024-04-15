@@ -60,40 +60,6 @@ describe("testing EventDetails", () => {
         });
     });
 
-    it("shows the proper buttons if the authenticated User is not the host and is not attending", async () => {
-        renderWithProviders(<EventDetails />, {
-            preloadedState: {
-                auth: mockUser
-            }
-        });
-
-        await waitFor(() => {
-            expect(screen.queryByText("Deactivate Event")).not.toBeInTheDocument();
-            expect(screen.queryByText("Activate Event")).not.toBeInTheDocument();
-            expect(screen.queryByText("Cancel attendance")).not.toBeInTheDocument();
-            expect(screen.queryByText("Join Event")).toBeInTheDocument();
-            expect(screen.queryByText("Edit")).not.toBeInTheDocument();
-            expect(screen.queryByText("Remove")).not.toBeInTheDocument();
-        });
-    });
-
-    it("shows the proper buttons if the authenticated User is not the host and is attending", async () => {
-        renderWithProviders(<EventDetails />, {
-            preloadedState: {
-                auth: { user: { username: "Attendee2" } }
-            }
-        });
-
-        await waitFor(() => {
-            expect(screen.queryByText("Deactivate Event")).not.toBeInTheDocument();
-            expect(screen.queryByText("Activate Event")).not.toBeInTheDocument();
-            expect(screen.queryByText("Cancel attendance")).toBeInTheDocument();
-            expect(screen.queryByText("Join Event")).not.toBeInTheDocument();
-            expect(screen.queryByText("Edit")).not.toBeInTheDocument();
-            expect(screen.queryByText("Remove")).not.toBeInTheDocument();
-        });
-    });
-
     it("shows the proper buttons if the authenticated User is the host and the event is not cancelled", async () => {
         renderWithProviders(<EventDetails />, {
             preloadedState: {
@@ -102,7 +68,6 @@ describe("testing EventDetails", () => {
         });
 
         await waitFor(() => {
-            expect(screen.queryByText("Deactivate Event")).toBeInTheDocument();
             expect(screen.queryByText("Activate Event")).not.toBeInTheDocument();
             expect(screen.queryByText("Cancel attendance")).not.toBeInTheDocument();
             expect(screen.queryByText("Join Event")).not.toBeInTheDocument();

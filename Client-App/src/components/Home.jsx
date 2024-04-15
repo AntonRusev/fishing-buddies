@@ -16,13 +16,13 @@ const Home = () => {
             {/* Show Login/Register Banner only if there is no authenticated User */}
             {!user.token && <CustomBanner />}
             
-            <section className="mx-auto mt-8 p-4 rounded bg-gray-50 xl:max-w-screen-xl dark:bg-gray-800">
+            <section className="mx-auto mt-8 p-4 rounded bg-gray-100 xl:max-w-screen-xl dark:bg-gray-800">
                 <div
                     className="flex"
                     style={{ height: "600px" }}
                 >
                     <div className="flex items-center text-center lg:text-left px-8 md:px-12 lg:w-1/2">
-                        <div>
+                        <div className="flex flex-col gap-y-4">
                             {/* TITLE */}
                             <h2 className="text-3xl font-semibold text-gray-800 md:text-4xl dark:text-white">
                                 Welcome to <span className="text-cyan-600 font-serif">Fishing Buddies</span>!
@@ -35,7 +35,7 @@ const Home = () => {
                                 {/* GO TO EVENTS BUTTON */}
                                 <Button
                                     onClick={() => navigate('/events')}
-                                    color='gray'
+                                    color='dark'
                                     size='lg'
                                 >
                                     View the Events

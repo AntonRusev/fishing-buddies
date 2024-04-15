@@ -32,9 +32,9 @@ const EventDetails = () => {
         );
     } else if (isSuccess && fishingEvent) {
         content = (
-            <article 
-            className="flex justify-center h-full font-lato pt-8 lg:pt-20 bg-gray-50 dark:bg-gray-900"
-            data-testid="event-details"
+            <article
+                className="flex justify-center h-full font-lato pt-8 lg:pt-20 bg-gray-50 dark:bg-gray-900"
+                data-testid="event-details"
             >
                 <div className="flex flex-col mx-4 w-full justify-start max-w-2xl lg:mx-0 lg:ml-2">
                     {/* DETAILS HEADER */}
@@ -54,7 +54,7 @@ const EventDetails = () => {
 
                 {/* DETAILS ATTENDEES SIDEBAR */}
                 {/* NOT visible on small screens */}
-                <div className="flex flex-col mx-4 hidden lg:block">
+                <div className="hidden flex-col mx-4 lg:block">
                     <EventDetailedAttendees fishingEvent={fishingEvent} />
                 </div>
             </article>

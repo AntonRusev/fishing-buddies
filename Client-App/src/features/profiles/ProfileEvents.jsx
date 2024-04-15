@@ -28,7 +28,7 @@ const ProfileEvents = () => {
                         // EVENT PREVIEW CARD
                         <div
                             key={event.id}
-                            className="max-w-sm col-span-1 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                            className="max-w-sm col-span-1 bg-gray-50 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
                             data-testid="profile-events-item"
                         >
                             <NavLink to={`/events/${event.id}`}>
@@ -67,8 +67,8 @@ const ProfileEvents = () => {
     let content = (
         <article className="flex flex-col justify-center align-center items-center dark:bg-gray-900">
             <ProfileHeader />
-            <div className="flex flex-col w-full items-center pb-8 md:mb-8 bg-gray-50 rounded xl:max-w-screen-xl sm:w-3/4 dark:bg-gray-800">
-                <div className="flex flex-col w-full items-center bg-gray-50 rounded xl:max-w-screen-xl sm:w-3/4 dark:bg-gray-800" >
+            <div className="flex flex-col w-full items-center pb-8 md:mb-8 bg-white rounded xl:max-w-screen-xl sm:w-3/4 dark:bg-gray-800">
+                <div className="flex flex-col w-full items-center bg-white rounded xl:max-w-screen-xl sm:w-3/4 dark:bg-gray-800" >
                     {/* NAV BUTTONS */}
                     <ButtonGroup
                         className="flex justify-stretch w-full tracking-wider mt-2 p-2 lg:mt-8 lg:mb-2"
